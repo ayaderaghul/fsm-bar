@@ -1,0 +1,22 @@
+VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];
+b0Graph =
+   Graph[{-1 -> 0 ,
+Labeled[0 -> 0, L,M] 
+, Labeled[0 -> 1, H] 
+, Labeled[1 -> 2, L,M] 
+, Labeled[1 -> 1, H] 
+, Labeled[2 -> 3, L,H] 
+, Labeled[2 -> 2, M] 
+, Labeled[3 -> 3, L,H] 
+, Labeled[3 -> 1, M] 
+     },
+   EdgeShapeFunction -> 
+    GraphElementData["EdgeShapeFunction", "FilledArrow"],
+   VertexStyle -> LightGray,
+   VertexShapeFunction -> VertexCircle,
+   VertexLabels -> {0 -> Placed["H", Center], 1 -> Placed["H", Center], 2 -> Placed["L", Center], 3 -> Placed["M", Center]}
+   ];
+G = Graphics[{White, Disk[{0, 0}, 0.2]}];
+Show[b0Graph, G]
+(*Export["b0.png",S]*)
+ 
