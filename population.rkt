@@ -3,10 +3,10 @@
 (provide (all-defined-out))
 (require "automata.rkt" "utilities.rkt")
 
-(define DEF-COO 2)
+(define MAX-STATES# 10)
 
 (define (build-random-population n)
-  (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random 10))))))
+  (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random MAX-STATES#))))))
   (cons v v))
 
 (define (population-payoffs population0)

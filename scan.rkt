@@ -4,8 +4,6 @@
 
 ;; SCAN
 
-
-
 (define (initial-action au)
   (match-define (automaton current initial payoff states) au)
   (match-define (state action dispatch) (vector-ref states initial))
@@ -19,31 +17,30 @@
    (hash)
    p0))
 
-(define (scan-init population)
+(define (scan-initials population)
+(define p0 (vector->list (car population)))
   (foldl
    (lambda (au h)
      (hash-update h (initial-action au) add1 0))
    (hash)
-   population))
-
+   p0))
 
 (define (hash-ref* a-hash a-key)
   (if (hash-has-key? a-hash a-key)
       (hash-ref a-hash a-key)
       0))
 
-(define (scan-types population)
-  (let ([type-list (scan-init population)])
+(define (scan-oneshot-types population)
+  (let ([ranking (scan-initials population)])
     (list
-     (hash-ref* type-list 0)
-     (hash-ref* type-list 1))))
+     (hash-ref* ranking 0)
+     (hash-ref* ranking 1))))
 
-`(define (scan-4-types population)
-(let ([ranking (scan population)])
-(list
-(hash-ref* ranking (list 1 1 1 1 1 1 1 1 1 1))
-(hash-ref* ranking (list 2 2 2 2 2 2 2 2 2 2)))))
-
+(define (scan-4-types population)
+  (let ([ranking (scan population)])
+    (list
+     (hash-ref* ranking (list 0 1 0 0 0))
+     (hash-ref* ranking (list 0 2 0 0 0)))))
 
 (define (rank population)
   (let ([ranking (hash->list (scan population))])
@@ -76,12 +73,12 @@
 
 (define (out-rank day population n rank-file)
   [define ranking (rank population)]
+  [define l (length ranking)]
   [define truncated (for/first
-                        ([i (length ranking)]
+                        ([i l]
                          #:when (< (cdr (list-ref ranking i))
                                    n))
                       (take ranking i))]
-  [define l (length ranking)]
   (out-data rank-file (append (list (list day))
                               (map list
                                    (if (false? truncated)

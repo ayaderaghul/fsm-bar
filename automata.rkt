@@ -18,11 +18,14 @@
 
 (define (highs p0)
   (automaton 0 0 p0 (vector (state HIGH (vector 0 0 0)))))
-
 (define (mediums p0)
   (automaton 0 0 p0 (vector (state MEDIUM (vector 0 0 0)))))
 (define (lows p0)
   (automaton 0 0 p0 (vector (state LOW (vector 0 0 0)))))
+(define (accommodator p0)
+  (automaton 1 1 p0 (vector (state LOW (vector 2 1 0))
+                            (state MEDIUM (vector 2 1 0))
+                            (state HIGH (vector 2 1 0)))))
 
 (define (clone a)
   (match-define (automaton current c0 payoff table) a)
@@ -116,17 +119,18 @@
   (cond [(= a1 a2 a3) (list "\"L,M,H\"" "\"L,M,H\"" "\"L,M,H\"")]
         [(= a1 a2) (list "\"L,M\"" "\"L,M\"" "\"H\"")]
         [(= a1 a3) (list "\"L,H\"" "\"M\"" "\"L,H\"")]
-        [(= a2 a3) (list "\"L\"" "\"M,H\"" "\"M,H\"")]))
+        [(= a2 a3) (list "\"L\"" "\"M,H\"" "\"M,H\"")]
+        [else (list "\"L\"" "\"M\"" "\"H\"")]))
 
 
-(define (generate-dispatch-code state-i dispatch)
+(define (generate-dispatch-code state# dispatch)
   (define l (vector-length dispatch))
   (define ending (scan-duplicate dispatch))
   (remove-duplicates
    (for/list ([i l])
      (string-append
       "Labeled["
-      (number->string state-i)
+      (number->string state#)
       " -> "
       (number->string (vector-ref dispatch i))
       ", "
