@@ -71,16 +71,15 @@
 (define (out-mean data)
   (out-data "mean" (map list data)))
 
-(define (out-rank day population n rank-file)
-  [define ranking (rank population)]
+(define (out-rank day ranking n rank-file)
+  ;[define ranking (rank population)]
   [define l (length ranking)]
-  [define truncated (for/first
-                        ([i l]
-                         #:when (< (cdr (list-ref ranking i))
-                                   n))
-                      (take ranking i))]
+  [define how-many (for/list
+                       ([i l]
+                        #:when (> (cdr (list-ref ranking i))
+                                  n))
+                     i)]
+  [define truncated (take ranking (length how-many))]
   (out-data rank-file (append (list (list day))
-                              (map list
-                                   (if (false? truncated)
-                                       '()
-                                       truncated)))))
+                              (map list (map list
+                                   truncated)))))

@@ -1,5 +1,14 @@
 # fsm-bar
 
+how to run
+
+```
+racket -tm main.rkt
+```
+```
+raco test -s five main.rkt 
+```
+
 | To do         | Date          | By    | Note |
 | ------------- |:-------------:| ----- |:----:|
 | spin off from sample-fsm2      | 7 Dec | chi | |
@@ -7,3 +16,4 @@
 | add classic automata | 8 Dec |||
 | plot the number of types in each cycle | x | |
 | pass test 1 and test 2 of RD | x | ||
+| fix out-rank ||||

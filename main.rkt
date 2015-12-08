@@ -13,24 +13,27 @@
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
-  (define N 1000)
-  (define CYCLES 1000)
-  (define SPEED 100)
-  (define ROUNDS-PER-MATCH 1)
+  (define N 100)
+  (define CYCLES 5000)
+  (define SPEED 10)
+  (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)
   (define MUTATION 1)
   (define datas
     (time (evolve (build-random-population N) CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
-  (define ps (simulation->lines (map first datas)))
-  (define ts (simulation->lines (map second datas)))
-  (define rd (lines (map third datas)))
+  (define ps (map first datas)) ; mean
+  (define ts (map second datas)) ; number of types
+  (define rs (map third datas)) ; highest ranking in each cycles
+  (define mean-types# (/ (apply + ts) CYCLES))
   (define h3 (function (lambda (x) 8) #:color "red"))
   (define h2 (function (lambda (x) 5) #:color "green"))
   (define h1 (function (lambda (x) 2) #:color "blue"))
-  ; (out-mean ps)
-  (plot (list h3 h2 h1 ps) #:y-min 0.0 #:y-max 10.0 #:title "mean")
-  (plot (list ts) #:y-min 0.0 #:y-max N #:title "types#")
-  (plot rd #:x-min 0.0 #:x-max N #:y-min 0 #:y-max N #:title "replicator dynamics"))
+  (plot (list h3 h2 h1
+              (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title "mean" #:out-file "mean.png")
+  (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
+  (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
+  (out-mean ps)
+  )
 
 (define (simulation->lines data)
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
@@ -43,10 +46,12 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate* p3 mutation)
-         ; (out-rank cycles p3 10 "rank")
+         (define ranking-list (rank p3))
+         (out-rank cycles ranking-list 10 "rank")
          (cons (list (relative-average pp rounds-per-match)
                      (length (rank p3))
-                     (scan-oneshot-types p3))
+                     (apply max (map cdr ranking-list))
+                     )
                (evolve p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
 (module+ five
