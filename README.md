@@ -16,4 +16,5 @@ raco test -s five main.rkt
 | add classic automata | 8 Dec |||
 | plot the number of types in each cycle | x | |
 | pass test 1 and test 2 of RD | x | ||
-| fix out-rank ||||
+| fix out-rank |x|||
+| test again, think of test 3 (test mutation)| |||

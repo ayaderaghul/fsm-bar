@@ -3,7 +3,7 @@
 (provide (all-defined-out))
 (require "automata.rkt" "utilities.rkt")
 
-(define MAX-STATES# 5)
+(define MAX-STATES# 3)
 
 (define (build-random-population n)
   (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random MAX-STATES#))))))

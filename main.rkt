@@ -14,8 +14,8 @@
   (collect-garbage)
   (collect-garbage)
   (define N 100)
-  (define CYCLES 5000)
-  (define SPEED 10)
+  (define CYCLES 50000)
+  (define SPEED 15)
   (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)
   (define MUTATION 1)
@@ -124,6 +124,8 @@
 
 (define point-list2
   (list
+   (list 250 700 49 1)
+   (list 50 850 49 1)
    (list 900 50 49 1)
    (list 800 50 149 1)
    (list 50 50 899 1)
