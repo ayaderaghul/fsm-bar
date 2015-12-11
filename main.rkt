@@ -13,7 +13,7 @@
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
-  (define N 100)
+  (define N 500)
   (define CYCLES 50000)
   (define SPEED 15)
   (define ROUNDS-PER-MATCH 20)
@@ -47,7 +47,7 @@
          (define p3 (regenerate p2 speed))
          (mutate* p3 mutation)
          (define ranking-list (rank p3))
-         (out-rank cycles ranking-list 10 "rank")
+        ; (out-rank cycles ranking-list 10 "rank")
          (cons (list (relative-average pp rounds-per-match)
                      (length (rank p3))
                      (apply max (map cdr ranking-list))
@@ -60,6 +60,43 @@
   (main)
   (main)
   (main))
+
+
+;; DELTA
+(define (evolve-d population cycles speed rounds-per-match delta mutation)
+  (cond
+   [(zero? cycles) '()]
+   [else (define p2 (match-up* population rounds-per-match delta))
+         (define pp (population-payoffs p2))
+         (define p3 (regenerate p2 speed))
+         (mutate* p3 mutation)
+         (define ranking-list (rank p3))
+         ;; (out-rank cycles ranking-list 10 "rank")
+         (cons (relative-average pp rounds-per-match)
+               (evolve-d p3 (- cycles 1) speed rounds-per-match delta mutation))]))
+
+(define (evolve-delta delta)
+  (define N 100)
+  (define CYCLES 10000)
+  (define SPEED 15)
+  (define ROUNDS-PER-MATCH 20)
+  (define MUTATION 1)
+  (evolve-d (build-random-population N) CYCLES SPEED ROUNDS-PER-MATCH delta MUTATION))
+(define DELTAS (list 0 .2 .4 .6 .8 1))
+(define (across-delta)
+  (for ([i (in-list DELTAS)])
+    (collect-garbage)
+    (collect-garbage)
+    (collect-garbage)
+    (define datas (time (evolve-delta i)))
+    (define h3 (function (lambda (x) 8) #:color "red"))
+    (define h2 (function (lambda (x) 5) #:color "green"))
+    (define h1 (function (lambda (x) 2) #:color "blue"))
+    (plot (list h3 h2 h1
+                (simulation->lines datas)) #:y-min 0.0 #:y-max 10.0 #:title "mean" ;#:out-file "mean.png"
+)
+    ))
+
 
 ;; TEST 1: ONE SHOT REPLICATOR DYNAMICS
 
