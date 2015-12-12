@@ -3,7 +3,7 @@
 (provide (all-defined-out))
 (require "automata.rkt" "utilities.rkt")
 
-(define MAX-STATES# 10)
+(define MAX-STATES# 30)
 
 (define (build-random-population n)
   (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random MAX-STATES#))))))
@@ -36,12 +36,11 @@
   (shuffle-vector a* b*))
 
 (define (mutate* population0 mutation)
-(define p1 (car population0))
-(for ([i mutation])
-(define r (random (vector-length p1)))
-(define mutated (mutate (vector-ref p1 r)))
-(vector-set! p1 r mutated)))
-
+  (define p1 (car population0))
+  (for ([i mutation])
+    (define r (random (vector-length p1)))
+    (define mutated (mutate (vector-ref p1 r)))
+    (vector-set! p1 r mutated)))
 
 (define (payoff->probabilities a*)
   (define payoffs (for/list ([x (in-vector a*)]) (automaton-payoff x)))

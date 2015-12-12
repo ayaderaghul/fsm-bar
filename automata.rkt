@@ -58,11 +58,13 @@
 (define (payoff current1 current2)
   (vector-ref (vector-ref PAYOFF-TABLE current1) current2))
 
+;; IMMUTABLE MUTATION
+
 (define (flatten-automaton au)
   (match-define (automaton current initial payoff states) au)
   (define l (vector-length states))
   (define body
-    (for/list ([i l])
+    (for/list ([i (in-range l)])
       (match-define (state action dispatch) (vector-ref states i))
       (list action (vector->list dispatch))))
   (flatten (list initial body)))
@@ -70,29 +72,32 @@
 (define STATE-LENGTH 4)
 
 (define (recover au)
-  (define s (/ (- (length au) 1) STATE-LENGTH))
-  (define body (drop au 1))
-  (define recovered-body
-    (for/vector ([i s])
-      (state (list-ref body (* STATE-LENGTH i))
-             (list->vector (take (drop body (+ 1 (* STATE-LENGTH i))) actions#)))))
-  (automaton (first au) (first au) 0 recovered-body))
+  (define-values (head body) (split-at au 1))
+  (define s (/ (length body) STATE-LENGTH))
+  (define (recover-body s a-body)
+    (cond [(zero? s) '()]
+          [else
+           (define-values (first-state the-rest)
+             (split-at a-body STATE-LENGTH))
+           (define-values (action dispatch)
+             (split-at first-state 1))
+           (define result-state (state (car action) (list->vector dispatch)))
+           (cons result-state (recover-body (- s 1) the-rest))]))
+  (automaton (car head) (car head) 0 (list->vector (recover-body s body))))
 
 (define (immutable-set a-list a-posn a-value)
-  (define head (take a-list a-posn))
-  (define tail (drop a-list (+ 1 a-posn)))
-  (append head (list a-value) tail))
+  (define-values (head tail) (split-at a-list a-posn))
+  (append head (list a-value) (drop tail 1)))
 
 (define (mutate au)
   (define a (flatten-automaton au))
   (define r (random (length a)))
-  (define s (/ (- (length a) 1) STATE-LENGTH))
+  (define s (quotient (length a) STATE-LENGTH))
   (recover
    (cond
     [(zero? r) (immutable-set a 0 (random s))]
     [(= 1 (modulo r STATE-LENGTH)) (immutable-set a r (random actions#))]
     [else (immutable-set a r (random s))])))
-
 
 ;; EXPORT MATHA CODE
 
@@ -121,7 +126,6 @@
         [(= a1 a3) (list "\"L,H\"" "\"M\"" "\"L,H\"")]
         [(= a2 a3) (list "\"L\"" "\"M,H\"" "\"M,H\"")]
         [else (list "\"L\"" "\"M\"" "\"H\"")]))
-
 
 (define (generate-dispatch-code state# dispatch)
   (define l (vector-length dispatch))

@@ -19,3 +19,6 @@ raco test -s five main.rkt
 | fix out-rank |x|||
 | test again, think of test 3 (test mutation)| |||
 | run across delta | 11 dec |||
+| write a montecarlo ||||
+| optimize code | |||
+| write acknowledgement | |||
