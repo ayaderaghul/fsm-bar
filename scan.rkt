@@ -29,18 +29,13 @@
    init-hash
    p0))
 
-(define (scan** population)
-  (define p0 (vector->list (car population)))
-  (define l (length p0))
-  (define (hash-update* an-auto a-hash)
-    (hash-update a-hash an-auto add1 0))
-  (for/fold ([init-hash (hash)])
-            ([i (in-range l)])
-    (define an-au (flatten-automaton (list-ref p0 i)))
-    (hash-update* an-au init-hash)))
+(define THRESHOLD 10)
 
-
-
+(define (rank population)
+  (define a-hash (time (scan population)))
+  (time (for/hash ([(k v) (in-hash a-hash)]
+                   #:when (< THRESHOLD v))
+          (values k v))))
 
 (define (scan-initials population)
 (define p0 (vector->list (car population)))
@@ -67,11 +62,6 @@
      (hash-ref* ranking (list 0 1 0 0 0))
      (hash-ref* ranking (list 0 2 0 0 0)))))
 
-(define (rank population)
-  (define rank-hash (scan population))
-  (define ranking (hash->list rank-hash))
-  (sort ranking > #:key cdr))
-
 (define (top t population)
   (let* ([flattened (map car (rank population))]
          [automaton (map (lambda (au)
@@ -97,15 +87,6 @@
 (define (out-mean data)
   (out-data "mean" (map list data)))
 
-(define (out-rank day ranking n rank-file)
-  ;[define ranking (rank population)]
-  [define l (length ranking)]
-  [define how-many (for/list
-                       ([i l]
-                        #:when (> (cdr (list-ref ranking i))
-                                  n))
-                     i)]
-  [define truncated (take ranking (length how-many))]
-  (out-data rank-file (append (list (list day))
-                              (map list (map list
-                                   truncated)))))
+(define (out-rank day data)
+  (out-data "rank" (append (list (list day)
+                                 (map list data)))))

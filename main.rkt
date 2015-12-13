@@ -13,14 +13,15 @@
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
-  (define N 500)
-  (define CYCLES 50000)
+  (define N 100)
+  (define P (build-random-population N))
+  (define CYCLES 1)
   (define SPEED 15)
   (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)
   (define MUTATION 1)
   (define datas
-    (time (evolve (build-random-population N) CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
+    (time (evolve P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
   (define ps (map first datas)) ; mean
   (define ts (map second datas)) ; number of types
   (define rs (map third datas)) ; highest ranking in each cycles
@@ -42,17 +43,18 @@
 (define (evolve population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-up* population rounds-per-match delta))
-         (define pp (population-payoffs p2))
-         (define p3 (regenerate p2 speed))
-         (mutate* p3 mutation)
-         (define ranking-list (rank p3))
-        ; (out-rank cycles ranking-list 10 "rank")
-         (cons (list (relative-average pp rounds-per-match)
-                     (length (rank p3))
-                     (apply max (map cdr ranking-list))
+   [else (define p2 (time (match-up* population rounds-per-match delta)))
+         (define pp (time (population-payoffs p2)))
+         (define p3 (time (regenerate p2 speed)))
+         (time (mutate* p3 mutation))
+         (define ranking (time (rank p3)))
+         (define ranking-list (time (hash->list ranking)))
+         (time (out-rank cycles ranking-list))
+         (time (cons (list (relative-average pp rounds-per-match)
+                     (length ranking-list)
+                     (apply max (if (hash-empty? ranking) (list 0) (hash-values ranking)))
                      )
-               (evolve p3 (- cycles 1) speed rounds-per-match delta mutation))]))
+               (evolve p3 (- cycles 1) speed rounds-per-match delta mutation)))]))
 
 (module+ five
   (main)

@@ -20,5 +20,9 @@ raco test -s five main.rkt
 | test again, think of test 3 (test mutation)| |||
 | run across delta | 11 dec |||
 | write a montecarlo ||||
-| optimize code | |||
-| write acknowledgement | |||
+| optimize code, now time is spent in match-up and rank | |||
+| write acknowledgement | x |||
+
+# Acknowledgment
+
+This is a customised version built upon the base code of Matthias Felleisen (here: https://github.com/mfelleisen/sample-fsm)
