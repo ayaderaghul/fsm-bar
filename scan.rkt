@@ -9,15 +9,14 @@
   (match-define (state action dispatch) (vector-ref states initial))
   action)
 
-#|
+
 (define (scan* population)
   (define p0 (vector->list (car population)))
   (foldl
    (lambda (au h)
-     (hash-update h (flatten-automaton au) add1 0))
+     (hash-update h au add1 0))
    (hash)
    p0))
-|#
 
 (define (scan population)
   (define p0 (vector->list (car population)))
@@ -32,10 +31,16 @@
 (define THRESHOLD 10)
 
 (define (rank population)
-  (define a-hash (time (scan population)))
-  (time (for/hash ([(k v) (in-hash a-hash)]
-                   #:when (< THRESHOLD v))
-          (values k v))))
+  (define a-hash (scan population))
+  (for/hash ([(k v) (in-hash a-hash)]
+             #:when (< THRESHOLD v))
+    (values k v)))
+
+(define (rank* population)
+  (define a-hash (scan* population))
+  (for/hash ([(k v) (in-hash a-hash)]
+             #:when (< THRESHOLD v))
+    (values k v)))
 
 (define (scan-initials population)
 (define p0 (vector->list (car population)))

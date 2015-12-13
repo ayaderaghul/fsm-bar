@@ -47,7 +47,7 @@
          (define pp (time (population-payoffs p2)))
          (define p3 (time (regenerate p2 speed)))
          (time (mutate* p3 mutation))
-         (define ranking (time (rank p3)))
+         (define ranking (time (rank* p3)))
          (define ranking-list (time (hash->list ranking)))
          (time (out-rank cycles ranking-list))
          (time (cons (list (relative-average pp rounds-per-match)
