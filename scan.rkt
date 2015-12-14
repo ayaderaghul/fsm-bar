@@ -37,10 +37,11 @@
     (values k v)))
 
 (define (rank* population)
-  (define a-hash (scan* population))
-  (for/hash ([(k v) (in-hash a-hash)]
-             #:when (< THRESHOLD v))
-    (values k v)))
+  (define a-hash (time (scan* population)))
+  (time
+   (for/hash ([(k v) (in-hash a-hash)]
+              #:when (< THRESHOLD v))
+     (values k v))))
 
 (define (scan-initials population)
 (define p0 (vector->list (car population)))
