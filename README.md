@@ -22,6 +22,7 @@ raco test -s five main.rkt
 | write a montecarlo ||||
 | optimize code, now time is spent in match-up and rank | |||
 | write acknowledgement | x |||
+| test 3 initiated | 28 dec | ||
 
 # Acknowledgment
 

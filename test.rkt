@@ -109,3 +109,83 @@
     (test2 (list-ref test-points i)
            (string-append "rd" (number->string i)))))
 
+;; TEST 3: 4 TYPES & DELTA CHANGES
+
+(define (tough)
+  (automaton 0 0 0 (vector (state HIGH (vector 0 0 1))
+                           (state HIGH (vector 1 1 2))
+                           (state HIGH (vector 2 2 3))
+                           (state MEDIUM (vector 0 3 0)))))
+
+(define (bully)
+  (automaton 0 0 0 (vector (state HIGH (vector 0 3 1))
+                           (state HIGH (vector 1 1 2))
+                           (state HIGH (vector 2 2 3))
+                           (state MEDIUM (vector 1 3 0)))))
+
+(define (build-test3-population f t b a)
+  (define p
+    (vector-append
+     (build-vector f (lambda (_) (mediums 0)))
+     (build-vector t (lambda (_) (tough)))
+     (build-vector b (lambda (_) (bully)))
+     (build-vector a (lambda (_) (accommodator 0)))))
+  (shuffle-vector p p))
+
+(define point-list3
+  (list
+   (list 150 750 50 50)
+   (list 200 700 50 50)
+   (list 250 650 50 50)
+   (list 250 550 100 100)
+   (list 250 450 150 150)
+   (list 350 550 50 50)
+   (list 150 250 300 300)
+   (list 250 250 250 250)
+   (list 350 250 200 200)
+   ))
+
+
+(define (scan-test3 population)
+  (let ([ranking (scan population)])
+    (list
+     (hash-ref* ranking (list 0 1 0 0 0))
+     (hash-ref* ranking (list 0 2 0 0 1 2 1 1 2 2 2 2 3 1 0 3 0)))))
+
+
+(define (evolve-rd3 population cycles speed r d)
+  (cond
+   [(zero? cycles) '()]
+   [else (define p2 (match-up* population r d))
+         (define pp (population-payoffs p2))
+         (define p3 (regenerate p2 speed))
+         (cons (scan-test3 p3)
+               (evolve-rd3 p3 (- cycles 1) speed r d))]))
+
+(define (test3 test-point file-name)
+  (collect-garbage)
+  (collect-garbage)
+  (collect-garbage)
+  (define A (apply build-test3-population test-point))
+  (define N 1000)
+  (define CYCLES 1000)
+  (define SPEED 100)
+  (define ROUNDS-PER-MATCH 20)
+  (define DELTA .8)
+  (define rd-types
+    (time (evolve-rd3 A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
+  (out-data file-name (map list (flatten rd-types)))
+  (define rd (lines rd-types))
+  (plot rd #:x-min 0.0 #:x-max N #:y-min 0 #:y-max N #:title "replicator dynamics"))
+
+(define (test3s test-points)
+  (for ([i (length test-points)])
+    (test3 (list-ref test-points i)
+           (string-append "rd" (number->string i)))))
+
+(define filelist3
+  (list "rd0" "rd1" "rd2" "rd3" "rd4" "rd5" "rd6" "rd7" "rd8"))
+
+(define (plot-dynamics file-list)
+  (define data (load-dynamics file-list))
+  (plot data #:x-label "fair" #:y-label "tough" #:title "delta 0.8"))

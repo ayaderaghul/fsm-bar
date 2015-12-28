@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require 2htdp/batch-io)
+(require 2htdp/batch-io plot)
 
 ;; IMPORT
 (define (load-data csv-file)
@@ -21,7 +21,7 @@
      (list-ref a-list (add1 (* 2 i))))))
 
 (define (load-dynamic csv-file)
-  (pack-coors (load-data csv-file)))
+  (lines (pack-coors (load-data csv-file))))
 
 (define (load-dynamics file-list)
   [define l (length file-list)]
