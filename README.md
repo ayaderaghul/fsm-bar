@@ -9,6 +9,16 @@ racket -tm main.rkt
 raco test -s five main.rkt 
 ```
 
+how to run in lab 1 computer:
+
+- change the directory for the output into a dropbox folder
+(ie smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png")
+
+```
+(require (file "/Users/linhchi.nguyen/Documents/fsm-bar/main.rkt"))
+
+```
+
 | To do         | Date          | By    | Note |
 | ------------- |:-------------:| ----- |:----:|
 | spin off from sample-fsm2      | 7 Dec | chi | |
@@ -17,7 +27,6 @@ raco test -s five main.rkt
 | plot the number of types in each cycle | x | |
 | pass test 1 and test 2 of RD | x | ||
 | fix out-rank |x|||
-| test again, think of test 3 (test mutation)| |||
 | run across delta | 11 dec |||
 | write a montecarlo ||||
 | optimize code, now time is spent in match-up and rank | |||
