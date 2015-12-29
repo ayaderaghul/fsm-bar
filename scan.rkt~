@@ -10,8 +10,6 @@
   action)
 
 
-;; scan* is cheaper because it doesnt flatten automata before hashing
-
 (define (scan* population)
   (define p0 (vector->list (car population)))
   (foldl
