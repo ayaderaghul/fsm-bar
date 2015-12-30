@@ -21,7 +21,8 @@ how to run in lab 1 computer:
 
 how to run in disa lab computer:
 - change directory for output:
-""
+"C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/run6/mean"
+
 ```
 (require (file "R:/fsm-bar/main.rkt"))
 ```
