@@ -1,25 +1,19 @@
 # fsm-bar
 
-## how to run
+## how to run in mathematica
 
 there are two main files: `basic.rkt` which is used for the grand simulation.
 `side.rkt` is for the side project (or spinoff).
 
-in general, the command to run is
-
-```
-racket -tm side.rkt
-```
-
-with -tm and no further specification, racket will evaluate the function `main inside the file (module) side.rkt
-
 before running, it's necessary to change the directory for the output.
 
-open `side.rkt`, the CONFIGURATION is at the beginning:
+- open `side.rkt`, the CONFIGURATION is at the beginning:
 
-(add smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png")
+- change the directory to smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png"
 
-then change the variables accordingly, for example: N 100, CYCLES 100000...
+- then change the variables accordingly, for example: N 100, CYCLES 100000...
+
+- then run the file `run-in-matha.nb` in mathematica
 
 ### how to run in lab 1 computer:
 
@@ -40,6 +34,14 @@ then change the variables accordingly, for example: N 100, CYCLES 100000...
 ```
 
 #### extra
+
+in general, the command to run is
+
+```
+racket -tm side.rkt
+```
+
+with -tm and no further specification, racket will evaluate the function `main inside the file (module) side.rkt
 
 ```
 raco test -s five main.rkt 
