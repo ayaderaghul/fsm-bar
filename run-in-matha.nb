@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    106388,       2173]
-NotebookOptionsPosition[      3477,         75]
-NotebookOutlinePosition[    106489,       2175]
-CellTagsIndexPosition[    106446,       2172]
+NotebookDataLength[    106512,       2175]
+NotebookOptionsPosition[      3601,         77]
+NotebookOutlinePosition[    106613,       2177]
+CellTagsIndexPosition[    106570,       2174]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -29,19 +29,20 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"SetDirectory", "[", 
      RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\n", 
    RowBox[{"(*", 
     RowBox[{
      RowBox[{
      "Creates", " ", "the", " ", "string", " ", "that", " ", "will", " ", 
       "be", " ", 
-      RowBox[{"evaluated", ".", " ", "latex"}], " ", "is", " ", "the", " ", 
-      "program", " ", "name"}], ",", " ", 
+      RowBox[{"evaluated", ".", " ", "as"}], " ", "default"}], ",", " ", 
      RowBox[{
-     "SecondoFile", " ", "is", " ", "the", " ", "name", " ", "of", " ", "the",
-       " ", "file", " ", "to", " ", "be", " ", "processed"}]}], "*)"}], "\n", 
+     "racket", " ", "will", " ", "evaluate", " ", "the", " ", "function", " ",
+       "`main", " ", "inside", " ", "the", " ", "file", " ", 
+      RowBox[{"side", ".", "rkt", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
    RowBox[{
-    RowBox[{"commandstring", "=", "\"\<racket -tm main.rkt\>\""}], ";"}], 
+    RowBox[{"commandstring", "=", "\"\<racket -tm side.rkt\>\""}], ";"}], 
    "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{"Runs", " ", "the", " ", "string"}], " ", "*)"}], 
@@ -71,7 +72,8 @@ Cell[BoxData[
    3.5997540324031496`*^9, 3.599754058575647*^9}, 3.653619767029251*^9, {
    3.6536198454745817`*^9, 3.653619858838455*^9}, {3.653620204245492*^9, 
    3.653620205245576*^9}, {3.6536204260278196`*^9, 3.6536205611329556`*^9}, {
-   3.6604806399843597`*^9, 3.6604806469453583`*^9}}]
+   3.6604806399843597`*^9, 3.6604806469453583`*^9}, {3.6605024866719227`*^9, 
+   3.660502488468546*^9}, {3.6605026170917053`*^9, 3.660502695716313*^9}}]
 },
 PrintingStyleEnvironment->"Printout",
 WindowSize->{704, 716},
@@ -2174,7 +2176,7 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 2916, 53, 221, "Input"]
+Cell[557, 20, 3040, 55, 240, "Input"]
 }
 ]
 *)

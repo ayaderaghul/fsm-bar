@@ -1,14 +1,11 @@
 #lang racket
 
-(require "automata.rkt" "population.rkt" "utilities.rkt" "scan.rkt" "in.rkt" plot)
-
+(require "automata.rkt" "population.rkt" "scan.rkt" "inout.rkt" plot)
 (plot-new-window? #t)
-
 
 (provide (all-defined-out))
 
 ;; TEST 1: ONE SHOT REPLICATOR DYNAMICS
-
 (define (build-oneshot-population l m h)
   (define p
     (vector-append
@@ -57,8 +54,7 @@
            (string-append "rd" (number->string i)))))
 
 
-;; TEST 2: REPEATED GAME RD FOR 4 TYPES
-
+;; TEST 2: REPEATED GAME RD FOR 4 TYPES: LOWS MEDIUMS HIGHS ACCOMMODATOR
 (define (build-test2-population m h a l)
   (define p
     (vector-append
@@ -85,7 +81,7 @@
    [else (define p2 (match-up* population r d))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (cons (scan-4-types p3)
+         (cons (scan-mediums-highs p3)
                (evolve-rd2 p3 (- cycles 1) speed r d))]))
 
 (define (test2 test-point file-name)
@@ -109,8 +105,8 @@
     (test2 (list-ref test-points i)
            (string-append "rd" (number->string i)))))
 
-;; TEST 3: 4 TYPES & DELTA CHANGES
-
+;; TEST 3: REPEATED GAME RD FOR 4 TYPES: MEDIUMS TOUGH BULLY ACCOMMODATOR
+;; AND DELTA CHANGES
 (define (build-test3-population f t b a)
   (define p
     (vector-append
@@ -133,21 +129,13 @@
    (list 350 250 200 200)
    ))
 
-
-(define (scan-test3 population)
-  (let ([ranking (scan population)])
-    (list
-     (hash-ref* ranking (list 0 1 0 0 0))
-     (hash-ref* ranking (list 0 2 0 0 1 2 1 1 2 2 2 2 3 1 0 3 0)))))
-
-
 (define (evolve-rd3 population cycles speed r d)
   (cond
    [(zero? cycles) '()]
    [else (define p2 (match-up* population r d))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (cons (scan-test3 p3)
+         (cons (scan-mediums-tough p3)
                (evolve-rd3 p3 (- cycles 1) speed r d))]))
 
 (define (test3 test-point file-name)

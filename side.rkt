@@ -1,52 +1,49 @@
 #lang racket
 
-(provide (all-defined-out))
+(provide main)
 (require "automata.rkt" "population.rkt"
-         "utilities.rkt" "scan.rkt" "in.rkt"
+         "scan.rkt" "inout.rkt"
          plot)
 (plot-new-window? #t)
 
-(define (build-random-test3 n)
-  (define p
-    (for/vector ([i (in-range n)])
-      (define r (random 4))
-      ((list-ref AUTO-SET r))))
-  (cons p p))
-
-;; output a readme that contains configuration
-
+;; CONFIGURATION
+;; change directory of output here
 (define MEAN "mean.txt")
 (define RANK "rank.txt")
 (define PIC "mean.png")
 (define RME "readme.txt")
 
-(define (print-configuration lst)
-  (out-data RME
-            (list lst)))
+(define AUTO-SET
+  (list mediums tough bully accommodator))
+(define N 100)
+(define CYCLES 10000)
+(define SPEED 25)
+(define ROUNDS-PER-MATCH 15)
+(define DELTA .95)
+(define MUTATION 1)
+
+;; the functions in this side project will have suffix -s for side or spinoff
+(define (build-population-s n)
+  (define p
+    (for/vector ([i (in-range n)])
+      (define r (random 4))
+      ((list-ref AUTO-SET r))))
+  (shuffle-vector p p))
+
+(define P (build-population-s N))
 
 (define (main)
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
-  (define N 100)
-  (define P (build-random-test3 N))
-  (define CYCLES 10000)
-  (define SPEED 25)
-  (define ROUNDS-PER-MATCH 15)
-  (define DELTA .95)
-  (define MUTATION 1)
-  (print-configuration (list "N" N "speed" SPEED "rounds per match" ROUNDS-PER-MATCH "delta" DELTA "mutation" MUTATION))
+  (print-configuration RME (list "N" N "speed" SPEED "rounds per match" ROUNDS-PER-MATCH "delta" DELTA "mutation" MUTATION))
   (define datas
-    (time (evolve-t3 P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
+    (time (evolve-s P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
   (define ps (map first datas)) ; mean
   (define ts (map second datas)) ; number of types
   (define rs (map third datas)) ; highest ranking in each cycles
   (define mean-types# (/ (apply + ts) CYCLES))
-  (define h3 (function (lambda (x) 8) #:color "red"))
-  (define h2 (function (lambda (x) 5) #:color "green"))
-  (define h1 (function (lambda (x) 2) #:color "blue"))
-  (plot (list h3 h2 h1
-              (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title "mean" #:out-file PIC #:width 1000)
+  (plot (list (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title "mean" #:out-file PIC #:width 1000)
   (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
   (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
   (out-mean MEAN ps)
@@ -56,10 +53,7 @@
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
   (lines coors))
 
-(define AUTO-SET
-  (list mediums tough bully accommodator))
-
-(define (mutate3 population0 mutation)
+(define (mutate-s population0 mutation)
   (define p1 (car population0))
   (for ([i mutation])
     (define posn (random (vector-length p1)))
@@ -67,13 +61,13 @@
     (define mutated ((list-ref AUTO-SET r)))
     (vector-set! p1 posn mutated)))
 
-(define (evolve-t3 population cycles speed rounds-per-match delta mutation)
+(define (evolve-s population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
    [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (mutate3 p3 mutation)
+         (mutate-s p3 mutation)
          (define ranking (rank p3))
          (define ranking-list (hash->list ranking))
          (out-rank RANK cycles ranking-list)
@@ -81,4 +75,4 @@
                      (hash-count ranking)
                      (apply max (if (hash-empty? ranking) (list 0) (hash-values ranking)))
                      )
-               (evolve-t3 p3 (- cycles 1) speed rounds-per-match delta mutation))]))
+               (evolve-s p3 (- cycles 1) speed rounds-per-match delta mutation))]))

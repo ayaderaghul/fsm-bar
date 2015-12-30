@@ -1,10 +1,15 @@
 #lang racket
 
-(provide (all-defined-out))
-(require "automata.rkt" "utilities.rkt")
+(provide build-random-population population-payoffs match-up*
+ 	population-reset regenerate mutate* payoff->probabilities
+	shuffle-vector relative-average)
 
-(define MAX-STATES# 15)
+(require "automata.rkt")
 
+;; CONFIGURATION
+(define MAX-STATES# 15) ; create an automaton having up to 15 states
+
+;; POPULATION
 (define (build-random-population n)
   (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random MAX-STATES#))))))
   (cons v v))
@@ -47,6 +52,7 @@
   (define total   (sum payoffs))
   (for/list ([p (in-list payoffs)]) (/ p total)))
 
+;; UTILITIES
 (define (shuffle-vector b a)
   ;; copy b into a
   (for ([x (in-vector b)][i (in-naturals)])
@@ -57,3 +63,25 @@
     (unless (= j i) (vector-set! a i (vector-ref a j)))
     (vector-set! a j x))
   (cons a b))
+
+(define (sum l)
+  (apply + l))
+
+(define (relative-average l w) ; weighted mean
+  (exact->inexact
+   (/ (sum l)
+      w (length l))))
+
+(define (choose-randomly probabilities speed #:random (q #false))
+  (define %s (accumulated-%s probabilities))
+  (for/list ([n (in-range speed)])
+    [define r (or q (random))]
+    ;; population is non-empty so there will be some i such that ...
+    (for/last ([p (in-naturals)] [% (in-list %s)] #:final (< r %)) p)))
+
+(define (accumulated-%s probabilities)
+  (let relative->absolute ([payoffs probabilities][so-far #i0.0])
+    (cond
+      [(empty? payoffs) '()]
+      [else (define nxt (+ so-far (first payoffs)))
+            (cons nxt (relative->absolute (rest payoffs) nxt))])))

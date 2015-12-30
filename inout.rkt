@@ -1,6 +1,6 @@
 #lang racket
-(provide (all-defined-out))
-(require 2htdp/batch-io plot)
+(provide load-dynamics out-data out-mean out-rank print-configuration)
+(require "csv.rkt" 2htdp/batch-io plot)
 
 ;; IMPORT
 (define (load-data csv-file)
@@ -27,6 +27,26 @@
   [define l (length file-list)]
   (for/list ([i (in-range l)])
     (load-dynamic (list-ref file-list i))))
+
+
+;; EXPORT DATA
+;; if needed, map list data..
+(define (out-data filename data)
+  (define out (open-output-file filename #:mode 'text #:exists 'append))
+  (write-table data out)
+  (close-output-port out))
+
+(define (out-mean filename data)
+  (out-data filename (map list data)))
+
+(define (out-rank filename day data)
+  (out-data filename (append (list (list day)
+                                 (map list data)))))
+
+(define (print-configuration filename lst)
+  (out-data filename (list lst)))
+
+
 
 
 
