@@ -46,7 +46,7 @@
   (define h2 (function (lambda (x) 5) #:color "green"))
   (define h1 (function (lambda (x) 2) #:color "blue"))
   (plot (list h3 h2 h1
-              (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title "mean" #:out-file PIC)
+              (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title "mean" #:out-file PIC #:width 1000)
   (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
   (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
   (out-mean MEAN ps)
