@@ -35,7 +35,7 @@
   (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)
   (define MUTATION 1)
-  (configuration (list N SPEED ROUNDS-PER-MATCH DELTA MUTATION))
+  (configuration (list "N" N "speed" SPEED "rounds per match" ROUNDS-PER-MATCH "delta" DELTA "mutation" MUTATION))
   (define datas
     (time (evolve-t3 P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
   (define ps (map first datas)) ; mean
