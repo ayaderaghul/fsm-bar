@@ -32,6 +32,9 @@ how to run in lab 1 computer:
 | optimize code, now time is spent in match-up and rank | |||
 | write acknowledgement | x |||
 | test 3 initiated | 28 dec | ||
+| output a readme for each run w configuration ||||
+| draw the new automata to check ||||
+
 
 # Acknowledgment
 

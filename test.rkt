@@ -111,25 +111,13 @@
 
 ;; TEST 3: 4 TYPES & DELTA CHANGES
 
-(define (tough)
-  (automaton 0 0 0 (vector (state HIGH (vector 0 0 1))
-                           (state HIGH (vector 1 1 2))
-                           (state HIGH (vector 2 2 3))
-                           (state MEDIUM (vector 0 3 0)))))
-
-(define (bully)
-  (automaton 0 0 0 (vector (state HIGH (vector 0 3 1))
-                           (state HIGH (vector 1 1 2))
-                           (state HIGH (vector 2 2 3))
-                           (state MEDIUM (vector 1 3 0)))))
-
 (define (build-test3-population f t b a)
   (define p
     (vector-append
-     (build-vector f (lambda (_) (mediums 0)))
+     (build-vector f (lambda (_) (mediums)))
      (build-vector t (lambda (_) (tough)))
      (build-vector b (lambda (_) (bully)))
-     (build-vector a (lambda (_) (accommodator 0)))))
+     (build-vector a (lambda (_) (accommodator)))))
   (shuffle-vector p p))
 
 (define point-list3
@@ -171,7 +159,7 @@
   (define CYCLES 1000)
   (define SPEED 100)
   (define ROUNDS-PER-MATCH 20)
-  (define DELTA .8)
+  (define DELTA .95)
   (define rd-types
     (time (evolve-rd3 A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
   (out-data file-name (map list (flatten rd-types)))

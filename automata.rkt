@@ -18,14 +18,27 @@
 
 (define (highs p0)
   (automaton 0 0 p0 (vector (state HIGH (vector 0 0 0)))))
-(define (mediums p0)
-  (automaton 0 0 p0 (vector (state MEDIUM (vector 0 0 0)))))
+(define (mediums)
+  (automaton 0 0 0 (vector (state MEDIUM (vector 0 0 0)))))
 (define (lows p0)
   (automaton 0 0 p0 (vector (state LOW (vector 0 0 0)))))
-(define (accommodator p0)
-  (automaton 1 1 p0 (vector (state LOW (vector 2 1 0))
+(define (accommodator)
+  (automaton 1 1 0 (vector (state LOW (vector 2 1 0))
                             (state MEDIUM (vector 2 1 0))
                             (state HIGH (vector 2 1 0)))))
+
+(define (tough)
+  (automaton 0 0 0 (vector (state HIGH (vector 0 0 1))
+                           (state HIGH (vector 1 1 2))
+                           (state HIGH (vector 2 2 3))
+                           (state MEDIUM (vector 0 3 0)))))
+
+(define (bully)
+  (automaton 0 0 0 (vector (state HIGH (vector 0 3 1))
+                           (state HIGH (vector 1 1 2))
+                           (state HIGH (vector 2 2 3))
+                           (state MEDIUM (vector 1 3 0)))))
+
 
 (define (clone a)
   (match-define (automaton current c0 payoff table) a)
