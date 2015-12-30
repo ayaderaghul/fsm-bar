@@ -50,6 +50,6 @@ how to run in disa lab computer:
 
 This is a customised version built upon the base code of Matthias Felleisen [here](https://github.com/mfelleisen/sample-fsm)
 
-The initial code of this project benefits from a considerable contribution by Hoang Minh Thang.
+The initial code of this project received a lot of critical contribution by Hoang Minh Thang.
 
 Along the way of the development of this project, the code benefits tremendously from discussions on racket mailing list [here](https://groups.google.com/forum/?hl=en-GB#!topic/racket-users/4o1goSwrLHA) and IRC #racket [here](http://pastebin.com/sxrCnwRV).
