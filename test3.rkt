@@ -15,12 +15,13 @@
 
 ;; output a readme that contains configuration
 
-(define MEAN "mean")
-(define RANK "rank")
-(define PIC "mean.png")
+(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/mean")
+(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/rank")
+(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/mean.png")
+(define RME "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/readme")
 
 (define (configuration lst)
-  (out-data "readme"
+  (out-data RME
             (list lst)))
 
 (define (run)
@@ -29,7 +30,7 @@
   (collect-garbage)
   (define N 1000)
   (define P (build-random-test3 N))
-  (define CYCLES 10000)
+  (define CYCLES 200000)
   (define SPEED 100)
   (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)
@@ -45,7 +46,7 @@
   (define h2 (function (lambda (x) 5) #:color "green"))
   (define h1 (function (lambda (x) 2) #:color "blue"))
   (plot (list h3 h2 h1
-              (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title "mean" #:out-file PIC)
+              (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title "mean" #:out-file PIC #:width 1000)
   (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
   (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
   (out-mean MEAN ps)

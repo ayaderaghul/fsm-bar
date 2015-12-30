@@ -19,6 +19,15 @@ how to run in lab 1 computer:
 
 ```
 
+how to run in disa lab computer:
+- change directory for output:
+"C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/run6/mean"
+
+```
+(require (file "R:/fsm-bar/main.rkt"))
+```
+
+
 | To do         | Date          | By    | Note |
 | ------------- |:-------------:| ----- |:----:|
 | spin off from sample-fsm2      | 7 Dec | chi | |
@@ -39,3 +48,5 @@ how to run in lab 1 computer:
 # Acknowledgment
 
 This is a customised version built upon the base code of Matthias Felleisen (here: https://github.com/mfelleisen/sample-fsm)
+
+The initial code of this project has a large contribution from Hoang Minh Thang.

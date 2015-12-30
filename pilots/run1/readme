@@ -1,8 +1,0 @@
- (define N 100)
-  (define CYCLES 5000)
-  (define SPEED 10)
-  (define ROUNDS-PER-MATCH 20)
-  (define DELTA 1)
-  (define MUTATION 1)
-
-max-states 5
