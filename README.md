@@ -72,11 +72,12 @@ raco test -s five main.rkt
 
 | Simulation | Details |
 |------------|---------|
-| The grand one| the down periods appear |
-| | though not much, 50-50 is quite stable |
-| The side project | with some tweaking, the down periods appear|
+| The grand one| the down periods appear, though not much |
+| | 50-50 is quite stable |
+| The side project | with some tweaking*, the down periods appear|
 ||need to check on it|
 
+* 1 mutation is too much for N = 100 but 1000 is too much for mutation to spread, currently increasing speed to an alarmingly level s = 25 works
 
 # Acknowledgment
 
