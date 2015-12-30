@@ -43,6 +43,7 @@ how to run in disa lab computer:
 | test 3 initiated | 28 dec | ||
 | output a readme for each run w configuration ||||
 | draw the new automata to check ||||
+| run in matha | x |||
 
 
 # Acknowledgment
