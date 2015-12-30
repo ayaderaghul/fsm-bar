@@ -5,9 +5,9 @@
 (require "automata.rkt" "population.rkt" "utilities.rkt" "scan.rkt" "in.rkt" plot)
 (plot-new-window? #t)
 
-(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean")
-(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/rank")
-(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png")
+(define MEAN "mean")
+(define RANK "rank")
+(define PIC "mean.png")
 
 (define (main)
   (collect-garbage)
