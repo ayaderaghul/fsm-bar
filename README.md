@@ -15,6 +15,14 @@ before running, it's necessary to change the directory for the output.
 
 - then run the file `run-in-matha.nb` in mathematica
 
+in general (and inside mathematica), the command to run is
+
+```
+racket -tm side.rkt
+```
+
+with -tm and no further specification, racket will evaluate the function `main defined inside the file side.rkt
+
 ### how to run in lab 1 computer:
 
 - change the directory for the output into a dropbox folder
@@ -35,18 +43,11 @@ before running, it's necessary to change the directory for the output.
 
 #### extra
 
-in general, the command to run is
-
-```
-racket -tm side.rkt
-```
-
-with -tm and no further specification, racket will evaluate the function `main inside the file (module) side.rkt
-
 ```
 raco test -s five main.rkt 
 ```
 
+## to do
 
 | To do         | Date          | By    | Note |
 | ------------- |:-------------:| ----- |:----:|
@@ -62,9 +63,10 @@ raco test -s five main.rkt
 | write acknowledgement | x |||
 | test 3 initiated, passed | 28 dec | ||
 | output a readme for each run w configuration |x|||
+| output to dropbox |x|||
 | draw the new automata to check |x|||
 | run in matha | x |||
-| restructure code | x |30 dec||
+| restructure code | 30 dec|||
 
 
 # Acknowledgment
