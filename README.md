@@ -47,7 +47,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 raco test -s five main.rkt 
 ```
 
-## to do
+## To do
 
 | To do         | Date          | By    | Note |
 | ------------- |:-------------:| ----- |:----:|
@@ -67,6 +67,15 @@ raco test -s five main.rkt
 | draw the new automata to check |x|||
 | run in matha | x |||
 | restructure code | 30 dec|||
+
+## Simulation status
+
+| Simulation | Details |
+|------------|---------|
+| The grand one| the down periods appear |
+| | though not much, 50-50 is quite stable |
+| The side project | with some tweaking, the down periods appear|
+||need to check on it|
 
 
 # Acknowledgment
