@@ -77,7 +77,7 @@ raco test -s five main.rkt
 | The side project | with some tweaking*, the down periods appear|
 ||need to check on it|
 
-* 1 mutation is too much for N = 100 but 1000 is too much for mutation to spread, currently increasing speed to an alarmingly level s = 25 works
+*1 mutation is too much for N = 100 but 1000 is too much for mutation to spread, currently increasing speed to an alarmingly level s = 25 works*
 
 # Acknowledgment
 
