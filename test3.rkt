@@ -15,27 +15,27 @@
 
 ;; output a readme that contains configuration
 
-(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/mean")
-(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/rank")
-(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/mean.png")
-(define RME "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/readme")
+(define MEAN "mean.txt")
+(define RANK "rank.txt")
+(define PIC "mean.png")
+(define RME "readme.txt")
 
-(define (configuration lst)
+(define (print-configuration lst)
   (out-data RME
             (list lst)))
 
-(define (run)
+(define (main)
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
-  (define N 1000)
+  (define N 100)
   (define P (build-random-test3 N))
-  (define CYCLES 200000)
-  (define SPEED 100)
-  (define ROUNDS-PER-MATCH 20)
-  (define DELTA 1)
+  (define CYCLES 10000)
+  (define SPEED 25)
+  (define ROUNDS-PER-MATCH 15)
+  (define DELTA .95)
   (define MUTATION 1)
-  (configuration (list "N" N "speed" SPEED "rounds per match" ROUNDS-PER-MATCH "delta" DELTA "mutation" MUTATION))
+  (print-configuration (list "N" N "speed" SPEED "rounds per match" ROUNDS-PER-MATCH "delta" DELTA "mutation" MUTATION))
   (define datas
     (time (evolve-t3 P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
   (define ps (map first datas)) ; mean
@@ -46,7 +46,7 @@
   (define h2 (function (lambda (x) 5) #:color "green"))
   (define h1 (function (lambda (x) 2) #:color "blue"))
   (plot (list h3 h2 h1
-              (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title "mean" #:out-file PIC #:width 1000)
+              (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title "mean" #:out-file PIC #:width 1000)
   (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
   (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
   (out-mean MEAN ps)
