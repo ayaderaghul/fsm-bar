@@ -15,7 +15,7 @@
   (collect-garbage)
   (define N 100)
   (define P (build-random-population N))
-  (define CYCLES 1000)
+  (define CYCLES 500000)
   (define SPEED 15)
   (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)

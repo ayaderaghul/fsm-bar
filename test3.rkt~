@@ -15,13 +15,12 @@
 
 ;; output a readme that contains configuration
 
-(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/mean")
-(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/rank")
-(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/mean.png")
-(define RME "/Users/linhchi.nguyen/Dropbox/fsm-bar/run5/readme")
+(define MEAN "mean")
+(define RANK "rank")
+(define PIC "mean.png")
 
 (define (configuration lst)
-  (out-data RME
+  (out-data "readme"
             (list lst)))
 
 (define (run)
@@ -30,7 +29,7 @@
   (collect-garbage)
   (define N 1000)
   (define P (build-random-test3 N))
-  (define CYCLES 200000)
+  (define CYCLES 10000)
   (define SPEED 100)
   (define ROUNDS-PER-MATCH 20)
   (define DELTA 1)
