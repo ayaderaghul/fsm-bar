@@ -8,17 +8,17 @@
 
 ;; CONFIGURATION
 ;; change directory of output here
-(define MEAN "mean.txt")
-(define RANK "rank.txt")
-(define PIC "mean.png")
-(define RME "readme.txt")
+(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/mean.txt")
+(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/rank.txt")
+(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/mean.png")
+(define RME "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/readme.txt")
 
 (define AUTO-SET
   (list mediums tough bully accommodator))
 (define N 100)
-(define CYCLES 10000)
-(define SPEED 25)
-(define ROUNDS-PER-MATCH 15)
+(define CYCLES 70000)
+(define SPEED 20)
+(define ROUNDS-PER-MATCH 5)
 (define DELTA .95)
 (define MUTATION 1)
 
@@ -43,9 +43,9 @@
   (define ts (map second datas)) ; number of types
   (define rs (map third datas)) ; highest ranking in each cycles
   (define mean-types# (/ (apply + ts) CYCLES))
-  (plot (list (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title "mean" #:out-file PIC #:width 1000)
-  (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
-  (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
+  (plot (list (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title "mean" #:out-file PIC #:width 1200)
+  (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#" #:width 1200)
+  (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest" #:width 1200)
   (out-mean MEAN ps)
   )
 
