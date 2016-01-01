@@ -3,13 +3,12 @@
 (require "automata.rkt" "population.rkt" "scan.rkt" "inout.rkt" plot)
 (plot-new-window? #t)
 
-(provide test1s test2s test3s plot-dynamics)
+(provide main test1s test2s test3s plot-dynamics)
 
 ;; UTILITIES
   (define N 1000)
   (define CYCLES 1000)
   (define SPEED 100)
-  (define ROUNDS-PER-MATCH 1)
   (define DELTA 1)
 
 ;; TEST 1: ONE SHOT REPLICATOR DYNAMICS
@@ -44,6 +43,7 @@
   (collect-garbage)
   (collect-garbage)
   (define A (apply build-oneshot-population test-point))
+  (define ROUNDS-PER-MATCH 1)
   (define rd-types
     (time (evolve-rd A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
   (out-data file-name (map list (flatten rd-types)))
@@ -91,6 +91,7 @@
   (collect-garbage)
   (collect-garbage)
   (define A (apply build-test2-population test-point))
+  (define ROUNDS-PER-MATCH 20)
   (define rd-types
     (time (evolve-rd2 A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
   (out-data file-name (map list (flatten rd-types)))
@@ -104,7 +105,7 @@
 
 ;; TEST 3: REPEATED GAME RD FOR 4 TYPES: MEDIUMS TOUGH BULLY ACCOMMODATOR
 ;; AND DELTA CHANGES
-(define (build-test3-population f t b a)
+(define (build-test3-population f a b t)
   (define p
     (vector-append
      (build-vector f (lambda (_) (mediums)))
@@ -115,15 +116,17 @@
 
 (define point-list3
   (list
-   (list 150 750 50 50)
-   (list 200 700 50 50)
+   (list 200 750 25 25)
+   (list 250 700 25 25)
    (list 250 650 50 50)
-   (list 250 550 100 100)
-   (list 250 450 150 150)
-   (list 350 550 50 50)
-   (list 150 250 300 300)
-   (list 250 250 250 250)
+   (list 350 500 50 100)
+
+   (list 300 400 150 150)
+   (list 300 300 200 200)
    (list 350 250 200 200)
+   (list 450 450 50 50)
+
+   (list 250 700 25 25)
    ))
 
 (define (evolve-rd3 population cycles speed r d)
@@ -132,7 +135,7 @@
    [else (define p2 (match-up* population r d))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (cons (scan-mediums-tough p3)
+         (cons (scan-mediums-accom p3)
                (evolve-rd3 p3 (- cycles 1) speed r d))]))
 
 (define (test3 test-point file-name)
@@ -140,9 +143,10 @@
   (collect-garbage)
   (collect-garbage)
   (define A (apply build-test3-population test-point))
+  (define ROUNDS-PER-MATCH 30)
   (define DELTAs .95)
   (define rd-types
-    (time (evolve-rd3 A CYCLES SPEED ROUNDS-PER-MATCH DELTAs)))
+    (time (evolve-rd3 A 700 SPEED ROUNDS-PER-MATCH DELTAs)))
   (out-data file-name (map list (flatten rd-types)))
   (define rd (lines rd-types))
   (plot rd #:x-min 0.0 #:x-max N #:y-min 0 #:y-max N #:title "replicator dynamics"))
@@ -152,9 +156,18 @@
     (test3 (list-ref test-points i)
            (string-append "rd" (number->string i)))))
 
-(define filelist3
+(define file-list3
   (list "rd0" "rd1" "rd2" "rd3" "rd4" "rd5" "rd6" "rd7" "rd8"))
 
 (define (plot-dynamics file-list)
   (define data (load-dynamics file-list))
-  (plot data #:x-label "fair" #:y-label "tough" #:title "delta 0.8"))
+  (plot data
+        #:x-max N #:y-max N
+        #:x-label "fair" #:y-label "tough" #:title "delta 0.95"))
+
+(define (main)
+  (collect-garbage)
+  (collect-garbage)
+  (collect-garbage)
+  (test3s point-list3)
+  (plot-dynamics file-list3))

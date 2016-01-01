@@ -11,10 +11,12 @@
 ;; the strategy to be played at that state
 ;; and 3 dispatching rules: given that the opponent plays L M H, which state to jump to?
 
+(define GAMMA 2) ; GAMMA < 5
+
 (define PAYOFF-TABLE
-  (vector (vector (cons 2 2) (cons 2 5) (cons 2 8))
-          (vector (cons 5 2) (cons 5 5) (cons 0 0))
-          (vector (cons 8 2) (cons 0 0) (cons 0 0))))
+  (vector (vector (cons GAMMA GAMMA) (cons GAMMA 5) (cons GAMMA (- 10 GAMMA)))
+          (vector (cons 5 GAMMA) (cons 5 5) (cons 0 0))
+          (vector (cons (- 10 GAMMA) GAMMA) (cons 0 0) (cons 0 0))))
 
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 

@@ -8,17 +8,20 @@
 
 ;; CONFIGURATION
 ;; change the directory of output file here
-(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/mean")
-(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/rank")
-(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/mean.png")
+
+(define lab1-directory "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/")
+
+(define MEAN "mean")
+(define RANK "rank")
+(define PIC "mean.png")
 ;; change the simulation settings here
-(define N 200)
+(define N 300)
 (define P (build-random-population N))
-(define CYCLES 100000)
-(define SPEED 30)
+(define CYCLES 10000)
+(define SPEED 45)
 (define ROUNDS-PER-MATCH 15)
 (define DELTA 1)
-(define MUTATION 2)
+(define MUTATION 3)
 
 ;; UTILITIES
 (define (simulation->lines data)
@@ -37,9 +40,12 @@
   (define ts (map second datas)) ; number of types
   (define rs (map third datas)) ; highest ranking in each cycles
   (define mean-types# (/ (apply + ts) CYCLES))
-  (plot (list (simulation->lines ps)) #:y-min 0.0 #:y-max 10.0 #:title pic-name #:out-file PIC)
-  (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
-  (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
+  (plot (list (simulation->lines ps))
+        #:y-min 0.0 #:y-max 10.0 #:title pic-name #:out-file PIC)
+  (plot (list (simulation->lines ts))
+        #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
+  (plot (list (simulation->lines rs))
+        #:y-min 0.0 #:y-max N #:title "biggest")
   (out-mean MEAN ps)
   )
 

@@ -61,13 +61,13 @@ raco test -s five main.rkt
 | write a montecarlo |||hm|
 | optimize code, now time is spent in match-up and rank | |||
 | write acknowledgement | x |||
-| test 3 initiated, passed | 28 dec | ||
-| output a readme for each run w configuration |x|||
+| test 3 passed | 28 dec | ||
 | output to dropbox |x|||
 | draw the new automata to check |x|||
 | run in matha | x |||
 | restructure code | 30 dec|||
-| print picture title | x |||
+| print simulation settings as title | x |||
+| able to run across N, rounds, deltas | x |||
 
 ## Simulation status
 
@@ -75,7 +75,8 @@ raco test -s five main.rkt
 |------------|---------|
 | The grand one| the down periods appear, though not much |
 | | 50-50 is quite stable |
-| The side project | meh.. |
+| | is running across deltas |
+| The side project | meh.. working.. |
 
 i want to call the fraction of the pie to be π (aka \pi) so much
  

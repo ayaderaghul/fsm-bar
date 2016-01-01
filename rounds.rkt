@@ -15,25 +15,23 @@
 (define RANK "rank")
 (define PIC "meanplot")
 
-(define N 200)
+(define N 100)
 (define P (build-random-population N))
-(define CYCLES 100000)
-(define SPEED 30)
-(define ROUNDS-PER-MATCH 15)
-(define DELTAS (list 0 .3 .6 .7 .8 .9 .95 1))
-(define MUTATION 2)
+(define CYCLES 100)
+(define SPEED 15)
+(define ROUNDS-PER-MATCH (list 1 5 10 15 20 50))
+(define DELTA 1)
+(define MUTATION 1)
 
 ;; UTILITIES
 (define (simulation->lines data)
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
   (lines coors))
-(define (delta->string delta)
-  (string-trim (number->string (* 100 delta)) ".0"))
-(define (generate-file-name prefix delta)
-  (string-append prefix (delta->string delta)))
+(define (generate-file-name prefix rounds)
+  (string-append prefix (number->string rounds)))
 
 ;; MAIN
-(define (evolve-d population cycles speed rounds-per-match delta mutation)
+(define (evolve-r population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
    [else (define p2 (match-up* population rounds-per-match delta))
@@ -41,20 +39,20 @@
          (define p3 (regenerate p2 speed))
          (mutate* p3 mutation)
          (define ranking-list (hash->list (rank p3)))
-         (out-rank (generate-file-name RANK delta) cycles ranking-list)
+         (out-rank (generate-file-name RANK rounds-per-match) cycles ranking-list)
          (cons (relative-average pp rounds-per-match)
-               (evolve-d p3 (- cycles 1) speed rounds-per-match delta mutation))]))
+               (evolve-r p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
-(define (evolve-delta delta)
-  (evolve-d P CYCLES SPEED ROUNDS-PER-MATCH delta MUTATION))
+(define (evolve-rounds rounds)
+  (evolve-r P CYCLES SPEED rounds DELTA MUTATION))
 
 (define (main)
-  (for ([i (in-list DELTAS)])
+  (for ([i (in-list ROUNDS-PER-MATCH)])
     (collect-garbage)
     (collect-garbage)
     (collect-garbage)
-	(define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH i))
-    (define datas (time (evolve-delta i)))
+	(define pic-name (configuration-string N SPEED i DELTA))
+    (define datas (time (evolve-rounds i)))
     (define max-pay (apply max datas))
     (plot (list (simulation->lines datas))
           #:y-min 0.0 #:y-max (+ 3 max-pay) #:title pic-name

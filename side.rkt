@@ -6,32 +6,27 @@
          plot)
 (plot-new-window? #t)
 
+;; TODO
+;; this side projects needs to:
+;; run simulation across deltas
+;; and gammas
+;; hm, normalise (1-delta) is when rounds = infinite
+
 ;; CONFIGURATION
 ;; change directory of output here
-<<<<<<< HEAD
-(define MEAN "mean.txt")
-(define RANK "rank.txt")
-(define PIC "mean.png")
 
-(define N 500)
-(define CYCLES 100)
-(define SPEED 200)
-(define ROUNDS-PER-MATCH 15)
-=======
-(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/mean.txt")
-(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/rank.txt")
-(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/mean.png")
-(define RME "/Users/linhchi.nguyen/Dropbox/fsm-bar/run15/readme.txt")
+(define lab1-directory "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/")
 
-(define AUTO-SET
-  (list mediums tough bully accommodator))
+(define MEAN "mean")
+(define RANK "rank")
+(define PIC "meanplot")
+
 (define N 100)
-(define CYCLES 70000)
-(define SPEED 20)
-(define ROUNDS-PER-MATCH 5)
->>>>>>> db9e3d36f86f3830ea32891d767ce84bc18b9e99
-(define DELTA .95)
-(define MUTATION 50)
+(define CYCLES 100)
+(define SPEED 15)
+(define ROUNDS-PER-MATCH 15)
+(define DELTAS (list 0 .3 .6 .7 .8 .9 .95 1))
+(define MUTATION 1)
 (define AUTO-SET (list mediums tough bully accommodator))
 
 ;; UTILITIES
@@ -47,6 +42,10 @@
 (define (simulation->lines data)
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
   (lines coors))
+(define (delta->string delta)
+  (string-trim (number->string (* 100 delta)) ".0"))
+(define (generate-file-name prefix delta)
+  (string-append prefix (delta->string delta)))
 
 (define (mutate-s population0 mutation)
   (define p1 (car population0))
@@ -57,30 +56,6 @@
     (vector-set! p1 posn mutated)))
 
 ;; MAIN
-(define (main)
-  (collect-garbage)
-  (collect-garbage)
-  (collect-garbage)
-  (define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH DELTA))
-  (define datas
-    (time (evolve-s P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
-  (define ps (map first datas)) ; mean
-  (define ts (map second datas)) ; number of types
-  (define rs (map third datas)) ; highest ranking in each cycles
-  (define mean-types# (/ (apply + ts) CYCLES))
-<<<<<<< HEAD
-  (plot (list (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title pic-name #:out-file PIC #:width 1000)
-  (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
-  (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest")
-=======
-  (plot (list (simulation->lines ps)) #:y-min 0.0 #:y-max 5.0 #:title "mean" #:out-file PIC #:width 1200)
-  (plot (list (simulation->lines ts)) #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#" #:width 1200)
-  (plot (list (simulation->lines rs)) #:y-min 0.0 #:y-max N #:title "biggest" #:width 1200)
->>>>>>> db9e3d36f86f3830ea32891d767ce84bc18b9e99
-  (out-mean MEAN ps)
-  )
-
-
 (define (evolve-s population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
@@ -90,8 +65,24 @@
          (mutate-s p3 mutation)
          (define ranking (rank p3))
          (define ranking-list (hash->list ranking))
-         (out-rank RANK cycles ranking-list)
-         (cons (list (relative-average pp rounds-per-match)
-                     (hash-count ranking)
-                     (apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
+         (out-rank (generate-file-name RANK delta) cycles ranking-list)
+         (cons (relative-average pp rounds-per-match)
                (evolve-s p3 (- cycles 1) speed rounds-per-match delta mutation))]))
+
+(define (evolve-delta delta)
+  (evolve-s P CYCLES SPEED ROUNDS-PER-MATCH delta MUTATION))
+
+(define (main)
+  (for ([i (in-list DELTAS)])
+    (collect-garbage)
+    (collect-garbage)
+    (collect-garbage)
+    (define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH i))
+    (define datas
+      (time (evolve-s P CYCLES SPEED ROUNDS-PER-MATCH i MUTATION)))
+    (define max-pay (apply max datas))
+    (plot (list (simulation->lines datas))
+          #:y-min 0.0 #:y-max (+ 3 max-pay) #:title pic-name
+          #:out-file (string-append (generate-file-name PIC i) ".png") #:width 1200)
+    (out-mean (generate-file-name MEAN i) datas)
+  ))

@@ -1,6 +1,6 @@
 #lang racket
 (require "automata.rkt" "csv.rkt" 2htdp/batch-io)
-(provide rank scan-oneshot-types scan-mediums-highs scan-mediums-tough)
+(provide rank scan-oneshot-types scan-mediums-highs scan-mediums-tough scan-mediums-accom)
 
 ;; CONFIGURATION
 (define THRESHOLD 10) ; only collect data on automata that have at least 10 of its kind
@@ -75,6 +75,11 @@
      (hash-ref* ranking (list 0 1 0 0 0))
      (hash-ref* ranking (list 0 2 0 0 1 2 1 1 2 2 2 2 3 1 0 3 0)))))
 
+(define (scan-mediums-accom population)
+  (let ([ranking (scan population)])
+    (list
+     (hash-ref* ranking (list 0 1 0 0 0))
+     (hash-ref* ranking (list 1 0 2 1 0 1 2 1 0 2 2 1 0)))))
 
 ;; NEED FIXING (USING RANK*)
 (define (top t population)
