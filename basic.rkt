@@ -8,17 +8,17 @@
 
 ;; CONFIGURATION
 ;; change the directory of output file here
-(define MEAN "mean")
-(define RANK "rank")
-(define PIC "mean.png")
+(define MEAN "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/mean")
+(define RANK "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/rank")
+(define PIC "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/mean.png")
 ;; change the simulation settings here
-(define N 100)
+(define N 200)
 (define P (build-random-population N))
-(define CYCLES 1000)
-(define SPEED 15)
-(define ROUNDS-PER-MATCH 20)
+(define CYCLES 100000)
+(define SPEED 30)
+(define ROUNDS-PER-MATCH 15)
 (define DELTA 1)
-(define MUTATION 1)
+(define MUTATION 2)
 
 ;; UTILITIES
 (define (simulation->lines data)
