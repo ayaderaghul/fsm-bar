@@ -1,5 +1,5 @@
 #lang racket
-(provide load-dynamics out-data out-mean out-rank print-configuration)
+(provide load-dynamics out-data out-mean out-rank configuration-string)
 (require "csv.rkt" 2htdp/batch-io plot)
 
 ;; IMPORT
@@ -13,21 +13,19 @@
       (values (cons datum data)))]
   (reverse data))
 
+;; load dynamics
 (define (pack-coors a-list)
   [define l (length a-list)]
   (for/list ([i (in-range (/ l 2))])
     (list
      (list-ref a-list (* 2 i))
      (list-ref a-list (add1 (* 2 i))))))
-
 (define (load-dynamic csv-file)
   (lines (pack-coors (load-data csv-file))))
-
 (define (load-dynamics file-list)
   [define l (length file-list)]
   (for/list ([i (in-range l)])
     (load-dynamic (list-ref file-list i))))
-
 
 ;; EXPORT DATA
 ;; if needed, map list data..
@@ -43,8 +41,11 @@
   (out-data filename (append (list (list day)
                                  (map list data)))))
 
-(define (print-configuration filename lst)
-  (out-data filename (list lst)))
+(define (configuration-string N speed rounds delta)
+  (format
+   "N = ~a, speed = ~a, rounds = ~a, delta = ~a"
+   N speed rounds delta))
+
 
 
 

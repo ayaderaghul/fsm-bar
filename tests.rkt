@@ -3,7 +3,14 @@
 (require "automata.rkt" "population.rkt" "scan.rkt" "inout.rkt" plot)
 (plot-new-window? #t)
 
-(provide (all-defined-out))
+(provide test1s test2s test3s plot-dynamics)
+
+;; UTILITIES
+  (define N 1000)
+  (define CYCLES 1000)
+  (define SPEED 100)
+  (define ROUNDS-PER-MATCH 1)
+  (define DELTA 1)
 
 ;; TEST 1: ONE SHOT REPLICATOR DYNAMICS
 (define (build-oneshot-population l m h)
@@ -37,11 +44,6 @@
   (collect-garbage)
   (collect-garbage)
   (define A (apply build-oneshot-population test-point))
-  (define N 1000)
-  (define CYCLES 1000)
-  (define SPEED 100)
-  (define ROUNDS-PER-MATCH 1)
-  (define DELTA 1)
   (define rd-types
     (time (evolve-rd A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
   (out-data file-name (map list (flatten rd-types)))
@@ -89,11 +91,6 @@
   (collect-garbage)
   (collect-garbage)
   (define A (apply build-test2-population test-point))
-  (define N 1000)
-  (define CYCLES 1000)
-  (define SPEED 100)
-  (define ROUNDS-PER-MATCH 20)
-  (define DELTA 1)
   (define rd-types
     (time (evolve-rd2 A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
   (out-data file-name (map list (flatten rd-types)))
@@ -143,13 +140,9 @@
   (collect-garbage)
   (collect-garbage)
   (define A (apply build-test3-population test-point))
-  (define N 1000)
-  (define CYCLES 1000)
-  (define SPEED 100)
-  (define ROUNDS-PER-MATCH 20)
-  (define DELTA .95)
+  (define DELTAs .95)
   (define rd-types
-    (time (evolve-rd3 A CYCLES SPEED ROUNDS-PER-MATCH DELTA)))
+    (time (evolve-rd3 A CYCLES SPEED ROUNDS-PER-MATCH DELTAs)))
   (out-data file-name (map list (flatten rd-types)))
   (define rd (lines rd-types))
   (plot rd #:x-min 0.0 #:x-max N #:y-min 0 #:y-max N #:title "replicator dynamics"))

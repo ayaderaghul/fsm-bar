@@ -77,6 +77,8 @@ raco test -s five main.rkt
 | The side project | with some tweaking*, the down periods appear|
 ||need to check on it|
 
+i want to call the fraction of the pie to be π (aka \pi) so much
+ 
 *1 mutation is too much for N = 100 but 1000 is too much for mutation to spread, currently increasing speed to an alarmingly level s = 25 works*
 
 # Acknowledgment
@@ -85,6 +87,6 @@ This is a customised version built upon the base code of Matthias Felleisen [her
 
 The initial code of this project received a lot of critical contribution by Hoang Minh Thang.
 
-Along the way of the development of this project, the code benefits tremendously from discussions on racket mailing list [here](https://groups.google.com/forum/?hl=en-GB#!topic/racket-users/4o1goSwrLHA) and IRC #racket [here](http://pastebin.com/sxrCnwRV).
+Along the way of the development of this project, the code benefits tremendously from discussions on racket mailing list [here](https://groups.google.com/forum/?hl=en-GB#!topic/racket-users/4o1goSwrLHA), IRC #racket [here](http://pastebin.com/sxrCnwRV) and StackExchange.
 
 The file "csv.rkt" has external copyright condition which can be found in its own file.
