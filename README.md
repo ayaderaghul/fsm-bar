@@ -67,6 +67,7 @@ raco test -s five main.rkt
 | draw the new automata to check |x|||
 | run in matha | x |||
 | restructure code | 30 dec|||
+| print picture title | x |||
 
 ## Simulation status
 
@@ -74,13 +75,10 @@ raco test -s five main.rkt
 |------------|---------|
 | The grand one| the down periods appear, though not much |
 | | 50-50 is quite stable |
-| The side project | with some tweaking*, the down periods appear|
-||need to check on it|
+| The side project | meh.. |
 
 i want to call the fraction of the pie to be π (aka \pi) so much
  
-*1 mutation is too much for N = 100 but 1000 is too much for mutation to spread, currently increasing speed to an alarmingly level s = 25 works*
-
 # Acknowledgment
 
 This is a customised version built upon the base code of Matthias Felleisen [here](https://github.com/mfelleisen/sample-fsm)
