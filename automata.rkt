@@ -11,7 +11,7 @@
 ;; the strategy to be played at that state
 ;; and 3 dispatching rules: given that the opponent plays L M H, which state to jump to?
 
-(define GAMMA 2) ; GAMMA < 5
+(define GAMMA 3) ; GAMMA < 5
 
 (define PAYOFF-TABLE
   (vector (vector (cons GAMMA GAMMA) (cons GAMMA 5) (cons GAMMA (- 10 GAMMA)))
