@@ -21,7 +21,7 @@
 (define CYCLES 100000)
 (define SPEED 30)
 (define ROUNDS-PER-MATCH 15)
-(define DELTAS (list 0 .3 .6 .7 .8 .9 .95 1))
+(define DELTAS (list 0 1 .95 .9 .6 .85 .7 .8 .3 .5))
 (define MUTATION 2)
 
 ;; UTILITIES
