@@ -9,11 +9,12 @@
 ;; CONFIGURATION
 
 (define lab1-directory "/Users/linhchi.nguyen/Dropbox/fsm-bar/deltas/run2/")
+(define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/rounds/run1/")
 
 ;; change the directory of output file here
-(define MEAN "mean")
-(define RANK "rank")
-(define PIC "meanplot")
+(define MEAN (string-append disa-lab "mean"))
+(define RANK (string-append disa-lab "rank"))
+(define PIC (string-append disa-lab "meanplot"))
 
 (define N 100)
 (define P (build-random-population N))
@@ -55,6 +56,7 @@
     (define datas (time (evolve-rounds i)))
     (define max-pay (apply max datas))
     (plot (list (simulation->lines datas))
+          #:width 1200
           #:y-min 0.0 #:y-max (+ 3 max-pay) #:title pic-name
           #:out-file (string-append (generate-file-name PIC i) ".png")
           )
