@@ -178,7 +178,8 @@
 (define (generate-matha-code au name)
   (match-define (automaton current initial payoff states) au)
   (string-append
-   "VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];\n"
+   "SetDirectory[NotebookDirectory[]];
+   VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];\n"
    name "Graph =\n"
    "   Graph[{-1 -> " (number->string initial) " ,\n"
    (generate-dispatch-codes states)

@@ -15,13 +15,13 @@
 (define RANK "rank")
 (define PIC "mean.png")
 ;; change the simulation settings here
-(define N 300)
+(define N 100)
 (define P (build-random-population N))
 (define CYCLES 10000)
-(define SPEED 45)
+(define SPEED 15)
 (define ROUNDS-PER-MATCH 15)
 (define DELTA 1)
-(define MUTATION 3)
+(define MUTATION 1)
 
 ;; UTILITIES
 (define (simulation->lines data)
@@ -55,7 +55,7 @@
    [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (mutate* p3 mutation)
+         (if (< (random 10) 8) (mutate* p3 mutation) (mutate-n p3 mutation))
          (define ranking (rank p3))
          (define ranking-list (hash->list ranking))
          (out-rank RANK cycles ranking-list)

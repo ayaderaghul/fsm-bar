@@ -1,13 +1,13 @@
 #lang racket
 
 (provide build-random-population population-payoffs match-up*
- 	population-reset regenerate mutate* payoff->probabilities
+ 	population-reset regenerate mutate* mutate-n payoff->probabilities
 	shuffle-vector relative-average)
 
 (require "automata.rkt")
 
 ;; CONFIGURATION
-(define MAX-STATES# 15) ; create an automaton having up to 15 states
+(define MAX-STATES# 7) ; create an automaton having up to 15 states
 
 ;; POPULATION
 (define (build-random-population n)
@@ -45,6 +45,13 @@
   (for ([i mutation])
     (define r (random (vector-length p1)))
     (define mutated (mutate (vector-ref p1 r)))
+    (vector-set! p1 r mutated)))
+
+(define (mutate-n population0 mutation)
+  (define p1 (car population0))
+  (for ([i mutation])
+    (define r (random (vector-length p1)))
+    (define mutated (make-random-automaton MAX-STATES#))
     (vector-set! p1 r mutated)))
 
 (define (payoff->probabilities a*)
