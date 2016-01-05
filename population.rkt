@@ -1,9 +1,6 @@
 #lang racket
 
-(provide build-random-population population-payoffs match-up*
- 	population-reset regenerate mutate* mutate-n payoff->probabilities
-	shuffle-vector relative-average)
-
+(provide (all-defined-out))
 (require "automata.rkt")
 
 ;; CONFIGURATION
@@ -41,6 +38,12 @@
   (shuffle-vector a* b*))
 
 (define (mutate* population0 mutation)
+  (define r (random 10))
+  (cond [(= r 8) (mutate-n population0 mutation)]
+        [(= r 9) (cross-over population0 mutation)]
+        [else (mutate-c population0 mutation)]))
+
+(define (mutate-c population0 mutation)
   (define p1 (car population0))
   (for ([i mutation])
     (define r (random (vector-length p1)))
@@ -53,6 +56,29 @@
     (define r (random (vector-length p1)))
     (define mutated (make-random-automaton MAX-STATES#))
     (vector-set! p1 r mutated)))
+
+(define (cross-over population0 mutation)
+  (define p1 (car population0))
+  (define l (vector-length p1))
+  (for ([i mutation])
+    (define r1 (random l))
+    (define r2 (random l))
+    (define au1 (vector-ref p1 r1))
+    (define au2 (vector-ref p1 r2))
+    (match-define (automaton c1 i1 pay1 table1) au1)
+    (match-define (automaton c2 i2 pay2 table2) au2)
+    (define l1 (vector-length table1))
+    (define l2 (vector-length table2))
+    (cond [(= l1 l2)
+           (begin
+             (define s (random l1))
+             (define-values (h1 t1) (vector-split-at table1 s))
+             (define-values (h2 t2) (vector-split-at table2 s))
+             (define m1 (vector-append h1 t2))
+             (define m2 (vector-append h2 t1))
+             (vector-set! p1 r1 (automaton c1 i1 pay1 m1))
+             (vector-set! p1 r2 (automaton c2 i2 pay2 m2)))]
+          [else (mutate* population0 1)])))
 
 (define (payoff->probabilities a*)
   (define payoffs (for/list ([x (in-vector a*)]) (automaton-payoff x)))

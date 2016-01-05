@@ -1,7 +1,7 @@
 ;;#! /usr/bin/env racket -tm
 #lang racket
 
-(provide main)
+(provide (all-defined-out))
 (require "automata.rkt" "population.rkt"
          "scan.rkt" "inout.rkt" plot)
 (plot-new-window? #t)
@@ -17,10 +17,10 @@
 ;; change the simulation settings here
 (define N 100)
 (define P (build-random-population N))
-(define CYCLES 10000)
+(define CYCLES 50000)
 (define SPEED 15)
-(define ROUNDS-PER-MATCH 15)
-(define DELTA 1)
+(define ROUNDS-PER-MATCH 300)
+(define DELTA .95)
 (define MUTATION 1)
 
 
@@ -33,11 +33,13 @@
   (define datas
     (time (evolve P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
   (define ps (map first datas)) ; mean
+  (define max-pay (apply max ps))
   (define ts (map second datas)) ; number of types
   (define rs (map third datas)) ; highest ranking in each cycles
   (define mean-types# (/ (apply + ts) CYCLES))
   (plot (list (simulation->lines ps))
-        #:y-min 0.0 #:y-max 10.0 #:title pic-name #:out-file PIC)
+        #:y-min 0.0 #:y-max (+ 5 max-pay) #:title pic-name #:out-file PIC
+        #:width 1200)
   (plot (list (simulation->lines ts))
         #:y-min 0.0 #:y-max (+ 10 mean-types#) #:title "types#")
   (plot (list (simulation->lines rs))
@@ -51,11 +53,11 @@
    [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (if (< (random 10) 8) (mutate* p3 mutation) (mutate-n p3 mutation))
+         (mutate-c p3 mutation)
          (define ranking (rank p3))
          (define ranking-list (hash->list ranking))
          (out-rank RANK cycles ranking-list)
-         (cons (list (relative-average pp rounds-per-match)
+         (cons (list (relative-average pp 1)
                      (hash-count ranking)
                      (apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta mutation))]))

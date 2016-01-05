@@ -11,8 +11,13 @@
 (define (load-data* csv-file)
   (define a (read-csv-file csv-file))
   (define b (map first a))
-  (define c (map string->number b))
-  (define d (simulation->lines c)))
+  (map string->number b))
+
+(define (plot-mean csv-file title pic-name)
+  (define c (load-data* csv-file))
+  (define d (simulation->lines c))
+  (define max-pay (apply max c))
+  (plot d #:width 1200 #:y-max (+ 1 max-pay) #:title title #:out-file pic-name))   
 
 (define (load-data csv-file)
   [define strings (read-csv-file csv-file)]

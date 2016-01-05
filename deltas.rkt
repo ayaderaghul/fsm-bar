@@ -59,7 +59,7 @@
     (define max-pay (apply max datas))
     (plot (list (simulation->lines datas))
     	#:width 1200
-          #:y-min 0.0 #:y-max (+ 3 max-pay) #:title pic-name
+          #:y-min 0.0 #:y-max (+ 1 max-pay) #:title pic-name
           #:out-file (string-append (generate-file-name PIC i) ".png")
           )
     (out-mean (generate-file-name MEAN i) datas)
