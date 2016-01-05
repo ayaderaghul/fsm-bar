@@ -23,10 +23,6 @@
 (define DELTA 1)
 (define MUTATION 1)
 
-;; UTILITIES
-(define (simulation->lines data)
-  (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
-  (lines coors))
 
 ;; MAIN
 (define (main)

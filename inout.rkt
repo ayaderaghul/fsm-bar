@@ -1,8 +1,19 @@
 #lang racket
-(provide load-dynamics out-data out-mean out-rank configuration-string)
+(provide (all-defined-out))
 (require "csv.rkt" 2htdp/batch-io plot)
 
 ;; IMPORT
+
+(define (simulation->lines data)
+  (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
+  (lines coors))
+
+(define (load-data* csv-file)
+  (define a (read-csv-file csv-file))
+  (define b (map first a))
+  (define c (map string->number b))
+  (define d (simulation->lines c)))
+
 (define (load-data csv-file)
   [define strings (read-csv-file csv-file)]
   [define l (length strings)]
@@ -45,9 +56,3 @@
   (format
    "N = ~a, speed = ~a, rounds = ~a, delta = ~a"
    N speed rounds delta))
-
-
-
-
-
-
