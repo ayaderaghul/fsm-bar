@@ -20,7 +20,7 @@
 (define CYCLES 10000)
 (define SPEED 15)
 (define ROUNDS-PER-MATCH 300)
-(define DELTA .95)
+(define DELTA .85)
 (define MUTATION 1)
 
 
@@ -58,6 +58,18 @@
           (evolve p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
 (module+ five
+  (main)
+  (main)
+  (main)
+  (main)
+  (main))
+
+(module+ ten
+  (main)
+  (main)
+  (main)
+  (main)
+  (main)
   (main)
   (main)
   (main)
