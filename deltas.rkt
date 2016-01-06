@@ -8,7 +8,7 @@
 
 ;; CONFIGURATION
 
-(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run1/")
+(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run4/")
 (define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/run2/")
 
 ;; change the directory of output file here
@@ -18,10 +18,11 @@
 
 (define N 100)
 (define P (build-random-population N))
-(define CYCLES 100000)
+(define CYCLES 1000000)
 (define SPEED 15)
 (define ROUNDS-PER-MATCH 300)
-(define DELTAS (list .99 .95 .9 .85 .8 .7 .6 .5 .4 .3 .2 .1 0))
+(define DELTAS (list .99 .95 .9 .8 .7 .6 
+                .5 .4 .3 .2 .1 0))
 (define MUTATION 1)
 
 ;; UTILITIES
@@ -37,7 +38,7 @@
    [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (mutate-c p3 mutation)
+         (mutate* p3 mutation)
          ;(define ranking-list (hash->list (rank p3)))
          ;(out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons (relative-average pp 1)

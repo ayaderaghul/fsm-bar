@@ -4,7 +4,7 @@
 (require "automata.rkt")
 
 ;; CONFIGURATION
-(define MAX-STATES# 7) ; create an automaton having up to 15 states
+(define MAX-STATES# 10) ; create an automaton having up to 15 states
 
 ;; POPULATION
 (define (build-random-population n)
@@ -21,7 +21,7 @@
   (for ([i (in-range 0 (- (vector-length population) 1) 2)])
     (define p1 (vector-ref population i))
     (define p2 (vector-ref population (+ i 1)))
-    (define-values (round-results a1 a2) (interact p1 p2 rounds-per-match delta))
+    (define-values (round-results a1 a2) (interact* p1 p2 rounds-per-match delta))
     (vector-set! population i a1)
     (vector-set! population (+ i 1) a2))
   population0)
@@ -40,7 +40,7 @@
 (define (mutate* population0 mutation)
   (define r (random 10))
   (cond [(= r 8) (mutate-n population0 mutation)]
-        [(= r 9) (cross-over population0 mutation)]
+        ;[(= r 9) (cross-over population0 mutation)]
         [else (mutate-c population0 mutation)]))
 
 (define (mutate-c population0 mutation)
