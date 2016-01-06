@@ -18,10 +18,10 @@
 
 (define N 100)
 (define P (build-random-population N))
-(define CYCLES 1000000)
+(define CYCLES 100)
 (define SPEED 15)
 (define ROUNDS-PER-MATCH 300)
-(define DELTAS (list .99 .95 .9 .8 .7 .6 
+(define DELTAS (list .99 .95 .9 .8 .7 .6
                 .5 .4 .3 .2 .1 0))
 (define MUTATION 1)
 
@@ -38,7 +38,7 @@
    [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (mutate* p3 mutation)
+         (mutate-c p3 mutation)
          ;(define ranking-list (hash->list (rank p3)))
          ;(out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons (relative-average pp 1)
@@ -57,7 +57,7 @@
     (define max-pay (apply max datas))
     (plot (list (simulation->lines datas))
     	#:width 1200
-          #:y-min 0.0 #:y-max (+ 1 max-pay) #:title pic-name
+          #:y-min 0.0 #:y-max (+ 3 max-pay) #:title pic-name
           #:out-file (string-append (generate-file-name PIC i) ".png")
           )
     ;(out-mean (generate-file-name MEAN i) datas)
