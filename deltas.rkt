@@ -8,18 +8,18 @@
 
 ;; CONFIGURATION
 
-(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run4/")
+(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run2/")
 (define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/run2/")
 (define home-dir "")
 
 ;; change the directory of output file here
-(define MEAN (string-append home-dir "mean"))
-(define RANK (string-append home-dir "rank"))
-(define PIC (string-append home-dir "meanplot"))
+(define MEAN (string-append lab1-dir "mean"))
+(define RANK (string-append lab1-dir "rank"))
+(define PIC (string-append lab1-dir "meanplot"))
 
 (define N 100)
 (define P (build-random-population N))
-(define CYCLES 10000)
+(define CYCLES 500000)
 (define SPEED 15)
 (define ROUNDS-PER-MATCH 300)
 (define DELTAS (list .99 .97 .95 .93 .91 .9
