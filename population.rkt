@@ -21,10 +21,23 @@
   (for ([i (in-range 0 (- (vector-length population) 1) 2)])
     (define p1 (vector-ref population i))
     (define p2 (vector-ref population (+ i 1)))
+    (define-values (round-results a1 a2) (interact* p1 p2 rounds-per-match delta))
+    (vector-set! population i a1)
+    (vector-set! population (+ i 1) a2))
+  population0)
+
+(define (match-up population0 rounds-per-match delta)
+  (define population (car population0))
+  (population-reset population)
+  (for ([i (in-range 0 (- (vector-length population) 1) 2)])
+    (define p1 (vector-ref population i))
+    (define p2 (vector-ref population (+ i 1)))
     (define-values (round-results a1 a2) (interact p1 p2 rounds-per-match delta))
     (vector-set! population i a1)
     (vector-set! population (+ i 1) a2))
   population0)
+
+
 
 (define (population-reset a*)
   (for ([x a*][i (in-naturals)]) (vector-set! a* i (clone x))))
@@ -32,7 +45,7 @@
 (define (regenerate population0 rate #:random (q #false))
   (match-define (cons a* b*) population0)
   (define probabilities (payoff->probabilities a*))
-  [define substitutes   (choose-randomly probabilities rate #:random q)]
+  [define substitutes (choose-randomly probabilities rate #:random q)]
   (for ([i (in-range rate)][p (in-list substitutes)])
     (vector-set! a* i (clone (vector-ref b* p))))
   (shuffle-vector a* b*))
