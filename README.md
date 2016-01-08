@@ -68,11 +68,18 @@ raco test -s five main.rkt
 | restructure code | 30 dec|||
 | print simulation settings as title | x |||
 | able to run across N, rounds, deltas | x |||
-| a new interpretation for delta (continual proba) | 6 jan |||
-| get result of the pd game | x |||
 
+## Simulation status
 
+| Simulation | Details |
+|------------|---------|
+| The grand one| the down periods appear, though not much |
+| | 50-50 is quite stable |
+| | is running across deltas |
+| The side project | meh.. working.. |
 
+i want to call the fraction of the pie to be π (aka \pi) so much
+ 
 # Acknowledgment
 
 This is a customised version built upon the base code of Matthias Felleisen [here](https://github.com/mfelleisen/sample-fsm)

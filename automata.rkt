@@ -65,7 +65,7 @@
                            (state MEDIUM (vector 1 3 0)))))
 
 ;; PAIR MATCH
-(define (interact* auto1 auto2 rounds-per-match delta)
+(define (interact auto1 auto2 rounds-per-match delta)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
   (define-values (new1 p1 new2 p2 round-results)
@@ -87,7 +87,7 @@
           (automaton new2 c2 p2 table2)))
 
 
-(define (interact auto1 auto2 rounds-per-match delta)
+(define (interact* auto1 auto2 rounds-per-match delta)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
   (define-values (new1 p1 new2 p2 round-results)
