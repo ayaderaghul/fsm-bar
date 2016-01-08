@@ -8,7 +8,7 @@
 
 ;; CONFIGURATION
 
-(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run6/")
+(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run5/")
 (define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/run2/")
 
 ;; change the directory of output file here
@@ -25,9 +25,6 @@
 (define MUTATION 1)
 
 ;; UTILITIES
-(define (simulation->lines data)
-  (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
-  (lines coors))
 (define (delta->string delta)
   (string-trim (number->string (* 100 delta)) ".0"))
 (define (generate-file-name prefix delta)
@@ -40,10 +37,10 @@
    [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
-         (mutate* p3 mutation)
-         (define ranking-list (hash->list (rank p3)))
-         (out-rank (generate-file-name RANK delta) cycles ranking-list)
-         (cons (relative-average pp rounds-per-match)
+         (mutate-c p3 mutation)
+         ;;(define ranking-list (hash->list (rank p3)))
+         ;;(out-rank (generate-file-name RANK delta) cycles ranking-list)
+         (cons (relative-average pp 1)
                (evolve-d p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
 (define (evolve-delta delta)
@@ -62,5 +59,5 @@
           #:y-min 0.0 #:y-max (+ 1 max-pay) #:title pic-name
           #:out-file (string-append (generate-file-name PIC i) ".png")
           )
-    (out-mean (generate-file-name MEAN i) datas)
+    ;;(out-mean (generate-file-name MEAN i) datas)
     ))
