@@ -34,7 +34,7 @@
 (define (evolve-d population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-up-d population rounds-per-match delta))
+   [else (define p2 (match-up-c population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
