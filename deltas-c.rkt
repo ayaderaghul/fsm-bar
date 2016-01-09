@@ -8,7 +8,7 @@
 
 ;; CONFIGURATION
 
-(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run5/")
+(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/c/run2/")
 (define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/run2/")
 
 ;; change the directory of output file here
@@ -18,10 +18,10 @@
 
 (define N 100)
 (define P (build-random-population N))
-(define CYCLES 1000000)
+(define CYCLES 500000)
 (define SPEED 15)
-(define ROUNDS-PER-MATCH 15)
-(define DELTAS (list 0 1 .95 .9 .6 .85 .7 .8 .3 .5))
+(define ROUNDS-PER-MATCH 300)
+(define DELTAS (list 0 .99 .97 .95 .93 .91 .9 .88 .86 .84 .82 .8 .78 .76 .74 .7))
 (define MUTATION 1)
 
 ;; UTILITIES
@@ -34,12 +34,12 @@
 (define (evolve-d population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-up* population rounds-per-match delta))
+   [else (define p2 (match-up-d population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         ;;(define ranking-list (hash->list (rank p3)))
-         ;;(out-rank (generate-file-name RANK delta) cycles ranking-list)
+         (define ranking-list (hash->list (rank p3)))
+         (out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons (relative-average pp 1)
                (evolve-d p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
@@ -51,13 +51,12 @@
     (collect-garbage)
     (collect-garbage)
     (collect-garbage)
-	(define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH i))
+	(define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH i GAMMA))
     (define datas (time (evolve-delta i)))
-    (define max-pay (apply max datas))
     (plot (list (simulation->lines datas))
-    	#:width 1200
-          #:y-min 0.0 #:y-max (+ 1 max-pay) #:title pic-name
+          #:width 1200
+          #:y-min 0.0 #:y-max 10 #:title pic-name
           #:out-file (string-append (generate-file-name PIC i) ".png")
           )
-    ;;(out-mean (generate-file-name MEAN i) datas)
+    (out-mean (generate-file-name MEAN i) datas)
     ))

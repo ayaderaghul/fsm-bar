@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "csv.rkt" 2htdp/batch-io plot)
+(require "automata.rkt" "csv.rkt" 2htdp/batch-io plot)
 
 ;; IMPORT
 
@@ -57,7 +57,7 @@
   (out-data filename (append (list (list day)
                                  (map list data)))))
 
-(define (configuration-string N speed rounds delta)
+(define (configuration-string N speed rounds delta gamma)
   (format
-   "N = ~a, speed = ~a, rounds = ~a, delta = ~a"
-   N speed rounds delta))
+   "N = ~a, speed = ~a, rounds = ~a, delta = ~a, gamma = ~a"
+   N speed rounds delta gamma))
