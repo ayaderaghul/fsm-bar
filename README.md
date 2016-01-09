@@ -68,17 +68,10 @@ raco test -s five main.rkt
 | restructure code | 30 dec|||
 | print simulation settings as title | x |||
 | able to run across N, rounds, deltas | x |||
+| two different methods of deltas | 9 jan | ||
+| set states# = 100 | x |||
+| plot the active-states# over cycles | |||
 
-## Simulation status
-
-| Simulation | Details |
-|------------|---------|
-| The grand one| the down periods appear, though not much |
-| | 50-50 is quite stable |
-| | is running across deltas |
-| The side project | meh.. working.. |
-
-i want to call the fraction of the pie to be π (aka \pi) so much
  
 # Acknowledgment
 
