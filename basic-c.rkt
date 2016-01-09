@@ -9,6 +9,7 @@
 ;; CONFIGURATION
 ;; change the directory of output file here
 
+<<<<<<< HEAD
 (define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/run6/")
 
 (define MEAN (string-append "" "mean"))
@@ -18,6 +19,17 @@
 (define N 100)
 (define P (build-random-population N))
 (define CYCLES 10000)
+=======
+(define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/")
+
+(define MEAN (string-append lab1-dir "mean"))
+(define RANK (string-append lab1-dir "rank"))
+(define PIC (string-append lab1-dir "mean.png"))
+;; change the simulation settings here
+(define N 100)
+(define P (build-random-population N))
+(define CYCLES 1000)
+>>>>>>> 35774b6f0cfcd2199cf5a74768feec134f8f1d3a
 (define SPEED 15)
 (define ROUNDS-PER-MATCH 300)
 (define DELTA .95)
@@ -28,7 +40,11 @@
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
+<<<<<<< HEAD
   (define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH DELTA))
+=======
+  (define pic-name (configuration-string N SPEED ROUNDS-PER-MATCH DELTA GAMMA))
+>>>>>>> 35774b6f0cfcd2199cf5a74768feec134f8f1d3a
   (define data
     (time (evolve P CYCLES SPEED ROUNDS-PER-MATCH DELTA MUTATION)))
   (plot (list (simulation->lines data))

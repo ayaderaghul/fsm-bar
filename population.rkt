@@ -4,24 +4,35 @@
 (require "automata.rkt")
 
 ;; CONFIGURATION
-(define MAX-STATES# 7) ; create an automaton having up to 15 states
+(define MAX-STATES# 100)
 
 ;; POPULATION
 (define (build-random-population n)
-  (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random MAX-STATES#))))))
+  (define v (build-vector n (lambda (_) (make-random-automaton MAX-STATES#))))
   (cons v v))
 
 (define (population-payoffs population0)
   (define population (car population0))
   (for/list ([a population]) (automaton-payoff a)))
 
-(define (match-up* population0 rounds-per-match delta)
+(define (match-up-d population0 rounds-per-match delta)
   (define population (car population0))
   (population-reset population)
   (for ([i (in-range 0 (- (vector-length population) 1) 2)])
     (define p1 (vector-ref population i))
     (define p2 (vector-ref population (+ i 1)))
-    (define-values (round-results a1 a2) (interact p1 p2 rounds-per-match delta))
+    (define-values (round-results a1 a2) (interact-d p1 p2 rounds-per-match delta))
+    (vector-set! population i a1)
+    (vector-set! population (+ i 1) a2))
+  population0)
+
+(define (match-up-c population0 rounds-per-match delta)
+  (define population (car population0))
+  (population-reset population)
+  (for ([i (in-range 0 (- (vector-length population) 1) 2)])
+    (define p1 (vector-ref population i))
+    (define p2 (vector-ref population (+ i 1)))
+    (define-values (round-results a1 a2) (interact-c p1 p2 rounds-per-match delta))
     (vector-set! population i a1)
     (vector-set! population (+ i 1) a2))
   population0)
