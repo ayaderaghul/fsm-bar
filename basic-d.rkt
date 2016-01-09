@@ -11,13 +11,14 @@
 
 (define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/")
 
-(define MEAN (string-append lab1-dir "mean"))
-(define RANK (string-append lab1-dir "rank"))
-(define PIC (string-append lab1-dir "mean.png"))
+(define MEAN (string-append "" "mean"))
+(define RANK (string-append "" "rank"))
+(define PIC (string-append "" "mean.png"))
+
 ;; change the simulation settings here
 (define N 100)
 (define P (build-random-population N))
-(define CYCLES 10000)
+(define CYCLES 1000)
 (define SPEED 15)
 (define ROUNDS-PER-MATCH 300)
 (define DELTA .95)

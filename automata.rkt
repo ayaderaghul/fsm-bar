@@ -195,7 +195,7 @@
       (number->string (vector-ref dispatch i))
       ", "
       (list-ref ending i)
-      "] \n"))))
+      "]"))))
 
 (define (generate-dispatch-codes table)
   (define dispatches (vector-map state-dispatch table))
@@ -219,8 +219,8 @@
    "   VertexShapeFunction -> VertexCircle,\n"
    "   VertexLabels -> {" (generate-state-code states) "}\n"
    "   ];\n"
-   "G = Graphics[{White, Disk[{0, 0}, 0.2]}];\n"
-   "Show[" name "Graph, G]\n"
+   ;; "G = Graphics[{White, Disk[{0, 0}, 0.2]}];\n"
+   "S = Show[" name "Graph]\n"
    "(*Export[\"" name ".png\",S]*)\n \n"))
 
 (define (export-matha-code au name)
