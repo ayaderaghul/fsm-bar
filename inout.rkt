@@ -57,7 +57,4 @@
   (out-data filename (append (list (list day)
                                  (map list data)))))
 
-(define (configuration-string N speed rounds delta gamma)
-  (format
-   "N = ~a, speed = ~a, rounds = ~a, delta = ~a, gamma = ~a"
-   N speed rounds delta gamma))
+
