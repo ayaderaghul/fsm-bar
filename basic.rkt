@@ -25,8 +25,8 @@
 ;; UTILITIES
 (define (configuration-string delta method)
   (format
-   "N = ~a, speed = ~a, rounds = ~a, gamma = ~a, ~a: delta = ~a"
-   N SPEED ROUNDS GAMMA method delta))
+   "N = ~a, speed = ~a, rounds = ~a, states# = ~a, gamma = ~a, ~a: delta = ~a"
+   N SPEED ROUNDS MAX-STATES# GAMMA method delta))
 (define (plot-payoff lst y-max title file-name)
   (plot (list (simulation->lines lst))
         #:y-min 0.0 #:y-max y-max #:title title
