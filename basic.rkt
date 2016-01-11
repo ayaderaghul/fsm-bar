@@ -9,14 +9,14 @@
 ;; CONFIGURATION
 ;; change the directory of output file here
 (define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/")
-(define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/run2/")
-(define MEAN (string-append "" "mean"))
-(define RANK (string-append "" "rank"))
-(define PIC (string-append "" "meanplot"))
+(define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/c/run1/")
+(define MEAN (string-append disa-lab "mean"))
+(define RANK (string-append disa-lab "rank"))
+(define PIC (string-append disa-lab "meanplot"))
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 100)
+(define CYCLES 1000000)
 (define SPEED 15)
 (define ROUNDS 300)
 (define DELTA .99)
