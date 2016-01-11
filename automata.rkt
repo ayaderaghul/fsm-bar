@@ -109,12 +109,26 @@
           (automaton new1 c1 p1 table1)
           (automaton new2 c2 p2 table2)))
 
-
-
-
-
 (define (payoff current1 current2)
   (vector-ref (vector-ref PAYOFF-TABLE current1) current2))
+;; INVESTIGATE AUTOMATON
+(define (n-dispatch n auto) ;; checked, passed test
+  (match-define (automaton c1 i1 p1 table1) auto)
+  (define d0 (after-state i1 table1))
+  (define-values (dn result)
+    (for/fold ([dx d0]
+               [ds (cons d0 '())])
+              ([_ n])
+      (define d-next (after-states dx table1))
+      (values d-next (cons d-next ds))))
+  (reverse result))
+
+(define (after-states states# table)
+  (flatten (for/list ([i (in-list states#)]) (after-state i table))))
+
+(define (after-state state# table)
+  (match-define (state a d) (vector-ref table state#))
+  (vector->list d))
 
 ;; (IMMUTABLE) MUTATION
 ;; turn the automaton structure into a flattened list
