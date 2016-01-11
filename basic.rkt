@@ -33,6 +33,11 @@
         #:out-file (string-append file-name ".png")
         #:width 1200))
 
+(define (delta->string delta)
+  (string-trim (number->string (* 100 delta)) ".0"))
+(define (generate-file-name prefix delta)
+  (string-append prefix (delta->string delta)))
+
 ;; CONTINUAL PROBABILITY
 (define (run-c)
   (collect-garbage)
@@ -43,7 +48,7 @@
     (time (evolve-c (build-random-population N)
                     CYCLES SPEED ROUNDS DELTA MUTATION)))
   (plot-payoff data 10.0 pic-name PIC)
-  ;; (out-mean MEAN data)
+  (out-mean MEAN data)
   )
 
 (define (evolve-c population cycles speed rounds-per-match delta mutation)
@@ -53,9 +58,9 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         ;;(define ranking (rank p3))
-         ;;(define ranking-list (hash->list ranking))
-         ;;(out-rank RANK cycles ranking-list)
+         (define ranking (rank p3))
+         (define ranking-list (hash->list ranking))
+         (out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons ;;(list
                 (relative-average pp 1)
                 ;;(hash-count ranking)
@@ -75,7 +80,7 @@
                     CYCLES SPEED ROUNDS DELTA MUTATION)))
   (define max-pay (apply max data))
   (plot-payoff data (+ 5 max-pay) pic-name PIC)
-  ;; (out-mean MEAN data)
+  (out-mean MEAN data)
   )
 
 (define (evolve-d population cycles speed rounds-per-match delta mutation)
@@ -85,9 +90,9 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         ;;(define ranking (rank p3))
-         ;;(define ranking-list (hash->list ranking))
-         ;;(out-rank RANK cycles ranking-list)
+         (define ranking (rank p3))
+         (define ranking-list (hash->list ranking))
+         (out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons ;;(list
                 (relative-average pp 1)
                      ;;(hash-count ranking)

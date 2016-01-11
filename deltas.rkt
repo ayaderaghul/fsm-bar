@@ -10,11 +10,6 @@
 (define DELTAS-C (list .99 .85 .5 .3 0))
 (define DELTAS-D (list 1 .9 .7 .5 .2 0))
 
-;; UTILITIES
-(define (delta->string delta)
-  (string-trim (number->string (* 100 delta)) ".0"))
-(define (generate-file-name prefix delta)
-  (string-append prefix (delta->string delta)))
 
 ;; MAIN
 (define (evolve-delta evolve-function delta)
@@ -29,7 +24,7 @@
     (define pic-name (configuration-string i "continual probability"))
     (define data (time (evolve-delta evolve-c i)))
     (plot-payoff data 10.0 pic-name (generate-file-name PIC i))
-    ;; (out-mean (generate-file-name MEAN i) data)
+    (out-mean (generate-file-name MEAN i) data)
     ))
 
 (module+ mainc (main-c))
@@ -43,7 +38,7 @@
     (define data (time (evolve-delta evolve-d i)))
     (define max-pay (apply max data))
     (plot-payoff data (+ 5 max-pay) pic-name (generate-file-name PIC i))
-    ;; (out-mean (generate-file-name MEAN i) data)
+    (out-mean (generate-file-name MEAN i) data)
     ))
 
 (module+ maind (main-d))
