@@ -70,10 +70,10 @@ raco test -s five main.rkt
 | able to run across N, rounds, deltas | x |||
 | two different methods of deltas | 9 jan | ||
 | set states# = 100 | x |||
-| track the active-states# (complexity) of automata over cycles | |||
-| count the states related to initial states | |||
 | fix a bug: in deltas, in the for loop, build-random-population in each i | x || see if it solves the flat simulations |
 | merge module c & d, from now on, run raco test for each module test | x |||
+| ls the decision tree of an auto | x |||
+| now contingent on the other action, ... (active states) |  |||
 
 
  
