@@ -9,7 +9,7 @@
 ;; CONFIGURATION
 ;; change the directory of output file here
 (define lab1-dir "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/")
-(define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/c/run1/")
+(define disa-lab "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/d/run1/")
 (define MEAN (string-append disa-lab "mean"))
 (define RANK (string-append disa-lab "rank"))
 (define PIC (string-append disa-lab "meanplot"))
@@ -58,9 +58,9 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         (define ranking (rank p3))
-         (define ranking-list (hash->list ranking))
-         (out-rank (generate-file-name RANK delta) cycles ranking-list)
+         ;;(define ranking (rank p3))
+         ;;(define ranking-list (hash->list ranking))
+         ;;(out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons ;;(list
                 (relative-average pp 1)
                 ;;(hash-count ranking)
@@ -90,9 +90,9 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         (define ranking (rank p3))
-         (define ranking-list (hash->list ranking))
-         (out-rank (generate-file-name RANK delta) cycles ranking-list)
+         ;;(define ranking (rank p3))
+         ;;(define ranking-list (hash->list ranking))
+         ;;(out-rank (generate-file-name RANK delta) cycles ranking-list)
          (cons ;;(list
                 (relative-average pp 1)
                      ;;(hash-count ranking)

@@ -24,7 +24,7 @@
     (define pic-name (configuration-string i "continual probability"))
     (define data (time (evolve-delta evolve-c i)))
     (plot-payoff data 10.0 pic-name (generate-file-name PIC i))
-    (out-mean (generate-file-name MEAN i) data)
+    ;;(out-mean (generate-file-name MEAN i) data)
     ))
 
 (module+ mainc (main-c))
@@ -38,7 +38,7 @@
     (define data (time (evolve-delta evolve-d i)))
     (define max-pay (apply max data))
     (plot-payoff data (+ 5 max-pay) pic-name (generate-file-name PIC i))
-    (out-mean (generate-file-name MEAN i) data)
+    ;;(out-mean (generate-file-name MEAN i) data)
     ))
 
 (module+ maind (main-d))
