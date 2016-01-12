@@ -4,7 +4,7 @@
 (require "automata.rkt")
 
 ;; CONFIGURATION
-(define MAX-STATES# 70)
+(define MAX-STATES# 80)
 
 ;; POPULATION
 (define (build-random-population n)
