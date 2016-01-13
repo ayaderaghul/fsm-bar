@@ -7,8 +7,8 @@
 (plot-new-window? #t)
 
 ;; CONFIGURATION
-(define DELTAS-C (list .99 .95 .9 .85 .8 .7 .6 .4 .2 0))
-(define DELTAS-D (list 1 .95 .9 .85 .8 .7 .6 .4 .2 0))
+(define DELTAS-C (list .99 .97 .95 .93 .91 .9 .88 .86 .84 .8 .7 0))
+(define DELTAS-D (list 1 .95 .9 .85 .8 .7 0))
 
 
 ;; MAIN
