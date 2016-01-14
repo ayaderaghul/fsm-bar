@@ -74,7 +74,7 @@ raco test -s five main.rkt
 | merge module c & d, from now on, run raco test for each module test | x |||
 | ls the decision tree of an auto | x |||
 | now contingent on the other action, ... (active states) |  |||
-
+| return the states + the payoff in each round | 14 jan |||
 
  
 # Acknowledgment
