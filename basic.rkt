@@ -10,16 +10,16 @@
 ;; change the directory of output file here
 (define lab1 "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/d/run3/")
 (define disa "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/c/run1/")
-(define MEAN (string-append lab1 "mean"))
-(define RANK (string-append lab1 "rank"))
-(define PIC (string-append lab1 "meanplot"))
+(define MEAN (string-append "" "mean"))
+(define RANK (string-append "" "rank"))
+(define PIC (string-append "" "meanplot"))
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 1000000)
+(define CYCLES 50000)
 (define SPEED 15)
-(define ROUNDS 300)
-(define DELTA .99)
+(define ROUNDS 100)
+(define DELTA .95)
 (define MUTATION 1)
 
 ;; UTILITIES
@@ -75,12 +75,16 @@
   (collect-garbage)
   (collect-garbage)
   (define pic-name (configuration-string DELTA "discount factor"))
-  (define data
+  (define datas
     (time (evolve-d (build-random-population N)
                     CYCLES SPEED ROUNDS DELTA MUTATION)))
-  (define max-pay (apply max data))
-  (plot-payoff data (+ 5 max-pay) pic-name PIC)
-  (out-mean MEAN data)
+  (define ps (map first datas))
+  (define max-pay (apply max ps))
+  (define as (map second datas))
+  (define max-a (apply max as))
+  (plot-payoff ps (+ 5 max-pay) pic-name PIC)
+  (plot (simulation->lines as) #:width 1200)
+  ;;(out-mean MEAN data)
   )
 
 (define (evolve-d population cycles speed rounds-per-match delta mutation)
@@ -90,11 +94,14 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         ;;(define ranking (rank p3))
-         ;;(define ranking-list (hash->list ranking))
+         (define ranking (rank* p3))
+         (define ranking-list (hash->list ranking))
+         (define sample-auto
+           (if (empty? ranking-list) 0 (car (first ranking-list))))
+         (define a-rate (accommodating sample-auto))
          ;;(out-rank (generate-file-name RANK delta) cycles ranking-list)
-         (cons ;;(list
-                (relative-average pp 1)
+         (cons (list
+                (relative-average pp 1) a-rate)
                      ;;(hash-count ranking)
                      ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve-d p3 (- cycles 1) speed rounds-per-match delta mutation))]))

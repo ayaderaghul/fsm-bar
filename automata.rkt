@@ -133,23 +133,95 @@
 (define (payoff current1 current2)
   (vector-ref (vector-ref PAYOFF-TABLE current1) current2))
 ;; INVESTIGATE AUTOMATON
-(define (n-dispatch n auto) ;; checked, passed test
-  (match-define (automaton c1 i1 p1 table1) auto)
-  (define d0 (after-state i1 table1))
+;; decision tree
+;; 0 order decision tree: what (3) states does the initial state tell you to jump to
+;; 1-order decision tree: what (3^2) states does the 0-order-state tell you to jump to
+(define (nth-decision-tree n auto)
+  (match-define (automaton c0 i0 p0 table0) auto)
+  (define d0 (state#->#s i0 table0))
   (define-values (dn result)
     (for/fold ([dx d0]
-               [ds (cons d0 '())])
+               [ds (cons d0 (cons (list i0) '()))])
               ([_ n])
-      (define d-next (after-states dx table1))
+      (define d-next (states#->##s dx table0))
       (values d-next (cons d-next ds))))
   (reverse result))
 
-(define (after-states states# table)
-  (flatten (for/list ([i (in-list states#)]) (after-state i table))))
-
-(define (after-state state# table)
-  (match-define (state a d) (vector-ref table state#))
+(define (states#->##s _ table)
+  (flatten (for/list ([i (in-list _)]) (state#->#s i table))))
+(define (state#->#s _ table)
+  (match-define (state a d) (vector-ref table _))
   (vector->list d))
+
+;; how does the automaton response to a L, M, H move?
+;; utilities:
+(define (vector-first a-vec)
+  (vector-ref a-vec 0))
+(define (vector-second a-vec)
+  (vector-ref a-vec 1))
+(define (vector-third a-vec)
+  (vector-ref a-vec 2))
+
+(define (how-many-l? lst)
+  (count zero? lst))
+(define (one? x) (= 1 x))
+(define (two? x) (= 2 x))
+(define (how-many-m? lst)
+  (count one? lst))
+(define (how-many-h? lst)
+  (count two? lst))
+(define (count-lmh lst)
+  (list (count zero? lst) (count one? lst) (count two? lst)))
+
+(define (responses auto)
+  (match-define (automaton c0 i0 p0 table0) auto)
+  (define states (vector->list table0))
+  (responses-h states states))
+
+(define (responses-h states table)
+  (define dispatches (map state-dispatch states))
+  (define l->states# (map vector-first dispatches))
+  (define m->states# (map vector-second dispatches))
+  (define h->states# (map vector-third dispatches))
+  (define (state#->action _) (state-action (list-ref table _)))
+  (define l->actions (map state#->action l->states#))
+  (define m->actions (map state#->action m->states#))
+  (define h->actions (map state#->action h->states#))
+  (list (count-lmh l->actions) (count-lmh m->actions) (count-lmh h->actions)))
+
+;; the simplest accommodator response distribution is this:
+;; ((0 0 3) (0 3 0) (3 0 0))
+;; it responds to l by 3 h
+;; it responds to m by 3 m
+;; it responds to h by 3 l
+
+;; investigate only n-order decision tree
+
+(define (core-responses n auto)
+  (match-define (automaton c0 i0 p0 table0) auto)
+  (define states (vector->list table0))
+  (define tree# (nth-decision-tree n auto))
+  (define (state#->state _) (list-ref states _))
+  (define (states#->states lst) (map state#->state lst))
+  (define tree (map states#->states tree#))
+  (define (respond lst) (responses-h lst states))
+  (map respond tree))
+
+(define (core-responses-2 n auto)
+  (match-define (automaton c0 i0 p0 table0) auto)
+  (define states (vector->list table0))
+  (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
+  (define (state#->state _) (list-ref states _))
+  (define tree (map state#->state tree#))
+  (responses-h tree states))
+
+(define (accommodating auto)
+  (cond [(struct? auto)
+         (first (third (core-responses-2 2 auto)))] [else 0]))
+
+
+
+
 
 ;; (IMMUTABLE) MUTATION
 ;; turn the automaton structure into a flattened list
