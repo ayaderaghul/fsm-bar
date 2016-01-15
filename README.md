@@ -77,6 +77,8 @@ raco test -s five main.rkt
 | return the states + the payoff in each round | 14 jan |||
 | walk through the workflow | |||
 | write some func to investigate automaton |v || hmm, |
+| spin off a version into fsm-bar-nogui to run on clusters@.. | x|||
+
 
  
 # Acknowledgment
