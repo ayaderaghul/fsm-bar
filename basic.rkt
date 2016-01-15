@@ -16,7 +16,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 50000)
+(define CYCLES 1000)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA .95)
@@ -30,7 +30,7 @@
 (define (plot-payoff lst y-max title file-name)
   (plot (list (simulation->lines lst))
         #:y-min 0.0 #:y-max y-max #:title title
-        #:out-file (string-append file-name ".png")
+        ;;#:out-file (string-append file-name ".png")
         #:width 1200))
 
 (define (delta->string delta)
@@ -48,7 +48,7 @@
     (time (evolve-c (build-random-population N)
                     CYCLES SPEED ROUNDS DELTA MUTATION)))
   (plot-payoff data 10.0 pic-name PIC)
-  (out-mean MEAN data)
+  ;;(out-mean MEAN data)
   )
 
 (define (evolve-c population cycles speed rounds-per-match delta mutation)
