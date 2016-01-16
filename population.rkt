@@ -1,10 +1,7 @@
 #lang racket
 
 (provide (all-defined-out))
-(require "automata.rkt")
-
-;; CONFIGURATION
-(define MAX-STATES# 50)
+(require "configuration.rkt" "automata.rkt")
 
 ;; POPULATION
 (define (build-random-population n)

@@ -1,8 +1,6 @@
 #lang racket
-(require "automata.rkt" "csv.rkt" 2htdp/batch-io)
+(require "configuration.rkt" "automata.rkt" "csv.rkt" 2htdp/batch-io)
 (provide rank rank* scan scan*)
-;; CONFIGURATION
-(define THRESHOLD 10) ; only collect data on automata that have at least 10 of its kind
 
 ;; SCAN
 (define (initial-action au)

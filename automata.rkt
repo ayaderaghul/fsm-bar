@@ -1,24 +1,7 @@
 #lang racket
+(require "configuration.rkt")
 (provide (all-defined-out))
 
-;; CONFIGURATION
-(define LOW 0)
-(define MEDIUM 1)
-(define HIGH 2)
-(define ACTIONS#  3) ; the number of strategies available for each player
-(define STATE-LENGTH 4)
-;; the state length is 4 bc each state has 4 information:
-;; the strategy to be played at that state
-;; and 3 dispatching rules: given that the opponent plays L M H, which state to jump to?
-
-(define GAMMA 3) ; GAMMA < 5
-
-(define PAYOFF-TABLE
-  (vector (vector (cons GAMMA GAMMA) (cons GAMMA 5) (cons GAMMA (- 10 GAMMA)))
-          (vector (cons 5 GAMMA) (cons 5 5) (cons 0 0))
-          (vector (cons (- 10 GAMMA) GAMMA) (cons 0 0) (cons 0 0))))
-
-(define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
 ;; AUTOMATON
 ;; an automaton has 4 parts:
