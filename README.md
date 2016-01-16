@@ -78,6 +78,7 @@ raco test -s five main.rkt
 | walk through the workflow | |||
 | write some func to investigate automaton |v || hmm, |
 | spin off a version into fsm-bar-nogui to run on clusters@.. | x|||
+| try ssh key | x |||
 
 
  
