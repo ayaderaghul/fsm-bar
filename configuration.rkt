@@ -32,7 +32,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 100)
+(define CYCLES 10000)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA .95)

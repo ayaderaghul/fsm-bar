@@ -72,9 +72,10 @@ with -tm and no further specification, racket will evaluate the function `main d
 | return the states + the payoff in each round | 14 jan || so we can see active states of two automaton in a match (in equilibrium)|
 | walk through the workflow | || pay attention to function vector-set!|
 | write some func to investigate automaton |v || hmm, |
-| change to no-gui to run on clusters@.. | |||
+| change to no-gui to run on clusters@.. | x |||
 | try ssh key | x |||
-
+| back up the job description sent to cluster as a sample | |||
+| only export data every 3 cycle (reduce data size) |x |||
 
  
 # Acknowledgment

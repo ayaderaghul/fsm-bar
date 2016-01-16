@@ -44,15 +44,15 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         ;;(define ranking (rank* p3))
-         ;;(define ranking-list (hash->list ranking))
-         ;;(define sample-auto
-         ;; (if (empty? ranking-list) 0 (car (first ranking-list))))
-         ;;(define a-rate (accommodating sample-auto))
-         ;;(out-rank (generate-file-name RANK delta) cycles ranking-list)
+         (and (zero? (modulo cycles 3))
+              ;;(define sample-auto
+              ;; (if (empty? ranking-list) 0 (car (first ranking-list))))
+              ;;(define a-rate (accommodating sample-auto))
+              (out-rank (generate-file-name RANK delta) cycles
+                        (hash->list (rank p3))))
          (cons (relative-average pp 1)
-                     ;;(hash-count ranking)
-                     ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
+               ;;(hash-count ranking)
+               ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
 (module+ rund
