@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "automata.rkt" "csv.rkt" 2htdp/batch-io plot)
+(require "automata.rkt" "csv.rkt" 2htdp/batch-io plot/no-gui)
 
 ;; IMPORT
 
@@ -17,7 +17,7 @@
   (define c (load-data* csv-file))
   (define d (simulation->lines c))
   (define max-pay (apply max c))
-  (plot d #:width 1200 #:y-max (+ 1 max-pay) #:title title #:out-file pic-name))   
+  (plot-file d pic-name 'png #:width 1200 #:y-max (+ 1 max-pay) #:title title))   
 
 (define (load-data csv-file)
   [define strings (read-csv-file csv-file)]

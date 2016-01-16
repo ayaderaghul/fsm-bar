@@ -3,12 +3,11 @@
 
 (provide (all-defined-out))
 (require "automata.rkt" "population.rkt"
-         "scan.rkt" "inout.rkt" plot "basic.rkt")
-(plot-new-window? #t)
+         "scan.rkt" "inout.rkt" plot/no-gui "basic.rkt")
 
 ;; CONFIGURATION
-(define DELTAS-C (list .99 .97 .95 .93 .91 .9 .88 .86 .84 .8 .7 0))
-(define DELTAS-D (list 1 .95 .9 .85 .8 .7 0))
+(define DELTAS-C (list .99 .97 .95 .93 0))
+(define DELTAS-D (list 1 .95 .9 .85 .8 .7 .6 .4 .2 0))
 
 
 ;; MAIN

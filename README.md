@@ -2,26 +2,28 @@
 
 ## how to run in mathematica
 
-there are two main files: `basic.rkt` which is used for the grand simulation.
-`side.rkt` is for the side project (or spinoff).
-
 before running, it's necessary to change the directory for the output.
 
-- open `side.rkt`, the CONFIGURATION is at the beginning:
+- open `basic.rkt`, the CONFIGURATION is at the beginning:
 
-- change the directory to smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png"
+- change the directory to smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/"
+this directory will be append before the file name, it's better to append "" (nothing) so that the output is exported in the current directory
 
 - then change the variables accordingly, for example: N 100, CYCLES 100000...
 
-- then run the file `run-in-matha.nb` in mathematica
+- then run the file `run-in-matha.nb` in mathematica (in that file, mathematica set directory as the current directory)
 
 in general (and inside mathematica), the command to run is
 
 ```
+raco test -s rund basic.rkt
+```
+or 
+```
 racket -tm side.rkt
 ```
 
-with -tm and no further specification, racket will evaluate the function `main defined inside the file side.rkt
+with -tm and no further specification, racket will evaluate the function `main defined inside the file side.rkt, raco will run the test module inside the file, (this may be necessary when there is not only one main module inside the file, for example, run in continual probability fashion or run in discount factor fashion)
 
 ### how to run in lab 1 computer:
 
@@ -39,12 +41,6 @@ with -tm and no further specification, racket will evaluate the function `main d
 
 ```
 (require (file "R:/fsm-bar/main.rkt"))
-```
-
-#### extra
-
-```
-raco test -s five main.rkt 
 ```
 
 ## To do
@@ -72,12 +68,11 @@ raco test -s five main.rkt
 | set states# = 100 | x |||
 | fix a bug: in deltas, in the for loop, build-random-population in each i | x || see if it solves the flat simulations |
 | merge module c & d, from now on, run raco test for each module test | x |||
-| ls the decision tree of an auto | x |||
-| now contingent on the other action, ... (active states) |  |||
-| return the states + the payoff in each round | 14 jan |||
-| walk through the workflow | |||
+| list the decision tree of an auto | x |||
+| return the states + the payoff in each round | 14 jan || so we can see active states of two automaton in a match (in equilibrium)|
+| walk through the workflow | || pay attention to function vector-set!|
 | write some func to investigate automaton |v || hmm, |
-| spin off a version into fsm-bar-nogui to run on clusters@.. | x|||
+| change to no-gui to run on clusters@.. | |||
 | try ssh key | x |||
 
 
