@@ -70,11 +70,11 @@ with -tm and no further specification, racket will evaluate the function `main d
 | merge module c & d, from now on, run raco test for each module test | x |||
 | list the decision tree of an auto | x |||
 | return the states + the payoff in each round | 14 jan || so we can see active states of two automaton in a match (in equilibrium)|
-| walk through the workflow | || pay attention to function vector-set!|
+| walk through the workflow |x || pay attention to function vector-set!|
 | write some func to investigate automaton |v || hmm, |
 | change to no-gui to run on clusters@.. | x |||
 | try ssh key | x |||
-| back up the job description sent to cluster as a sample | |||
+| back up the job description (which'd be sent to cluster) | || next time just edit that file|
 | only export data every 3 cycle (reduce data size) |x |||
 
  

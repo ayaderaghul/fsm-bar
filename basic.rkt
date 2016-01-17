@@ -44,7 +44,7 @@
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         (and (zero? (modulo cycles 3))
+         (and (zero? (modulo cycles DATA-POINT))
               ;;(define sample-auto
               ;; (if (empty? ranking-list) 0 (car (first ranking-list))))
               ;;(define a-rate (accommodating sample-auto))

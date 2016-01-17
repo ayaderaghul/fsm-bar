@@ -38,12 +38,14 @@
 (define DELTA .95)
 (define MUTATION 1)
 
+(define DATA-POINT 3) ; collect data every x cycles
+
 ;; RUN ACROSS DELTA
 (define DELTAS-C (list .99 .97 .95 .93 0))
 (define DELTAS (list 1 .95 .9 .85 0))
 
 ;; POPULATION
-(define MAX-STATES# 50)
+(define MAX-STATES# 50) ; generating automata w this number of states
 
 ;; SCAN
 (define THRESHOLD 10) ; only collect data on automata that have at least 10 of its kind
