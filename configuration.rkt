@@ -25,14 +25,15 @@
 
 (define lab1 "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/d/run3/")
 (define disa "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/c/run1/")
+(define home "./run/")
 
-(define MEAN (string-append "" "mean"))
-(define RANK (string-append "" "rank"))
-(define PIC (string-append "" "meanplot"))
+(define MEAN (string-append home "mean"))
+(define RANK (string-append home "rank"))
+(define PIC (string-append home "meanplot"))
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 200000)
+(define CYCLES 1000)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA 1)
@@ -44,8 +45,12 @@
 (define DELTAS-C (list .99 .97 .95 .93 0))
 (define DELTAS (list 1 .95 .9 .85 0))
 
+;; PIES
+(define GAMMAS (list 0.5 2 3 4))
+
 ;; POPULATION
-(define MAX-STATES# 30) ; generating automata w this number of states
+(define MAX-STATES# 40) ; generating automata w this number of states
+(define STATES# (list 10 30 40 50))
 
 ;; SCAN
 (define THRESHOLD 10) ; only collect data on automata that have at least 10 of its kind
