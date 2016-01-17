@@ -15,6 +15,11 @@
         #:y-min 0.0 #:y-max y-max #:title title
                 #:width 1200))
 
+(define (plot-payoffs lst a-line y-max title file-name)
+  (plot-file (list (simulation->lines lst) a-line) file-name 'png
+        #:y-min 0.0 #:y-max y-max #:title title
+                #:width 1200))
+
 (define (delta->string delta)
   (string-trim (number->string (* 100 delta)) ".0"))
 (define (generate-file-name prefix delta)
@@ -28,13 +33,14 @@
   (define pic-name (configuration-string DELTA "discount factor"))
   (define datas
     (time (evolve (build-random-population N) CYCLES SPEED ROUNDS DELTA MUTATION)))
+  (define max-pay (* 5 ROUNDS DELTA))  
+  (define ceiling (function (lambda (x) max-pay) #:color "blue"))
   ;;(define ps (map first datas))
-  (define max-pay (apply max datas))
   ;;(define as (map second datas))
   ;;(define max-a (apply max as))
-  (plot-payoff datas (+ 5 max-pay) pic-name PIC)
+  (plot-payoffs datas ceiling  (+ 5 max-pay) pic-name PIC)
   ;;(plot (simulation->lines as) #:width 1200)
-  ;;(out-mean MEAN ps)
+  (out-mean MEAN datas)
   )
 
 (define (evolve population cycles speed rounds-per-match delta mutation)

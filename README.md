@@ -75,7 +75,8 @@ with -tm and no further specification, racket will evaluate the function `main d
 | change to no-gui to run on clusters@.. | x |||
 | try ssh key | x |||
 | back up the job description (which'd be sent to cluster) | || next time just edit that file|
-| only export data every 3 cycle (reduce data size) |x |||
+| only export data every 10 cycle (reduce data size) |x |||
+| issue: high states -> lower periods -> maybe due to inefficient learning (not quite equilibrium). so if reduce states -> has to increase cycles. | || run the same combination of (cycle,states) w pd to see|
 
  
 # Acknowledgment
