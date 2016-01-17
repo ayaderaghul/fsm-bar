@@ -9,7 +9,7 @@
 (define (configuration-string delta method)
   (format
    "N = ~a, speed = ~a, rounds = ~a, states# = ~a, gamma = ~a, ~a: delta = ~a"
-   N SPEED ROUNDS MAX-STATES# GAMMA method delta))
+   N SPEED ROUNDS STATE# GAMMA method delta))
 (define (plot-payoff lst y-max title file-name) ;; for the continual method (no ceiling)
   (plot-file (simulation->lines lst) file-name 'png
         #:y-min 0.0 #:y-max y-max #:title title
@@ -38,7 +38,7 @@
   (define pic-name (configuration-string DELTA "discount factor"))
 (define rank-name (generate-file-name RANK DELTA))
   (define datas
-    (time (evolve (build-random-population N) CYCLES SPEED ROUNDS DELTA MUTATION rank-name)))
+    (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA GAMMA MUTATION rank-name)))
   ;;(define ps (map first datas))
   ;;(define as (map second datas))
   ;;(define max-a (apply max as))
@@ -47,10 +47,10 @@
   (out-mean MEAN datas)
   )
 
-(define (evolve population cycles speed rounds-per-match delta mutation rank-file)
+(define (evolve population cycles speed rounds-per-match delta gamma mutation rank-file)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-up-d population rounds-per-match delta))
+   [else (define p2 (match-up-d population rounds-per-match delta gamma))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
@@ -63,7 +63,7 @@
          (cons (relative-average pp 1)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
-               (evolve p3 (- cycles 1) speed rounds-per-match delta mutation rank-file))]))
+               (evolve p3 (- cycles 1) speed rounds-per-match delta gamma mutation rank-file))]))
 
 (module+ rund
   (run))
@@ -75,7 +75,7 @@
     (collect-garbage)
     (define pic-name (configuration-string i "discount factor"))
 (define rank-name (generate-file-name RANK i))
-    (define data (time (evolve (build-random-population N) CYCLES SPEED ROUNDS i MUTATION rank-name)))
+    (define data (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS i GAMMA MUTATION rank-name)))
     (plot-payoffs data i pic-name (generate-file-name PIC i))
     (out-mean (generate-file-name MEAN i) data)
     ))
@@ -84,7 +84,7 @@
 (define (print-configuration gamma)
   (format
    "N = ~a, speed = ~a, rounds = ~a, states# = ~a, gamma = ~a, ~a: delta = ~a"
-   N SPEED ROUNDS MAX-STATES# gamma "discount factor" DELTA))
+   N SPEED ROUNDS STATE# gamma "discount factor" DELTA))
 (define (pies)
   (for ([i (in-list GAMMAS)])
     (collect-garbage)
@@ -92,20 +92,18 @@
     (collect-garbage)
     (define pic-name (print-configuration i))
 (define rank-name (generate-file-name RANK i))
-    (define PAYOFF-TABLE
-      (vector (vector (cons i i) (cons i 5) (cons i (- 10 i)))
-              (vector (cons 5 i) (cons 5 5) (cons 0 0))
-              (vector (cons (- 10 i) i) (cons 0 0) (cons 0 0))))
-    (define data (time (evolve (build-random-population N) CYCLES SPEED ROUNDS DELTA MUTATION rank-name)))
+    (define data (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA i MUTATION rank-name)))
     (plot-payoffs data DELTA pic-name (generate-file-name PIC i))
     (out-mean (generate-file-name MEAN i) data)
     ))
 (module+ pies (pies))
+
+
 ;; ACROSS STATES#
-(define (print-title states#)
+(define (print-title state#)
   (format
    "N = ~a, speed = ~a, rounds = ~a, states# = ~a, gamma = ~a, ~a: delta = ~a"
-   N SPEED ROUNDS states# GAMMA "discount factor" DELTA))
+   N SPEED ROUNDS state# GAMMA "discount factor" DELTA))
 (define (states#)
   (for ([i (in-list STATES#)])
     (collect-garbage)
@@ -113,8 +111,7 @@
     (collect-garbage)
     (define pic-name (print-title i))
 (define rank-name (generate-file-name RANK i))
-    (define MAX-STATES# i)
-    (define data (time (evolve (build-random-population N) CYCLES SPEED ROUNDS DELTA MUTATION rank-name)))
+    (define data (time (evolve (build-random-population N i) CYCLES SPEED ROUNDS DELTA GAMMA MUTATION rank-name)))
     (plot-payoffs data DELTA pic-name (generate-file-name PIC i))
     (out-mean (generate-file-name MEAN i) data)
     ))
@@ -128,18 +125,18 @@
   (collect-garbage)
   (define pic-name (configuration-string DELTA "continual probability"))
   (define data
-    (time (evolve-c (build-random-population N)
-                    CYCLES SPEED ROUNDS DELTA MUTATION)))
+    (time (evolve-c (build-random-population N STATE#)
+                    CYCLES SPEED ROUNDS DELTA GAMMA MUTATION)))
   (plot-payoff data DELTA 10.0 pic-name PIC)
   ;;(out-mean MEAN data)
   )
 
 (module+ runc (run-c))
 
-(define (evolve-c population cycles speed rounds-per-match delta mutation)
+(define (evolve-c population cycles speed rounds-per-match delta gamma mutation)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-up-c population rounds-per-match delta))
+   [else (define p2 (match-up-c population rounds-per-match delta gamma))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
@@ -150,7 +147,7 @@
                 (relative-average pp 1)
                 ;;(hash-count ranking)
                 ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
-                (evolve-c p3 (- cycles 1) speed rounds-per-match delta mutation))]))
+                (evolve-c p3 (- cycles 1) speed rounds-per-match delta gamma mutation))]))
 
 (define (main-c)
   (for ([i (in-list DELTAS-C)])
@@ -158,7 +155,7 @@
     (collect-garbage)
     (collect-garbage)
     (define pic-name (configuration-string i "continual probability"))
-    (define data (time (evolve-c (build-random-population N) CYCLES SPEED ROUNDS i MUTATION)))
+    (define data (time (evolve-c (build-random-population N STATE#) CYCLES SPEED ROUNDS i GAMMA MUTATION)))
     (plot-payoff data 10.0 pic-name (generate-file-name PIC i))
     ;;(out-mean (generate-file-name MEAN i) data)
     ))

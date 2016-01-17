@@ -13,11 +13,6 @@
 
 (define GAMMA 3) ; GAMMA < 5
 
-(define PAYOFF-TABLE
-  (vector (vector (cons GAMMA GAMMA) (cons GAMMA 5) (cons GAMMA (- 10 GAMMA)))
-          (vector (cons 5 GAMMA) (cons 5 5) (cons 0 0))
-          (vector (cons (- 10 GAMMA) GAMMA) (cons 0 0) (cons 0 0))))
-
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
 ;; BASIC RUN
@@ -49,7 +44,7 @@
 (define GAMMAS (list 0.5 2 3 4))
 
 ;; POPULATION
-(define MAX-STATES# 40) ; generating automata w this number of states
+(define STATE# 40) ; generating automata w this number of states
 (define STATES# (list 10 30 40 50))
 
 ;; SCAN
