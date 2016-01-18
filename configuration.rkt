@@ -28,13 +28,13 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 1000)
+(define CYCLES 100000)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA 1)
 (define MUTATION 1)
 
-(define DATA-POINT 10) ; collect data every x cycles
+(define DATA-POINT 100) ; collect data every x cycles
 
 ;; RUN ACROSS DELTA
 (define DELTAS-C (list .99 .97 .95 .93 0))
@@ -44,7 +44,7 @@
 (define GAMMAS (list 0.5 2 3 4))
 
 ;; POPULATION
-(define STATE# 40) ; generating automata w this number of states
+(define STATE# 30) ; generating automata w this number of states
 (define STATES# (list 10 30 40 50))
 
 ;; SCAN

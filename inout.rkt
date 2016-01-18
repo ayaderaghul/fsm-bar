@@ -13,6 +13,10 @@
   (define b (map first a))
   (map string->number b))
 
+(define (load-data2 csv-file)
+  (read-csv-file/rows csv-file (lambda (x) (apply string->number x))))
+
+
 (define (plot-mean csv-file title pic-name)
   (define c (load-data* csv-file))
   (define d (simulation->lines c))

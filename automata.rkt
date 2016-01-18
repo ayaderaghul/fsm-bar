@@ -196,13 +196,16 @@
   (define (respond lst) (responses-h lst states))
   (map respond tree))
 
+(require "cake.rkt")
 (define (core-responses-2 n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
   (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
   (define (state#->state _) (list-ref states _))
   (define tree (map state#->state tree#))
-  (responses-h tree states))
+  (define distribution (responses-h tree states))
+(map (lambda (x) (apply make-histogram x)) distribution)
+)
 
 (define (accommodating auto)
   (cond [(struct? auto)

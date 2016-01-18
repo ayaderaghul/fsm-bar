@@ -77,7 +77,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 | back up the job description (which'd be sent to cluster) | || next time just edit that file|
 | only export data every 10 cycle (reduce data size) |x |||
 | issue: high states -> lower periods -> maybe due to inefficient learning (not quite equilibrium). so if reduce states -> has to increase cycles. | || run the same combination of (cycle,states) w pd to see|
-| run across deltas, pies, states# | 17 jan | | not sure if it works, have to run systematically across pies to see if the code works (ie pies actually change)|
+| run across deltas, pies, states# | 17 jan | | |
 
  
 # Acknowledgment
