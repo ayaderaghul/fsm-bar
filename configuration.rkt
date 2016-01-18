@@ -28,7 +28,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 100000)
+(define CYCLES 200000)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA 1)
@@ -44,7 +44,7 @@
 (define GAMMAS (list 0.5 2 3 4))
 
 ;; POPULATION
-(define STATE# 30) ; generating automata w this number of states
+(define STATE# 40) ; generating automata w this number of states
 (define STATES# (list 10 30 40 50))
 
 ;; SCAN
