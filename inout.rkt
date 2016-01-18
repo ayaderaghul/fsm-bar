@@ -1,6 +1,7 @@
 #lang racket
 (provide (all-defined-out))
 (require "automata.rkt" "csv.rkt" 2htdp/batch-io plot/no-gui "configuration.rkt")
+(require (planet neil/csv:2:0))
 
 ;; IMPORT
 
@@ -8,31 +9,42 @@
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
   (lines coors))
 
-(define (load-data* csv-file)
-  (define a (read-csv-file csv-file))
+;;
+(define (load-strings csv-file)
+  (csv->list (open-input-file csv-file)))
+
+(define (load-data csv-file)
+  (define a (load-strings csv-file))
   (define b (map first a))
   (map string->number b))
+;;
+(define make-automaton-csv-reader
+  (make-csv-reader-maker
+   '((separator-chars #\,)
+     (strip-leading-whitespace? . #t)
+     (strip-trailing-whitespace? . #t))))
+(define (all-rows file make-reader)
+  (define next-row
+    (make-reader (open-input-file file)))
+  (define (loop)
+    (define row (next-row))
+    (if (empty? row) '()
+        (cons row (loop))))
+  (loop))
 
-(define (load-data2 csv-file)
-  (read-csv-file/rows csv-file (lambda (x) (apply string->number x))))
-
+(define (at-row n file make-reader)
+  (define next-row (make-reader (open-input-file file)))
+  (define (at x)
+    (define row (next-row))
+    (if (zero? x) row (at (- x 1))))
+  (at n))
 
 (define (plot-mean csv-file title pic-name)
-  (define c (load-data* csv-file))
+  (define c (load-data csv-file))
   (define d (simulation->lines c))
   (define max-pay (* 5 ROUNDS DELTA))
   (define ceiling (function (lambda (x) max-pay) #:color "blue"))
-  (plot-file (list d ceiling) pic-name 'png #:width 1200 #:y-max (+ 10 max-pay) #:title title))   
-
-(define (load-data csv-file)
-  [define strings (read-csv-file csv-file)]
-  [define l (length strings)]
-  [define-values (data)
-    (for/fold ([data '()])
-              ([i (in-range l)])
-      [define datum (apply string->number (list-ref strings i))]
-      (values (cons datum data)))]
-  (reverse data))
+  (plot-file (list d ceiling) pic-name 'png #:width 1200 #:y-max (+ 10 max-pay) #:title title))
 
 ;; load dynamics
 (define (pack-coors a-list)
@@ -61,5 +73,3 @@
 (define (out-rank filename day data)
   (out-data filename (append (list (list day)
                                  (map list data)))))
-
-

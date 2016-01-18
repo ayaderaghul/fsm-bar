@@ -78,7 +78,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 | only export data every 10 cycle (reduce data size) |x |||
 | issue: high states -> lower periods -> maybe due to inefficient learning (not quite equilibrium). so if reduce states -> has to increase cycles. | || run the same combination of (cycle,states) w pd to see|
 | run across deltas, pies, states# | 17 jan | | |
-
+| investigate the automaton, but how? | |||
  
 # Acknowledgment
 
