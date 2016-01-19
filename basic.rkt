@@ -16,16 +16,26 @@
         #:y-min 0.0 #:y-max y-max #:title title
                 #:width 1200))
 
-(define (plot-as lst y-max title file-name)
-  (define h->l (pack-coors (map first lst)))
-  (define h->m (pack-coors (map second lst)))
-  (define h->h (pack-coors (map third lst)))
+(define (plot-x lst title file-name)
+  (define x->l (pack-coors (map first lst)))
+  (define x->m (pack-coors (map second lst)))
+  (define x->h (pack-coors (map third lst)))
+  (define y-max (apply max (flatten lst)))
   (plot-file (list
-              (lines h->l #:color 'brown)
-              (lines h->m #:color 'green)
-              (lines h->h #:color 'red)) file-name 'png
-             #:y-min 0.0 #:y-max y-max #:title title
+              (lines x->l #:color 'brown)
+              (lines x->m #:color 'green)
+              (lines x->h #:color 'red)) file-name 'png
+             #:y-min 0.0 #:y-max (+ 10 y-max) #:title title
              #:width 1200))
+
+(define (plot-xxx lst pre-name)
+(define l (map first lst))
+(define m (map second lst))
+(define h (map third lst))
+(plot-x l "l->" (string-append pre-name "l"))
+(plot-x m "m->" (string-append pre-name "m"))
+(plot-x h "h->" (string-append pre-name "h"))
+)
 
 ;; to calculate the compound rate of payoff
 (define (compound d r) (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
@@ -43,7 +53,7 @@
   (string-append prefix (delta->string delta)))
 
 ;; ACROSS DELTAS: DISCOUNT FACTOR
-(define (run)
+(define (main)
   (collect-garbage)
   (collect-garbage)
   (collect-garbage)
@@ -55,13 +65,13 @@
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
   (define ps (map first datas))
-  (define as0 (map second datas))
-  (define as5 (map third datas))
-  (define max-as0 (apply max (flatten as0)))
-  (define max-as5 (apply max (flatten as5)))
+  (define r0 (map second datas))
+  (define r5 (map third datas))
+  (plot-xxx r0 res0-name)
+  (plot-xxx r5 res5-name)
   (plot-payoffs ps DELTA pic-name PIC)
-  (plot-as as0 (+ 10 max-as0) "responses to h - 0th order" res0-name)
-  (plot-as as5 (+ 10 max-as5) "responses to h - 5th order" res5-name)
+  ;;(plot-as as0 (+ 10 max-as0) "responses to h - 0th order" res0-name)
+  ;;(plot-as as5 (+ 10 max-as5) "responses to h - 5th order" res5-name)
   ;;(plot (simulation->lines as) #:width 1200)
   ;;(out-mean MEAN datas)
   )
@@ -79,27 +89,27 @@
          (define ranking-list (hash->list ranking))
          (define sample-auto
            (if (hash-empty? ranking) 0 (car (first ranking-list))))
-         (define a-rate-0
+         (define resp0
            (if (struct? sample-auto)
-               (third (core-responses-3 0 sample-auto))
-               (list 0 0 0)))
-         (define a-rate-5
-           (if (struct? sample-auto)
-               (third (core-responses-3 5 sample-auto))
-               (list 0 0 0)))
+               (core-responses-3 0 sample-auto)
+               (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
+         ;;(define resp5
+           ;;(if (struct? sample-auto)
+               ;;(core-responses-3 5 sample-auto)
+               ;;(list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
              ;;(out-rank rank-file cycles
              ;;          (hash->list (rank p3))))
          (define m (relative-average pp 1))
              ;;(out-mean mean-file (list m))
-         (cons (list m a-rate-0 a-rate-5)
+         (cons (list m resp0)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))
 
-(module+ rund
+`(module+ rund
   (run))
 
-(define (main)
+`(define (main)
   (for ([i (in-list DELTAS)])
     (collect-garbage)
     (collect-garbage)
