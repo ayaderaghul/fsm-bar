@@ -2,7 +2,6 @@
 
 (require "automata.rkt" "population.rkt" "scan.rkt" "inout.rkt" plot)
 (plot-new-window? #t)
-
 (provide main test1s test2s test3s plot-dynamics)
 
 ;; UTILITIES

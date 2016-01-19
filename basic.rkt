@@ -1,9 +1,7 @@
-;;#! /usr/bin/env racket -tm
 #lang racket
 
 (provide (all-defined-out))
-(require "configuration.rkt" "automata.rkt" "population.rkt"
-         "scan.rkt" "inout.rkt" plot/no-gui)
+(require "configuration.rkt" "automata.rkt" "population.rkt" "scan.rkt" "inout.rkt" plot/no-gui)
 
 ;; UTILITIES
 (define (configuration-string delta method)

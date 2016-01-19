@@ -1,8 +1,7 @@
 #lang racket
-(require "configuration.rkt") 
-(require "cake.rkt")
-(provide (all-defined-out))
 
+(require "configuration.rkt")
+(provide (all-defined-out))
 
 ;; AUTOMATON
 ;; an automaton has 4 parts:
@@ -186,6 +185,17 @@
 ;; it responds to h by 3 l
 
 ;; investigate only n-order decision tree
+
+;; CAKE
+(define (show str n char)
+  (printf str (make-string n char))
+  (newline))
+(define (make-histogram l m h)
+  (show "L: ~a" l #\|)
+  (show "M: ~a" m #\|)
+  (show "H: ~a" h #\|)
+  (show "~a" 10 #\-))
+
 
 (define (core-responses n auto)
   (match-define (automaton c0 i0 p0 table0) auto)

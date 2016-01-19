@@ -23,12 +23,13 @@
 (define lab1 "/Users/linhchi.nguyen/Dropbox/fsm-bar/grand/deltas/d/run3/")
 (define disa "C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/grand/deltas/c/run1/")
 (define home "./run/")
+(define c "")
 
-(define MEAN (string-append home "mean"))
-(define RANK (string-append home "rank"))
-(define PIC (string-append home "meanplot"))
-(define RES0 (string-append home "response0"))
-(define RES5 (string-append home "response5"))
+(define MEAN (string-append c "mean"))
+(define RANK (string-append c "rank"))
+(define PIC (string-append c "meanplot"))
+(define RES0 (string-append c "response0"))
+(define RES5 (string-append c "response5"))
 
 
 ;; change the simulation settings here
