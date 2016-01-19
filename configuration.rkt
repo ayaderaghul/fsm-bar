@@ -11,7 +11,7 @@
 ;; the strategy to be played at that state
 ;; and 3 dispatching rules: given that the opponent plays L M H, which state to jump to?
 
-(define GAMMA 3) ; GAMMA < 5
+(define PIE 3) ; pie < 5
 
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
@@ -34,7 +34,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 8000)
+(define CYCLES 100)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA .99)
@@ -47,7 +47,7 @@
 (define DELTAS (list 1 .95 .9 .85 0))
 
 ;; PIES
-(define GAMMAS (list 0.5 2 3 4))
+(define PIES (list 0.5 2 3 4))
 
 ;; POPULATION
 (define STATE# 40) ; generating automata w this number of states

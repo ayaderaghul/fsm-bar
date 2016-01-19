@@ -48,7 +48,7 @@
                            (state MEDIUM (vector 1 3 0)))))
 
 ;; PAIR MATCH
-(define (interact-d auto1 auto2 rounds-per-match delta gamma)
+(define (interact-d auto1 auto2 rounds-per-match delta pie)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
   (define-values (new1 p1 new2 p2 round-results)
@@ -58,7 +58,7 @@
               ([_ (in-range rounds-per-match)])
       (match-define (state a1 v1) (vector-ref table1 current1))
       (match-define (state a2 v2) (vector-ref table2 current2))
-      (match-define (cons p1 p2) (payoff a1 a2 gamma))
+      (match-define (cons p1 p2) (payoff a1 a2 pie))
       (define n1 (vector-ref v1 a2))
       (define n2 (vector-ref v2 a1))
       (define round-result (list p1 p2))
@@ -70,7 +70,7 @@
           (automaton new2 c2 p2 table2)))
 
 
-(define (interact-c auto1 auto2 rounds-per-match delta gamma)
+(define (interact-c auto1 auto2 rounds-per-match delta pie)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
   (define-values (new1 p1 new2 p2 round-results)
@@ -81,7 +81,7 @@
       #:final (> (random) delta)
       (match-define (state a1 v1) (vector-ref table1 current1))
       (match-define (state a2 v2) (vector-ref table2 current2))
-      (match-define (cons p1 p2) (payoff a1 a2 gamma))
+      (match-define (cons p1 p2) (payoff a1 a2 pie))
       (define n1 (vector-ref v1 a2))
       (define n2 (vector-ref v2 a1))
       (define round-result (list p1 p2))
@@ -92,7 +92,7 @@
           (automaton new1 c1 p1 table1)
           (automaton new2 c2 p2 table2)))
 
-(define (interact auto1 auto2 rounds-per-match delta gamma)
+(define (interact auto1 auto2 rounds-per-match delta pie)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
   (define-values (new1 p1 new2 p2 round-results state-results)
@@ -102,7 +102,7 @@
               ([_ (in-range rounds-per-match)])
       (match-define (state a1 v1) (vector-ref table1 current1))
       (match-define (state a2 v2) (vector-ref table2 current2))
-      (match-define (cons p1 p2) (payoff a1 a2 gamma))
+      (match-define (cons p1 p2) (payoff a1 a2 pie))
       (define n1 (vector-ref v1 a2))
       (define n2 (vector-ref v2 a1))
       (define round-result (list p1 p2))
@@ -113,13 +113,13 @@
               (cons state-result state-results))))
   (values (reverse round-results) (reverse state-results)))
 
-(define (payoff-table gamma)
-  (vector (vector (cons gamma gamma) (cons gamma 5) (cons gamma (- 10 gamma)))
-          (vector (cons 5 gamma) (cons 5 5) (cons 0 0))
-          (vector (cons (- 10 gamma) gamma) (cons 0 0) (cons 0 0))))
+(define (payoff-table pie)
+  (vector (vector (cons pie pie) (cons pie 5) (cons pie (- 10 pie)))
+          (vector (cons 5 pie) (cons 5 5) (cons 0 0))
+          (vector (cons (- 10 pie) pie) (cons 0 0) (cons 0 0))))
 
-(define (payoff current1 current2 gamma)
-  (define payoffs (payoff-table gamma))
+(define (payoff current1 current2 pie)
+  (define payoffs (payoff-table pie))
   (vector-ref (vector-ref payoffs current1) current2))
 ;; INVESTIGATE AUTOMATON
 ;; decision tree
@@ -187,14 +187,14 @@
 ;; investigate only n-order decision tree
 
 ;; CAKE
-(define (show str n char)
+(define (print-char str n char)
   (printf str (make-string n char))
   (newline))
 (define (make-histogram l m h)
-  (show "L: ~a" l #\|)
-  (show "M: ~a" m #\|)
-  (show "H: ~a" h #\|)
-  (show "~a" 10 #\-))
+  (print-char "L: ~a" l #\|)
+  (print-char "M: ~a" m #\|)
+  (print-char "H: ~a" h #\|)
+  (print-char "~a" 10 #\-))
 
 
 (define (core-responses n auto)
