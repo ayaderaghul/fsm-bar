@@ -37,17 +37,18 @@
   (collect-garbage)
   (define pic-name (configuration-string DELTA "discount factor"))
 (define rank-name (generate-file-name RANK DELTA))
+(define mean-name (generate-file-name MEAN DELTA))
   (define datas
-    (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA GAMMA MUTATION rank-name)))
+    (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA GAMMA MUTATION mean-name rank-name)))
   ;;(define ps (map first datas))
   ;;(define as (map second datas))
   ;;(define max-a (apply max as))
   (plot-payoffs datas DELTA pic-name PIC)
   ;;(plot (simulation->lines as) #:width 1200)
-  (out-mean MEAN datas)
+  ;;(out-mean MEAN datas)
   )
 
-(define (evolve population cycles speed rounds-per-match delta gamma mutation rank-file)
+(define (evolve population cycles speed rounds-per-match delta gamma mutation mean-file rank-file)
   (cond
    [(zero? cycles) '()]
    [else (define p2 (match-up-d population rounds-per-match delta gamma))
@@ -60,10 +61,12 @@
               ;;(define a-rate (accommodating sample-auto))
               (out-rank rank-file cycles
                         (hash->list (rank p3))))
-         (cons (relative-average pp 1)
+(define m (relative-average pp 1))
+(out-mean mean-file (list m))
+         (cons m
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
-               (evolve p3 (- cycles 1) speed rounds-per-match delta gamma mutation rank-file))]))
+               (evolve p3 (- cycles 1) speed rounds-per-match delta gamma mutation mean-file rank-file))]))
 
 (module+ rund
   (run))

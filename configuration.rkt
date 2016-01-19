@@ -28,10 +28,10 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 200000)
+(define CYCLES 100)
 (define SPEED 15)
 (define ROUNDS 100)
-(define DELTA 1)
+(define DELTA .99)
 (define MUTATION 1)
 
 (define DATA-POINT 100) ; collect data every x cycles
