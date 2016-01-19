@@ -4,7 +4,7 @@ folder=results_${PBS_JOBID}
 mkdir /tmp/$folder
 cd /tmp/$folder
 
-/usr/local/racket-6.3/bin/racket -tm /home/linhchi.nguyen/trial.rkt
+/usr/local/racket-6.3/bin/racket -tm /home/linhchi.nguyen/basic.rkt
 
 cd /tmp
 smbclient //eco-files.unitn.it/utenti -U 'linhchi.nguyen%password' -c "prompt; recurse; cd linhchi.nguyen; mput $folder"
