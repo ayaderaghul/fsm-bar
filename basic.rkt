@@ -64,6 +64,7 @@
   (define res5-name (generate-file-name RES5 DELTA))
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
+  (out-mean MEAN datas)
   (define ps (map first datas))
   (define r0 (map second datas))
   (define r5 (map third datas))
@@ -73,7 +74,7 @@
   ;;(plot-as as0 (+ 10 max-as0) "responses to h - 0th order" res0-name)
   ;;(plot-as as5 (+ 10 max-as5) "responses to h - 5th order" res5-name)
   ;;(plot (simulation->lines as) #:width 1200)
-  ;;(out-mean MEAN datas)
+  ;;
   )
 
 (define (evolve population cycles speed rounds-per-match delta pie mutation mean-file rank-file)
@@ -93,15 +94,15 @@
            (if (struct? sample-auto)
                (core-responses-3 0 sample-auto)
                (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
-         ;;(define resp5
-           ;;(if (struct? sample-auto)
-               ;;(core-responses-3 5 sample-auto)
-               ;;(list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
+         (define resp5
+           (if (struct? sample-auto)
+               (core-responses-3 5 sample-auto)
+               (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
              ;;(out-rank rank-file cycles
              ;;          (hash->list (rank p3))))
          (define m (relative-average pp 1))
              ;;(out-mean mean-file (list m))
-         (cons (list m resp0)
+         (cons (list m resp0 resp5)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))
