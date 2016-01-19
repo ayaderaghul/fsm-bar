@@ -15,6 +15,8 @@
 
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
+(define NTH-TREE 2) ;; nth order decision tree of an automaton
+
 ;; BASIC RUN
 ;; change the directory of output file here
 
@@ -25,10 +27,13 @@
 (define MEAN (string-append home "mean"))
 (define RANK (string-append home "rank"))
 (define PIC (string-append home "meanplot"))
+(define RES0 (string-append home "response0"))
+(define RES5 (string-append home "response5"))
+
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 100)
+(define CYCLES 8000)
 (define SPEED 15)
 (define ROUNDS 100)
 (define DELTA .99)

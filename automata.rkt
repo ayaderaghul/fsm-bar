@@ -1,5 +1,6 @@
 #lang racket
-(require "configuration.rkt")
+(require "configuration.rkt") 
+(require "cake.rkt")
 (provide (all-defined-out))
 
 
@@ -196,7 +197,6 @@
   (define (respond lst) (responses-h lst states))
   (map respond tree))
 
-(require "cake.rkt")
 (define (core-responses-2 n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
@@ -207,11 +207,13 @@
 (map (lambda (x) (apply make-histogram x)) distribution)
 )
 
-(define (accommodating auto)
-  (cond [(struct? auto)
-         (first (third (core-responses-2 2 auto)))] [else 0]))
-
-
+(define (core-responses-3 n auto)
+  (match-define (automaton c0 i0 p0 table0) auto)
+  (define states (vector->list table0))
+  (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
+  (define (state#->state _) (list-ref states _))
+  (define tree (map state#->state tree#))
+  (responses-h tree states))
 
 
 
