@@ -209,6 +209,9 @@
   (define (respond lst) (responses* lst states))
   (map respond tree))
 (define (acc-responses-2 auto)
+(define resp (acc-responses 2 auto))
+(fourth resp))
+(define (acc-responses-3 auto)
   (define resp (acc-responses 2 auto))
   (make-histograms (fourth resp)))
 

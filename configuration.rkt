@@ -28,9 +28,7 @@
 (define MEAN (string-append c "mean"))
 (define RANK (string-append c "rank"))
 (define PIC (string-append c "meanplot"))
-(define RES0 (string-append c "response0"))
-(define RES5 (string-append c "response5"))
-
+(define RES (string-append c "respons"))
 
 ;; change the simulation settings here
 (define N 100)
