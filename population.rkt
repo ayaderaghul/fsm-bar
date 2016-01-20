@@ -39,17 +39,12 @@
 
 (define (regenerate population0 rate #:random (q #false))
   (match-define (cons a* b*) population0)
-  (define probabilities (payoff->probabilities a*))
+  (define probabilities (payoff->fitness a*))
   [define substitutes   (choose-randomly probabilities rate #:random q)]
   (for ([i (in-range rate)][p (in-list substitutes)])
     (vector-set! a* i (clone (vector-ref b* p))))
   (shuffle-vector a* b*))
 
-(define (mutate* population0 mutation)
-  (define r (random 10))
-  (cond [(= r 8) (mutate-n population0 mutation)]
-        [(= r 9) (cross-over population0 mutation)]
-        [else (mutate-c population0 mutation)]))
 
 (define (mutate-c population0 mutation)
   (define p1 (car population0))
@@ -58,13 +53,19 @@
     (define mutated (mutate (vector-ref p1 r)))
     (vector-set! p1 r mutated)))
 
+;; other way of mutation, very fluctuating
+#|
+(define (mutate* population0 mutation)
+  (define r (random 10))
+  (cond [(= r 8) (mutate-n population0 mutation)]
+        [(= r 9) (cross-over population0 mutation)]
+        [else (mutate-c population0 mutation)]))
 (define (mutate-n population0 mutation)
   (define p1 (car population0))
   (for ([i mutation])
     (define r (random (vector-length p1)))
     (define mutated (make-random-automaton STATE#))
     (vector-set! p1 r mutated)))
-
 (define (cross-over population0 mutation)
   (define p1 (car population0))
   (define l (vector-length p1))
@@ -87,13 +88,15 @@
              (vector-set! p1 r1 (automaton c1 i1 pay1 m1))
              (vector-set! p1 r2 (automaton c2 i2 pay2 m2)))]
           [else (mutate* population0 1)])))
+|#
 
-(define (payoff->probabilities a*)
+
+;; UTILITIES
+(define (payoff->fitness a*)
   (define payoffs (for/list ([x (in-vector a*)]) (automaton-payoff x)))
   (define total   (sum payoffs))
   (for/list ([p (in-list payoffs)]) (/ p total)))
 
-;; UTILITIES
 (define (shuffle-vector b a)
   ;; copy b into a
   (for ([x (in-vector b)][i (in-naturals)])
@@ -107,21 +110,20 @@
 
 (define (sum l)
   (apply + l))
-
 (define (relative-average l w) ; weighted mean
   (exact->inexact
    (/ (sum l)
       w (length l))))
 
 (define (choose-randomly probabilities speed #:random (q #false))
-  (define %s (accumulated-%s probabilities))
+  (define %s (accumulate probabilities))
   (for/list ([n (in-range speed)])
     [define r (or q (random))]
     ;; population is non-empty so there will be some i such that ...
     (for/last ([p (in-naturals)] [% (in-list %s)] #:final (< r %)) p)))
 
-(define (accumulated-%s probabilities)
-  (let relative->absolute ([payoffs probabilities][so-far #i0.0])
+(define (accumulate lst)
+  (let relative->absolute ([payoffs lst][so-far #i0.0])
     (cond
       [(empty? payoffs) '()]
       [else (define nxt (+ so-far (first payoffs)))

@@ -121,6 +121,7 @@
 (define (payoff current1 current2 pie)
   (define payoffs (payoff-table pie))
   (vector-ref (vector-ref payoffs current1) current2))
+
 ;; INVESTIGATE AUTOMATON
 ;; decision tree
 ;; 0 order decision tree: what (3) states does the initial state tell you to jump to
@@ -165,9 +166,9 @@
 (define (responses auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
-  (responses-h states states))
+  (responses* states states))
 
-(define (responses-h states table)
+(define (responses* states table)
   (define dispatches (map state-dispatch states))
   (define l->states# (map vector-first dispatches))
   (define m->states# (map vector-second dispatches))
@@ -185,27 +186,31 @@
 ;; it responds to h by 3 l
 
 ;; investigate only n-order decision tree
-
 ;; CAKE
 (define (print-char str n char)
   (printf str (make-string n char))
   (newline))
-(define (make-histogram l m h)
+(define (make-histogram lst)
+  (match-define (list l m h) lst)
   (print-char "L: ~a" l #\|)
   (print-char "M: ~a" m #\|)
   (print-char "H: ~a" h #\|)
   (print-char "~a" 10 #\-))
+(define (make-histograms lst)
+  (map make-histogram lst))
 
-
-(define (core-responses n auto)
+(define (acc-responses n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
   (define tree# (nth-decision-tree n auto))
   (define (state#->state _) (list-ref states _))
   (define (states#->states lst) (map state#->state lst))
   (define tree (map states#->states tree#))
-  (define (respond lst) (responses-h lst states))
+  (define (respond lst) (responses* lst states))
   (map respond tree))
+(define (acc-responses-2 auto)
+  (define resp (acc-responses 2 auto))
+  (make-histograms (fourth resp)))
 
 (define (core-responses-2 n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
@@ -213,18 +218,17 @@
   (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
   (define (state#->state _) (list-ref states _))
   (define tree (map state#->state tree#))
-  (define distribution (responses-h tree states))
-(map (lambda (x) (apply make-histogram x)) distribution)
+  (define distribution (responses* tree states))
+  (map make-histogram distribution)
 )
 
-(define (core-responses-3 n auto)
+(define (core-responses n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
   (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
   (define (state#->state _) (list-ref states _))
   (define tree (map state#->state tree#))
-  (responses-h tree states))
-
+  (responses* tree states))
 
 
 ;; (IMMUTABLE) MUTATION
@@ -266,6 +270,10 @@
     [(zero? r) (immutable-set a 0 (random s))]
     [(= 1 (modulo r STATE-LENGTH)) (immutable-set a r (random ACTIONS#))]
     [else (immutable-set a r (random s))])))
+
+
+
+
 
 ;; EXPORT MATHA CODE OF THE AUTOMATON
 (define (generate-state-code table)

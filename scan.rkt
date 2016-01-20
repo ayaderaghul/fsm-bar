@@ -1,5 +1,5 @@
 #lang racket
-(require "configuration.rkt" "automata.rkt" "csv.rkt" 2htdp/batch-io)
+(require "configuration.rkt" "automata.rkt")
 (provide rank rank* scan scan*)
 
 ;; SCAN
