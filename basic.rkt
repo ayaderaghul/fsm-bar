@@ -49,7 +49,7 @@
                        (hash->list (rank p3))))
          (define m (relative-average pp 1))
          (out-mean mean-file (list m resp))
-         (cons (list m resp0 resp5)
+         (cons (list m resp)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))
