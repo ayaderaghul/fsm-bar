@@ -19,12 +19,8 @@
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
   (define ps (map first datas))
   (define rs (map second datas))
-  ;(define r5 (map third datas))
   (plot-distributions rs res-name)
-  ;(plot-xxx r5 res5-name)
   (plot-payoffs ps DELTA pic-title PIC)
-  ;;(plot-as as0 (+ 10 max-as0) "responses to h - 0th order" res0-name)
-  ;;(plot-as as5 (+ 10 max-as5) "responses to h - 5th order" res5-name)
   )
 
 (module+ main (run-d))
@@ -44,11 +40,11 @@
            (if (struct? sample-auto)
                (acc-responses-2 sample-auto)
                (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
-         (when (zero? (modulo cycles DATA-POINT))
-              (out-rank rank-file cycles
-                       (hash->list (rank p3))))
+         ;(when (zero? (modulo cycles DATA-POINT))
+         ;     (out-rank rank-file cycles
+         ;              (hash->list (rank p3))))
          (define m (relative-average pp 1))
-         (out-mean mean-file (list m resp))
+         ;(out-mean mean-file (list m resp))
          (cons (list m resp)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
