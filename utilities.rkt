@@ -33,7 +33,7 @@
 (define (plot-payoffs lst delta title file-name) ;; payoff series w ceiling - discount method
 (define m-pay (* 5 (compound delta ROUNDS)))
 (define ceiling (function (lambda (x) m-pay) #:color "blue"))
-  (plot-file (list (series->lines lst) ceiling) file-name 'png
+  (plot-file (list (series->lines lst) ceiling) (string-append file-name ".png") 'png
         #:y-min 0.0 #:y-max (+ 10 m-pay) #:title title
                 #:width 1200))
 
