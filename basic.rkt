@@ -14,13 +14,13 @@
   (define pic-title (print-delta DELTA "discount factor"))
   (define rank-name (generate-file-name RANK DELTA))
   (define mean-name (generate-file-name MEAN DELTA))
-  (define res-name (generate-file-name RES DELTA))
+  ;(define res-name (generate-file-name RES DELTA))
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
-  (define ps (map first datas))
-  (define rs (map second datas))
-  (plot-distributions rs res-name)
-  (plot-payoffs ps DELTA pic-title PIC)
+  ;(define ps (map first datas))
+  ;(define rs (map second datas))
+  ;(plot-distributions rs res-name)
+  (plot-payoffs datas DELTA pic-title PIC)
   )
 
 (module+ main (run-d))
@@ -34,18 +34,18 @@
          (mutate-c p3 mutation)
          (define ranking (rank* p3))
          (define ranking-list (hash->list ranking))
-         (define sample-auto
-           (if (hash-empty? ranking) 0 (car (first ranking-list))))
-         (define resp
-           (if (struct? sample-auto)
-               (acc-responses-2 sample-auto)
-               (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
-         ;(when (zero? (modulo cycles DATA-POINT))
-         ;     (out-rank rank-file cycles
-         ;              (hash->list (rank p3))))
+         ;(define sample-auto
+         ;  (if (hash-empty? ranking) 0 (car (first ranking-list))))
+         ;(define resp
+         ;  (if (struct? sample-auto)
+         ;      (acc-responses-2 sample-auto)
+         ;      (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
+         (when (zero? (modulo cycles DATA-POINT))
+              (out-rank rank-file cycles
+                       (hash->list (rank p3))))
          (define m (relative-average pp 1))
-         ;(out-mean mean-file (list m resp))
-         (cons (list m resp)
+         (out-mean mean-file (list m))
+         (cons m
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))
