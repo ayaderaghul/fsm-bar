@@ -16,7 +16,7 @@
   (define (states*) (build-vector states# make-state))
   (define (make-state _) (state (random ACTIONS#) (transitions))) ; the action in each state is set randomly
   (define (transitions) (build-vector ACTIONS# make-transition))
-  (define (make-transition _) (random states#)) ; the ending trajectories are set randomly
+  (define (make-transition _) (random (round (/ states# 3)))) ; the ending trajectories are set randomly, initially, it's set toward a smaller set of states
   (automaton initial-current initial-current 0 (states*)))
 
 (define (clone a)

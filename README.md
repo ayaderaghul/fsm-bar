@@ -81,6 +81,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 | investigate the automaton, but how? | || eh, plot some picture on accommodating index|
 | the code is very messy now... (out mean each cycle, plot AI, add dir so that it can run on cluster | |||
 | attempt to refactor the code so it looks like organised modules | 20 jan |||
+| maybe initially, i should set only a smaller set of states to be connected | |||
  
 # Acknowledgment
 
