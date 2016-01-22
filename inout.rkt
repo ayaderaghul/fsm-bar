@@ -13,10 +13,11 @@
   (define a (load-string csv-file))
   (define b (map first a))
   (map string->number b))
+
 (define (plot-mean csv-file title pic-name)
   (define c (load-data csv-file))
   (define d (series->lines c))
-  (define max-pay (* 5 ROUNDS DELTA))
+  (define max-pay (* 5 (compound DELTA ROUNDS)))
   (define ceiling (function (lambda (x) max-pay) #:color "blue"))
   (plot-file (list d ceiling) pic-name 'png #:width 1200 #:y-max (+ 10 max-pay) #:title title))
 

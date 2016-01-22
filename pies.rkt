@@ -17,7 +17,7 @@
     (define rank-name (generate-file-name RANK i))    
     (define datas (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA i MUTATION mean-name rank-name)))
     ;(define ps (map first datas))
-    (plot-payoffs datas i pic-title pic-name)
+    (plot-payoffs datas DELTA pic-title pic-name)
     ))
 
 (module+ main (pies))
