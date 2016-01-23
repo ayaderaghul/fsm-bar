@@ -83,6 +83,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 | attempt to refactor the code so it looks like organised modules | 20 jan |||
 | maybe initially, i should set only a smaller set of states to be connected | |||
 | test to see if you change the script, it messes up the simulation on cluster, because it shouldnt, the script should be loaded for one time at the begining the of the job |x || no it doesnt, the last time it happens bc YOU forget to modify the variables|
+| what about the kind of learning speed in the probability sense that everybody has chance to learn | || ignore?|
  
 # Acknowledgment
 
