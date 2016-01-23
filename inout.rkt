@@ -100,18 +100,26 @@
    (recover (map string->number (string-split z)))
    (string->number t)))
 
-(define (resurrect lst)
+(define (resurrect pre lst)
 (define resurrected (map convert lst))
 (define l (length resurrected))
-(define names (generate-ax (build-list l values)))
+(define names (generate-ax pre (build-list l values)))
 (for ([i (in-list names)]
 [j (in-list resurrected)])
-(eval (list 'define i (car j)))))
+(eval (list 'define i (car j))))
+(map cdr resurrected))
 
-(define (resurrect-at cycle file)
+(define (resurrect-at cycle pre file make-reader)
+(define posn (cycle->posn cycle))
+(define data (at-row (+ posn 1) file make-reader))
+(resurrect pre data))
+
+(define (resurrect-at* pre cycle file)
 (define posn (cycle->posn cycle))
 (define data (at-row (+ posn 1) file make-automaton-csv-reader))
-(resurrect data))
+(resurrect pre data))
+
+
 
 `(define (top t population)
   (let* ([flattened (map car (rank population))]
@@ -123,10 +131,10 @@
              (list-ref automaton i))))))
 
 ;; name the resurrected automata
-(define (x->ax x)
-  (string->symbol (string-append "a" (number->string x))))
-(define (generate-ax a-list)
-  (map x->ax a-list))
+(define (x->ax pre x)
+  (string->symbol (string-append pre (number->string x))))
+(define (generate-ax pre a-list)
+  (map (lambda (x) (x->ax pre x)) a-list))
 
 ;; EXPORT DATA
 ;; if needed, map list data..
