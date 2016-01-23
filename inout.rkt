@@ -19,7 +19,7 @@
   (define d (series->lines c))
   (define max-pay (* 5 (compound DELTA ROUNDS)))
   (define ceiling (function (lambda (x) max-pay) #:color "blue"))
-  (plot-file (list d ceiling) pic-name 'png #:width 1200 #:y-max (+ 10 max-pay) #:title title))
+  (plot-file (list d ceiling) pic-name 'png #:width 1200 #:y-min 0.0 #:y-max (+ 10 max-pay) #:title title))
 
 ;; PLOT DYNAMICS FROM EXPORTED DATA
 
@@ -38,10 +38,7 @@
 
 
 ;; IMPORT AUTOMATA
-;; converting automaton back from data is very slow
-;; let's calculate what you need in the process then
-;; export only numeric data
-#|
+
 (define make-automaton-csv-reader
   (make-csv-reader-maker
    '((separator-chars #\,)
@@ -63,6 +60,11 @@
   (at n))
 (define (posn->cycle p)
   (* DATA-POINT (/ p 2)))
+(define (cycle->posn c)
+  (* 2 (/ c DATA-POINT)))
+
+;; convert the whole file at once, this shouldnt be necessary
+#|
 (define (take-odd lst)
   (define l (length lst))
   (filter-not false?
@@ -86,6 +88,8 @@
              0]
             [else (map convert j)]))
     (cons result results)))
+|#
+
 (define (convert x)
   (define y (string-split x " . "))
   (define (trim-bracket a)
@@ -95,8 +99,34 @@
   (cons
    (recover (map string->number (string-split z)))
    (string->number t)))
-|#
 
+(define (resurrect lst)
+(define resurrected (map convert lst))
+(define l (length resurrected))
+(define names (generate-ax (build-list l values)))
+(for ([i (in-list names)]
+[j (in-list resurrected)])
+(eval (list 'define i (car j)))))
+
+(define (resurrect-at cycle file)
+(define posn (cycle->posn cycle))
+(define data (at-row (+ posn 1) file make-automaton-csv-reader))
+(resurrect data))
+
+`(define (top t population)
+  (let* ([flattened (map car (rank population))]
+         [automaton (map (lambda (au)
+                           (apply automaton au)) (take flattened t))])
+    (for/list ([i t])
+      (eval
+       (list 'define (x->ax i)
+             (list-ref automaton i))))))
+
+;; name the resurrected automata
+(define (x->ax x)
+  (string->symbol (string-append "a" (number->string x))))
+(define (generate-ax a-list)
+  (map x->ax a-list))
 
 ;; EXPORT DATA
 ;; if needed, map list data..

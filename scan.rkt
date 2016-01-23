@@ -78,18 +78,4 @@
      (hash-ref* ranking (list 0 1 0 0 0))
      (hash-ref* ranking (list 1 0 2 1 0 1 2 1 0 2 2 1 0)))))
 
-;; NEED FIXING (USING RANK*)
-(define (top t population)
-  (let* ([flattened (map car (rank population))]
-         [automaton (map (lambda (au)
-                           (apply automaton au)) (take flattened t))])
-    (for/list ([i t])
-      (eval
-       (list 'define (x->ax i)
-             (list-ref automaton i))))))
 
-(define (x->ax x)
-  (string->symbol (string-append "a" (number->string x))))
-
-(define (generate-ax a-list)
-  (map x->ax a-list))
