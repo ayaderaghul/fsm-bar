@@ -323,13 +323,15 @@
     ", "
     #:before-first "{"
     #:after-last "}")))
+
 (define (generate-auto auto name)
   (match-define (automaton c i p table) auto)
-  (string-join
-   (vector->list (vector-map generate-state table))
-   ", "
-   #:before-first (string-append name " = {")
-   #:after-last "}\n"))
+  (string-append name " = {" (number->string c) ", "   
+    (string-join
+     (vector->list (vector-map generate-state table))
+     ", "
+     #:before-first "{"
+     #:after-last "}}\n")))
 
 (define (export-mathas a-list name)
   (with-output-to-file AUTO-CODE

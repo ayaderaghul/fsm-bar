@@ -1,3 +1,14 @@
-a0 = {{"H", {0, 2, 0}}, {"L", {1, 2, 0}}, {"L", {2, 2, 2}}, {"L", {2, 2, 0}}, {"L", {1, 2, 0}}, {"H", {1, 0, 0}}, {"M", {2, 0, 0}}, {"L", {2, 2, 2}}, {"L", {1, 0, 1}}, {"M", {1, 0, 1}}}
-
-a1 = {{"H", {1, 1, 0}}, {"M", {0, 0, 0}}, {"L", {1, 0, 0}}, {"L", {1, 0, 1}}, {"M", {1, 0, 0}}, {"M", {0, 0, 0}}, {"L", {1, 0, 0}}}
+SetDirectory[NotebookDirectory[]];
+   VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];
+b0Graph =
+   Graph[{-1 -> 1 ,
+Labeled[0 -> 1, "L,M,H"], Labeled[1 -> 1, "L"], Labeled[1 -> 0, "M,H"], Labeled[2 -> 0, "L,M"], Labeled[2 -> 1, "H"], Labeled[3 -> 0, "L"], Labeled[3 -> 1, "M,H"], Labeled[4 -> 0, "L,M"], Labeled[4 -> 1, "H"], Labeled[5 -> 0, "L"], Labeled[5 -> 1, "M,H"], Labeled[6 -> 1, "L,M"], Labeled[6 -> 0, "H"]     },
+   EdgeShapeFunction -> 
+    GraphElementData["EdgeShapeFunction", "FilledArrow"],
+   VertexStyle -> LightGray,
+   VertexShapeFunction -> VertexCircle,
+   VertexLabels -> {0 -> Placed["L", Center], 1 -> Placed["M", Center], 2 -> Placed["L", Center], 3 -> Placed["L", Center], 4 -> Placed["M", Center], 5 -> Placed["H", Center], 6 -> Placed["H", Center]}
+   ];
+S = Show[b0Graph]
+(*Export["b0.png",S]*)
+ 
