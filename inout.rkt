@@ -119,22 +119,17 @@
 (define data (at-row (+ posn 1) file make-automaton-csv-reader))
 (resurrect pre data))
 
-
-
-`(define (top t population)
-  (let* ([flattened (map car (rank population))]
-         [automaton (map (lambda (au)
-                           (apply automaton au)) (take flattened t))])
-    (for/list ([i t])
-      (eval
-       (list 'define (x->ax i)
-             (list-ref automaton i))))))
-
 ;; name the resurrected automata
 (define (x->ax pre x)
   (string->symbol (string-append pre (number->string x))))
 (define (generate-ax pre a-list)
   (map (lambda (x) (x->ax pre x)) a-list))
+
+;; match the resurrected automata
+(define (contest lst delta pie)
+(for/list ([i (in-list lst)])
+(for/list ([j (in-list lst)])
+(interact-s i j 400 0 delta pie))))
 
 ;; EXPORT DATA
 ;; if needed, map list data..

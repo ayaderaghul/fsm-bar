@@ -134,7 +134,13 @@
               n2 (+ payoff2 (* (expt delta _) p2))
               (cons round-result round-results)
               )))
-  (values (cons p1 p2) (take (reverse round-results) rounds-print)))
+  (values (cons (round-payoff p1 2) (round-payoff p2 2)) ;(take (reverse round-results) rounds-print)
+))
+
+(define (round-payoff x n)
+(define factor (expt 10 n))
+(/ (round (* x factor))
+   factor))
 
 (define (payoff-table pie)
   (vector (vector (cons pie pie) (cons pie 5) (cons pie (- 10 pie)))
@@ -222,7 +228,7 @@
 (define (make-histograms lst)
   (map make-histogram lst))
 
-(define (acc-responses n auto)
+(define (response-tree n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
   (define tree# (nth-decision-tree n auto))
@@ -231,24 +237,24 @@
   (define tree (map states#->states tree#))
   (define (respond lst) (responses* lst states))
   (map respond tree))
-(define (acc-responses-2 auto)
-(define resp (acc-responses 2 auto))
+
+(define (response-tree-2 auto)
+(define resp (response-tree 2 auto))
 (fourth resp))
-(define (acc-responses-3 auto)
-  (define resp (acc-responses 2 auto))
+(define (plot-response-branch auto)
+  (define resp (response-tree 2 auto))
   (make-histograms (fourth resp)))
 
-(define (core-responses-2 n auto)
+(define (plot-response-states n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
   (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
   (define (state#->state _) (list-ref states _))
   (define tree (map state#->state tree#))
   (define distribution (responses* tree states))
-  (map make-histogram distribution)
-)
+  (map make-histogram distribution))
 
-(define (core-responses n auto)
+(define (response-states n auto)
   (match-define (automaton c0 i0 p0 table0) auto)
   (define states (vector->list table0))
   (define tree# (remove-duplicates (flatten (nth-decision-tree n auto))))
@@ -299,9 +305,48 @@
 
 
 
-
-
 ;; EXPORT MATHA CODE OF THE AUTOMATON
+(define (number->action x)
+  (cond ([zero? x] "\"L\"")
+        ([= 1 x] "\"M\"")
+        ([= 2 x] "\"H\"")))
+
+(define (generate-state a-state)
+  (match-define (state a d) a-state)
+  (string-append
+   (string-join
+    (list
+     (number->action a)
+     (string-join (map number->string (vector->list d)) ", "
+                  #:before-first "{"
+                  #:after-last "}"))
+    ", "
+    #:before-first "{"
+    #:after-last "}")))
+(define (generate-auto auto name)
+  (match-define (automaton c i p table) auto)
+  (string-join
+   (vector->list (vector-map generate-state table))
+   ", "
+   #:before-first (string-append name " = {")
+   #:after-last "}\n"))
+
+(define (export-mathas a-list name)
+  (with-output-to-file AUTO-CODE
+    (lambda () (printf (generate-autos a-list name)))
+    #:exists 'replace))
+
+(define (generate-autos a-list name)
+  (string-join
+   (for/list ([i (length a-list)]
+              [j (in-list a-list)])
+     (generate-auto j
+                    (string-append (symbol->string name) (number->string i))))
+   "\n"))
+
+
+
+;; EXPORT MATHA CODE OF THE AUTOMATON GRAPH
 (define (generate-state-code table)
   (define l (vector-length table))
   (define state-numbers (vector-map state-action table))
@@ -371,7 +416,7 @@
 (define (export-matha-code au name)
   (with-output-to-file AUTO-CODE
     (lambda () (printf (generate-matha-code au name)))
-    #:exists 'append))
+    #:exists 'replace))
 
 (define (export-matha-codes a-list name)
   (for ([i (length a-list)])
