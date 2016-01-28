@@ -49,4 +49,3 @@
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))
-

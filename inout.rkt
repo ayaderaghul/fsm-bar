@@ -60,8 +60,9 @@
   (at n))
 (define (posn->cycle p)
   (* DATA-POINT (/ p 2)))
-(define (cycle->posn c)
-  (* 2 (/ c DATA-POINT)))
+(define (cycle->posn c data-point)
+  (* 2 (/ c data-point)))
+
 
 ;; convert the whole file at once, this shouldnt be necessary
 #|
@@ -109,14 +110,9 @@
 (eval (list 'define i (car j))))
 (map cdr resurrected))
 
-(define (resurrect-at cycle pre file make-reader)
-(define posn (cycle->posn cycle))
+(define (resurrect-at cycle data-point pre file make-reader)
+(define posn (cycle->posn cycle data-point))
 (define data (at-row (+ posn 1) file make-reader))
-(resurrect pre data))
-
-(define (resurrect-at* pre cycle file)
-(define posn (cycle->posn cycle))
-(define data (at-row (+ posn 1) file make-automaton-csv-reader))
 (resurrect pre data))
 
 ;; name the resurrected automata
@@ -130,7 +126,7 @@
 (for/list ([i (in-list lst)])
 (for/list ([j (in-list lst)])
 (interact-s i j 400 0 delta pie))))
-
+ 
 ;; EXPORT DATA
 ;; if needed, map list data..
 (define (out-data filename data)

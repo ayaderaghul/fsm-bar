@@ -85,6 +85,8 @@ with -tm and no further specification, racket will evaluate the function `main d
 | test to see if you change the script, it messes up the simulation on cluster, because it shouldnt, the script should be loaded for one time at the begining the of the job |x || no it doesnt, the last time it happens bc YOU forget to modify the variables|
 | what about the kind of learning speed in the probability sense that everybody has chance to learn | || ignore?|
 | resurrect automata from data & analyse population state | 23 jan |||
+| personality test (itself, l m h) | 28 jan |||
+| plot the personality test | |||
  
 # Acknowledgment
 

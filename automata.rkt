@@ -46,7 +46,12 @@
                            (state HIGH (vector 1 1 2))
                            (state HIGH (vector 2 2 3))
                            (state MEDIUM (vector 1 3 0)))))
-
+(define l (lows))
+(define m (mediums))
+(define h (highs))
+(define t (tough))
+(define b (bully))
+(define a (accommodator))
 ;; PAIR MATCH
 (define (interact-d auto1 auto2 rounds-per-match delta pie)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
@@ -136,6 +141,24 @@
               )))
   (values (cons (round-payoff p1 2) (round-payoff p2 2)) ;(take (reverse round-results) rounds-print)
 ))
+
+(define (interact-self auto1 auto2 rounds-per-match delta pie)
+  (match-define (automaton current1 c1 payoff1 table1) auto1)
+  (match-define (automaton current2 c2 payoff2 table2) auto2)
+  (define-values (new1 p1 new2 p2)
+    (for/fold ([current1 current1] [payoff1 payoff1]
+               [current2 current2] [payoff2 payoff2]
+               )
+              ([_ (in-range rounds-per-match)])
+      (match-define (state a1 v1) (vector-ref table1 current1))
+      (match-define (state a2 v2) (vector-ref table2 current2))
+      (match-define (cons p1 p2) (payoff a1 a2 pie))
+      (define n1 (vector-ref v1 a2))
+      (define n2 (vector-ref v2 a1))
+      (values n1 (+ payoff1 (* (expt delta _) p1))
+              n2 (+ payoff2 (* (expt delta _) p2))
+              )))
+  (round-payoff p1 2))
 
 (define (round-payoff x n)
 (define factor (expt 10 n))
@@ -262,6 +285,57 @@
   (define tree (map state#->state tree#))
   (responses* tree states))
 
+;; PERSONALITY TEST
+;; ok, so investigating decision tree doesnt work
+;; plan B: in each cycle, rank* the population
+;; take these automaton out
+;; match them w themselves, Lows, Mediums, Highs
+;; TOUGH personality: kind among themselves, resists Mediums, resists Highs, friend of bully
+;; BULLY personality: kind among themselves, compromises Mediums, resists Highs, friend of tough
+;; FAIR: be the best they can be among themselves, resists Highs, dominates bully, repulses tough
+;; ACCOMMODATOR: submits to Highs, cooperates w Mediums, (exploit Lows)
+;; HIGHS: fares badly among itself and Mediums, but exploits Lows & Accommodator
+
+(define (personality-test auto-list delta pie)
+  (define general-list (append auto-list (list l m h)))
+  (define (test small-list big-list)
+    (for/list ([i (in-list small-list)])
+      (for/list ([j (in-list big-list)])
+        (interact-s i j 400 0 delta pie))))
+  (cons (interact-s m m 400 0 delta pie)
+        (test auto-list general-list)))
+
+;; among itself? half the Fair among themselves is good
+(define (test-personality auto delta pie)
+  (define w-itself (interact-self auto auto 400 delta pie))
+  (define fair-pay (interact-self m m 400 delta pie))
+  (define w-highs (interact-s auto h 400 0 delta pie))
+  (define w-mediums (interact-s auto m 400 0 delta pie))
+  (define w-lows (interact-self auto l 400 delta pie))
+  (define high-pay (interact-self h l 400 delta pie))
+  (define kindness (/ w-itself fair-pay))
+  (define accommodation (/ (cdr w-highs) high-pay))
+  (define exploitation (/ w-lows high-pay))
+  (define cooperation (/ (cdr w-mediums) (+ w-itself 0.01)))
+  (cons
+   (cond [(= 1 kindness) (cond [(< accommodation .5) 'authentic-fair]
+                               [else (cond [(> exploitation .5) 'accommodator]
+                                           [else 'nice-accommodator])])]
+         [(> kindness .5) (cond [(< cooperation .8) 'tough]
+                                [(< cooperation 1) 'bullyish-tough]
+                                [else (cond [(< accommodation .5) 'bully]
+                                            [else 'low])])]
+         [else (cond [(< cooperation .8) (cond [(> exploitation .6) 'high]
+                                               [else 'lame])]
+                     [else 'low])])
+   (list "w-itself fair-pay w-fair w-highs w-lows highs-pay"
+         w-itself fair-pay
+         w-mediums w-highs
+         high-pay w-lows)))
+
+
+
+
 
 ;; (IMMUTABLE) MUTATION
 ;; turn the automaton structure into a flattened list
@@ -326,7 +400,7 @@
 
 (define (generate-auto auto name)
   (match-define (automaton c i p table) auto)
-  (string-append name " = {" (number->string c) ", "   
+  (string-append name " = {" (number->string c) ", "
     (string-join
      (vector->list (vector-map generate-state table))
      ", "
@@ -415,13 +489,16 @@
    "S = Show[" name "Graph]\n"
    "(*Export[\"" name ".png\",S]*)\n \n"))
 
-(define (export-matha-code au name)
+(define (export-matha-codes a-list name)
   (with-output-to-file AUTO-CODE
-    (lambda () (printf (generate-matha-code au name)))
+    (lambda () (printf (generate-matha-codes a-list name)))
     #:exists 'replace))
 
-(define (export-matha-codes a-list name)
-  (for ([i (length a-list)])
-    (export-matha-code (list-ref a-list i)
-                       (string-append (symbol->string name)
-                                      (number->string i)))))
+(define (generate-matha-codes a-list name)
+(string-join
+  (for/list ([i (length a-list)] [j (in-list a-list)])
+(generate-matha-code j
+       (string-append (symbol->string name)
+                                      (number->string i))))
+"\n \n"
+))
