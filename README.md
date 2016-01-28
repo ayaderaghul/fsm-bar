@@ -18,7 +18,7 @@ in general (and inside mathematica), the command to run is
 ```
 raco test -s rund basic.rkt
 ```
-or 
+or
 ```
 racket -tm side.rkt
 ```
@@ -74,20 +74,66 @@ with -tm and no further specification, racket will evaluate the function `main d
 | write some func to investigate automaton |v || hmm, |
 | change to no-gui to run on clusters@.. | x |||
 | try ssh key | x |||
-| back up the job description (which'd be sent to cluster) | || next time just edit that file|
+| back up the job description (which'd be sent to cluster) |x || next time just edit that file|
 | only export data every 10 cycle (reduce data size) |x |||
-| issue: high states -> lower periods -> maybe due to inefficient learning (not quite equilibrium). so if reduce states -> has to increase cycles. | || run the same combination of (cycle,states) w pd to see|
+| issue: high states -> lower periods -> maybe due to inefficient learning (not quite equilibrium). so if reduce states -> has to increase cycles. not quite because how does the inefficient periods come in stay (invade the population), there must be some mutation that mess up things | not quite || run the same combination of (cycle,states) w pd to see|
 | run across deltas, pies, states# | 17 jan | | |
 | investigate the automaton, but how? | || eh, plot some picture on accommodating index|
 | the code is very messy now... (out mean each cycle, plot AI, add dir so that it can run on cluster | |||
 | attempt to refactor the code so it looks like organised modules | 20 jan |||
-| maybe initially, i should set only a smaller set of states to be connected | |||
+| maybe initially, i should set only a smaller set of states to be connected | x||20% connected initially|
 | test to see if you change the script, it messes up the simulation on cluster, because it shouldnt, the script should be loaded for one time at the begining the of the job |x || no it doesnt, the last time it happens bc YOU forget to modify the variables|
 | what about the kind of learning speed in the probability sense that everybody has chance to learn | || ignore?|
 | resurrect automata from data & analyse population state | 23 jan |||
-| personality test (itself, l m h) | 28 jan |||
-| plot the personality test | |||
- 
+| personality test (w itself, l m h) | 28 jan |||
+| plot the personality test | ||||
+
+### Personality test
+
+```
+                             _____________________
+                            |how nice is it       |
+                            |among its own kind?  |
+                             ---------------------
+                                      |
+          ____________________________|__________________________
+        |                             |                          |
+________|_________              ______|_______             ______|______
+100% (regarding                     > 50%                      <50%
+the fair equi)                                             -------------
+--------------------            --------------                   |
+        |                             |                    ______V_______
+________V_________              ______V_______             Highs or Lows
+accommodate Highs?             cooperate w Fair?           --------------
+------------------              --------------
+        |                             |
+ _______|_________              ______|________________
+ |               |             |          |           |
+ |               |             NO         |          YES
+NO              YES          (Fair does   |         __V_______
+(highs get       |           badly w it)  |        accommodate
+<50% potential)  |             |          |        Highs?
+  |              |           __V__      ALMOST     -----------
+  |              |           Tough     (its tolerance     |
+  |              |           -----     toward Fair        |
+ _V_________    _V_________             increases)        |
+|authentic |    exploit Lows?             |         ______V_________
+|Fair      |    ------------            __V__       |               |
+ ----------          |                 Bullyish     NO             YES
+               ______V_______           Tough       (highs gets     |
+               |            |          --------     <50% potential  |
+              YES          NO                       |               |
+          (get 50% as       |                       |             __V__
+        highs potential)    |                     __V__            Lows
+               |            |                     Bully           -----
+         ______V_______     V                     -----
+         |Accommodator|    nice
+         --------------   Accommodator
+
+
+```
+
+
 # Acknowledgment
 
 This is a customised version built upon the base code of Matthias Felleisen [here](https://github.com/mfelleisen/sample-fsm)
