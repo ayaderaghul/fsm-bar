@@ -12,7 +12,7 @@
 (define (interact-d auto1 auto2 rounds-per-match delta pie)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
-  (define-values (new1 p1 new2 p2 round-results)
+  (define-values (new1 p1 new2 p2)
     (for/fold ([current1 current1] [payoff1 payoff1]
                [current2 current2] [payoff2 payoff2])
               ([_ (in-range rounds-per-match)])
