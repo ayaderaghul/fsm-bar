@@ -46,9 +46,10 @@
          high-potential w-lows)))
 
 
-(define (test-personalities lst delta pie)
+(define (test-personalities lst rounds-per-match delta pie)
   (for/list ([i (in-list lst)])
-    (test-personality i delta pie)))
+    (test-personality i rounds-per-match delta pie)))
+
 ;; test personality of mixture
 
 (define (questionaire-m lst weights rounds-per-match delta pie)
@@ -62,5 +63,32 @@
 "w-itself l- m- h- fair-benchmark highs-potentials"
 )))
 
+(define (test-personality-m lst auto-numbers rounds-per-match delta pie)
 
+(define total (apply + auto-numbers))
+(define weights (for/list ([i (in-list auto-numbers)])
+(/ i total)))
+
+  (define questionaire-result (questionaire-m lst weights rounds-per-match delta pie))
+  (match-define
+   (list w-itself low-pay medium-pay high-pay fair-benchmark highs-potential) questionaire-result)
+  (define kindness (/ w-itself fair-benchmark))
+  (define accommodation (/ high-pay high-potential))
+  (define exploitation (/ w-lows high-potential))
+  (define cooperation (/ medium-pay (+ w-itself 0.001)))
+  (cons
+   (cond [(= 1 kindness) (cond [(< accommodation .5) 'authentic-fair]
+                               [else (cond [(> exploitation .5) 'accommodator]
+                                           [else 'nice-accommodator])])]
+         [(> kindness .5) (cond [(< cooperation .9) 'tough]
+                                [(< cooperation 1) 'bullyish-tough]
+                                [else (cond [(< accommodation .5) 'bully]
+                                            [else 'low])])]
+         [else (cond [(< cooperation .8) (cond [(> exploitation .6) 'high]
+                                               [else 'lame])]
+                     [else 'low])])
+   (list "w-itself fair-benchmark medium-pay high-pay highs-potential w-lows"
+         w-itself fair-benchmark
+         medium-pay high-pay
+         high-potential w-lows)))
 
