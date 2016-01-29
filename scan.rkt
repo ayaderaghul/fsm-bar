@@ -1,5 +1,5 @@
 #lang racket
-(require "configuration.rkt" "automata.rkt")
+(require "configuration.rkt" "./automata/automata.rkt")
 (provide rank rank* scan scan*)
 
 ;; SCAN

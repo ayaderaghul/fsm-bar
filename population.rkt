@@ -1,7 +1,7 @@
 #lang racket
 
 (provide (all-defined-out))
-(require "configuration.rkt" "automata.rkt")
+(require "configuration.rkt" "./automata/automata.rkt" "./automata/interaction.rkt")
 
 ;; POPULATION
 (define (build-random-population n state#)

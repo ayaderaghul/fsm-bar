@@ -86,6 +86,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 | what about the kind of learning speed in the probability sense that everybody has chance to learn | || ignore?|
 | resurrect automata from data & analyse population state | 23 jan |||
 | personality test (w itself, l m h) | 28 jan |||
+|personality test for mixture | |||
 | plot the personality test | ||||
 
 ### Personality test
