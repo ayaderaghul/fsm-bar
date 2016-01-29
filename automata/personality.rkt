@@ -14,7 +14,7 @@
 
 (define (questionaire auto-list rounds-per-match delta pie)
   (define test-kit (append auto-list (list l m h)))
-  (payoff-table test-kit rounds-per-match delta pie))
+  (payoff-table test-kit test-kit rounds-per-match delta pie))
 
 (define (test-personality auto rounds-per-match delta pie)
   (define questionaire-result (questionaire (list auto) rounds-per-match delta pie))
@@ -33,19 +33,34 @@
    (cond [(= 1 kindness) (cond [(< accommodation .5) 'authentic-fair]
                                [else (cond [(> exploitation .5) 'accommodator]
                                            [else 'nice-accommodator])])]
-         [(> kindness .5) (cond [(< cooperation .8) 'tough]
+         [(> kindness .5) (cond [(< cooperation .9) 'tough]
                                 [(< cooperation 1) 'bullyish-tough]
                                 [else (cond [(< accommodation .5) 'bully]
                                             [else 'low])])]
          [else (cond [(< cooperation .8) (cond [(> exploitation .6) 'high]
                                                [else 'lame])]
                      [else 'low])])
-   (list "w-itself fair-benchmark w-fair w-highs highs-potential w-lows"
+   (list "w-itself fair-benchmark medium-pay high-pay highs-potential w-lows"
          w-itself fair-benchmark
-         w-mediums w-highs
+         medium-pay high-pay
          high-potential w-lows)))
 
-;; test personality of mixture
+
 (define (test-personalities lst delta pie)
   (for/list ([i (in-list lst)])
     (test-personality i delta pie)))
+;; test personality of mixture
+
+(define (questionaire-m lst weights rounds-per-match delta pie)
+(define test-kit (list l m h))
+(define match-result
+(interact-m lst test-kit weights rounds-per-match delta pie))
+(append match-result 
+(list 
+(car (interact m m rounds-per-match delta pie))
+(cdr (interact l h rounds-per-match delta pie))
+"w-itself l- m- h- fair-benchmark highs-potentials"
+)))
+
+
+

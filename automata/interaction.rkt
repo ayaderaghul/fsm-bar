@@ -141,15 +141,23 @@
 ;; the previous part deals with interaction among pure strategies
 ;; but a mixture should be able to be thought of as one strategy also
 ;; so we write function to interact mixture
-(define (payoff-table lst rounds-per-match delta pie)
-  (for/list ([i (in-list lst)])
-    (for/list ([j (in-list lst)])
+(define (payoff-table hori-lst vert-lst rounds-per-match delta pie)
+  (for/list ([i (in-list vert-lst)])
+    (for/list ([j (in-list hori-lst)])
       (car (interact i j rounds-per-match delta pie)))))
 
-(define (interact-m lst weights rounds-per-match delta pie)
-  (define l (length lst))
-  (define pay-table (payoff-table lst rounds-per-match delta pie))
-  (define pay-matrix (list->matrix l l (flatten pay-table)))
-  (define w-row (list->matrix 1 l weights))
+(define (interact-m hori-lst vert-lst weights rounds-per-match delta pie)
+  (define hori-l (length hori-lst))
+  (define vert-l (length vert-lst))
+  (define mixture (payoff-table hori-lst hori-lst rounds-per-match delta pie))
+  (define mixture-matrix
+    (list->matrix hori-l hori-l (flatten mixture)))
+  (define test (payoff-table hori-lst vert-lst rounds-per-match delta pie))
+  (define test-matrix
+    (list->matrix vert-l hori-l (flatten test)))
+  (define w-row (list->matrix 1 hori-l weights))
   (define w-col (->col-matrix w-row))
-  (matrix* w-row pay-matrix w-col))
+  (cons
+   (apply (lambda (x) (round-payoff x 2))
+          (matrix->list (matrix* w-row mixture-matrix w-col)))
+   (matrix->list (matrix* test-matrix w-col))))
