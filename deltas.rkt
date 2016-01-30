@@ -20,7 +20,7 @@
     (define a-name (generate-file-name A i))    
     (define datas (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS i PIE MUTATION mean-name rank-name)))
     (define ps (map first datas))
-    (plot-payoffs datas i pic-title pic-name)
+    (plot-payoffs ps i pic-title pic-name)
     (define ts (map second datas))
 (define bs (map third datas))
 (define fs (map fourth datas))
