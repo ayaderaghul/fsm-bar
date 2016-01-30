@@ -30,9 +30,14 @@
 (define PIC (string-append c "meanplot"))
 (define RES (string-append c "respons"))
 
+(define T (string-append c "toughs"))
+(define B (string-append c "bullys"))
+(define F (string-append c "fairs"))
+(define A (string-append c "accoms"))
+
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 10000)
+(define CYCLES 100)
 (define SPEED 15)
 (define ROUNDS 400)
 (define DELTA .99)
