@@ -61,9 +61,9 @@
 ;; turn the automaton structure into a flattened list
 (define (flatten-automaton au)
   (match-define (automaton current initial payoff states) au)
-  (define l (vector-length states))
+  (define len (vector-length states))
   (define body
-    (for/list ([i (in-range l)])
+    (for/list ([i (in-range len)])
       (match-define (state action dispatch) (vector-ref states i))
       (list action (vector->list dispatch))))
   (flatten (list initial body)))

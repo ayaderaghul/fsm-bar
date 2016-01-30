@@ -22,9 +22,10 @@
   (define points (pack-points data))
   (lines points))
 
-(define (plot-payoff lst y-max title file-name) ;; for the continual method (no ceiling)
-  (plot-file (series->lines lst) file-name 'png
-        #:y-min 0.0 #:y-max y-max #:title title
+(define (plot-payoff lst title file-name) ;; for the continual method (no ceiling)
+(define max-pay (apply max lst))  
+(plot-file (series->lines lst) file-name 'png
+        #:y-min 0.0 #:y-max (+ 5 max-pay) #:title title
                 #:width 1200))
 
 ;; to calculate the compound rate of payoff

@@ -17,10 +17,11 @@
   ;(define res-name (generate-file-name RES DELTA))
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
-  ;(define ps (map first datas))
-  ;(define rs (map second datas))
+  (define ps (map first datas))
+  (define ts (map second datas))
   ;(plot-distributions rs res-name)
-  (plot-payoffs datas DELTA pic-title PIC)
+  (plot-payoffs ps DELTA pic-title PIC)
+(plot-payoff ts "toughs" "toughs.png")
   )
 
 (module+ main (run-d))
@@ -34,6 +35,7 @@
          (mutate-c p3 mutation)
          (define ranking (rank* p3))
          (define ranking-list (hash->list ranking))
+(define char-hash (scan-char ranking-list rounds-per-match delta pie))
          ;(define sample-auto
          ;  (if (hash-empty? ranking) 0 (car (first ranking-list))))
          ;(define resp
@@ -43,9 +45,10 @@
          (when (zero? (modulo cycles DATA-POINT))
               (out-rank rank-file cycles
                        (hash->list (rank p3))))
+(define toughs (if (hash-has-key? char-hash 'tough) (hash-ref char-hash 'tough) 0))
          (define m (relative-average pp 1))
          (out-mean mean-file (list m))
-         (cons m
+         (cons (list m toughs)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))

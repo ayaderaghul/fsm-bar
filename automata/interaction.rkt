@@ -146,18 +146,23 @@
     (for/list ([j (in-list hori-lst)])
       (car (interact i j rounds-per-match delta pie)))))
 
-(define (interact-m hori-lst vert-lst weights rounds-per-match delta pie)
-  (define hori-l (length hori-lst))
-  (define vert-l (length vert-lst))
-  (define mixture (payoff-table hori-lst hori-lst rounds-per-match delta pie))
-  (define mixture-matrix
-    (list->matrix hori-l hori-l (flatten mixture)))
-  (define test (payoff-table hori-lst vert-lst rounds-per-match delta pie))
-  (define test-matrix
-    (list->matrix vert-l hori-l (flatten test)))
-  (define w-row (list->matrix 1 hori-l weights))
-  (define w-col (->col-matrix w-row))
-  (cons
-   (apply (lambda (x) (round-payoff x 2))
-          (matrix->list (matrix* w-row mixture-matrix w-col)))
-   (matrix->list (matrix* test-matrix w-col))))
+(define (questionaire-m auto-list weights rounds-per-match delta pie)
+  (define test-kit (list l m h))
+  (define len (length auto-list))
+  (define mixture (payoff-table auto-list auto-list rounds-per-match delta pie))
+  (define w-lmh (payoff-table test-kit auto-list rounds-per-match delta pie))
+  (define lmh-pay (payoff-table auto-list test-kit rounds-per-match delta pie))
+  (define mixture-matrix (list->matrix len len (flatten mixture)))
+  (define w-lmh-matrix (list->matrix len 3 (flatten w-lmh)))
+  (define lmh-pay-matrix (list->matrix 3 len (flatten lmh-pay)))
+  (define weight-row (list->matrix 1 len weights))
+  (define weight-col (->col-matrix weight-row))
+  (match-define (cons highs-potential lows-pay) (interact h l rounds-per-match delta pie))
+  (define fair-benchmark (car (interact m m rounds-per-match delta pie)))
+  (append
+   (matrix->list (matrix* weight-row mixture-matrix weight-col))
+   (matrix->list (matrix* weight-row w-lmh-matrix))
+   (matrix->list (matrix* lmh-pay-matrix weight-col))
+   (list lows-pay fair-benchmark highs-potential)
+   ))
+

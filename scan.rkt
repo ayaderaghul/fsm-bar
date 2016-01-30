@@ -1,6 +1,6 @@
 #lang racket
-(require "configuration.rkt" "./automata/automata.rkt")
-(provide rank rank* scan scan*)
+(require "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt")
+(provide rank rank* scan scan* scan-char)
 
 ;; SCAN
 (define (initial-action au)
@@ -40,6 +40,29 @@
               #:when (< THRESHOLD v))
      (values k v)))
 
+;; scan for types (personality)
+
+(define (tough? x) (equal? 'tough x))
+(define (bully? x) (equal? 'bully x))
+(define (accommodator? x) (equal? 'accommodator x))
+(define (fair? x) (equal? 'authentic-fair x))
+
+(define (scan-char lst rounds delta pie)
+  (define autos (map car lst))
+  (define auto-numbers (map cdr lst))
+  (define result
+    (for/list ([i (in-list autos)]
+               [j (in-list auto-numbers)])
+      (cons (first (test-auto i rounds delta pie)) j)))
+  (foldl
+   (lambda (entry h) (hash-update h (car entry)
+                             (lambda (x) (+ (cdr entry) x))
+                             0))
+   (hash)
+   result))
+
+
+;; SCAN FOR DIFFERENT TESTS
 (define (scan-initials population)
   (define p0 (vector->list (car population)))
   (foldl
@@ -53,7 +76,6 @@
       (hash-ref a-hash a-key)
       0))
 
-;; SCAN FOR DIFFERENT TESTS
 (define (scan-oneshot-types population)
   (let ([ranking (scan-initials population)])
     (list
@@ -77,5 +99,3 @@
     (list
      (hash-ref* ranking (list 0 1 0 0 0))
      (hash-ref* ranking (list 1 0 2 1 0 1 2 1 0 2 2 1 0)))))
-
-
