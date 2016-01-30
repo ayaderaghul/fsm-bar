@@ -25,10 +25,10 @@
 (define bs (map third datas))
 (define fs (map fourth datas))
 (define as (map fifth datas))
-  (plot-payoff ts "toughs" "toughs.png")
-(plot-payoff bs "bullys" "bullys.png")
-(plot-payoff fs "fairs" "fairs.png")
-(plot-payoff as "accoms" "accoms.png")
+  (plot-payoff ts "toughs" t-name)
+(plot-payoff bs "bullys" b-name)
+(plot-payoff fs "fairs" f-name)
+(plot-payoff as "accoms" a-name)
 
     ))
 

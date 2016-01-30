@@ -24,7 +24,7 @@
 
 (define (plot-payoff lst title file-name) ;; for the continual method (no ceiling)
 (define max-pay (apply max lst))  
-(plot-file (series->lines lst) file-name 'png
+(plot-file (series->lines lst) (string-append file-name ".png") 'png
         #:y-min 0.0 #:y-max (+ 5 max-pay) #:title title
                 #:width 1200))
 
