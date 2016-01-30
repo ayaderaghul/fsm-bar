@@ -42,7 +42,7 @@
 
 ;; scan for types (personality)
 
-(define (how-many? x h)
+(define (how-many x h)
 (if (hash-has-key? h x) (hash-ref h x) 0))
 
 (define (scan-char lst rounds delta pie)
