@@ -1,6 +1,6 @@
 #lang racket
 (require "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt")
-(provide rank rank* scan scan* scan-char)
+(provide rank rank* scan scan* scan-char how-many)
 
 ;; SCAN
 (define (initial-action au)
@@ -42,10 +42,8 @@
 
 ;; scan for types (personality)
 
-(define (tough? x) (equal? 'tough x))
-(define (bully? x) (equal? 'bully x))
-(define (accommodator? x) (equal? 'accommodator x))
-(define (fair? x) (equal? 'authentic-fair x))
+(define (how-many? x h)
+(if (hash-has-key? h x) (hash-ref h x) 0))
 
 (define (scan-char lst rounds delta pie)
   (define autos (map car lst))
