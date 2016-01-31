@@ -53,7 +53,7 @@
 (define PIES (list 0.5 1 2 3 4 4.5))
 
 ;; POPULATION
-(define STATE# 10) ; generating automata w this number of states
+(define STATE# 6) ; generating automata w this number of states
 (define STATES# (list 10 30 50 70 90))
 
 ;; SCAN
