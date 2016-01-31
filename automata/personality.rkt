@@ -82,12 +82,12 @@
   (define (test-mix mix posn rounds delta pie)
     (define autos (map car mix))
     (define auto-numbers (map cdr mix))
-    (quote posn
-(cons      
+(hash      
 (first (test-mixture autos auto-numbers rounds delta pie))
-     	(apply + auto-numbers))))
+     	(list posn (apply + auto-numbers))))
 (define len (length lst))
-  (for ([i (in-list lst)]
-[j (* data-point (in-naturals len))])
+(define xs (build-list len (lambda (x) (* 10 x))))
+  (for/list ([i (in-list lst)]
+[j (in-list xs)])
     (if (list? i) (test-mix i j rounds delta pie)
-        (cons j (cons 'nothing 0)))))
+        (hash 'nothing (list 0 0)))))

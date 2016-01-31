@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt")
+(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt" unstable/hash "scan.rkt")
 (require (planet neil/csv:2:0))
 
 ;; IMPORT
@@ -141,11 +141,31 @@
       (interact-s i j 400 0 delta pie))))
 
 ;; test the whole simulation, then plot the characters
-data (all-rows file make-reader)
-autos (take-odd data)
-ressurected (converts autos)
-test-result (test-simulation ressurected data-point rounds delta pie)
-len (length test-result)
+(define (render-characters file make-reader data-point rounds delta pie)
+(define data (all-rows file make-reader))
+(define autos (take-odd data))
+(define ressurected (converts autos))
+(define test-result (test-simulation ressurected data-point rounds delta pie))
+(define len (length test-result))
+(define types (apply hash-union test-result
+#:combine/key (lambda (k v1 v2) (append  v1 v2))))
+(define toughs (how-many 'tough types))
+(define bullys (how-many 'bully types))
+(define b-toughs (how-many 'bullyish-tough types))
+(define fairs (how-many 'authentic-fair types))
+(define accoms (how-many 'accommodator types))
+(list toughs bullys b-toughs fairs accoms))
+
+(define (plot-types toughs bullys b-toughs accoms)
+(plot-file 
+(list
+(lines (pack-coors toughs) #:color 'red)
+(lines (pack-coors bullys) #:color 'green)
+(lines (pack-coors b-toughs) #:color 'blue)
+(lines (pack-coors fairs) #:color 'purple)
+(lines (pack-coors accoms) #:color 'brown))
+"chars.png" '.png))
+
 
 
 
