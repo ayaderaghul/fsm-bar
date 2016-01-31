@@ -45,6 +45,10 @@
 (define (how-many x h)
 (if (hash-has-key? h x) (hash-ref h x) 0))
 
+(define (how-manys lst h)
+(for/sum ([i (in-list lst)])
+(how-many i h)))
+
 (define (scan-char lst rounds delta pie)
   (define autos (map car lst))
   (define auto-numbers (map cdr lst))

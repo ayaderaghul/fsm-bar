@@ -52,8 +52,8 @@
               (out-rank rank-file cycles
                        (hash->list (rank p3))))
 (define toughs (how-many 'tough char-hash))
-(define bullys (how-many 'bully char-hash))
-(define accoms (how-many 'accommodator char-hash))
+(define bullys (how-manys (list 'bullyish-tough 'bully) char-hash))
+(define accoms (how-manys (list 'nice-accommodator 'accommodator) char-hash))
 (define fairs (how-many 'authentic-fair char-hash))
          (define m (relative-average pp 1))
          (out-mean mean-file (list m))
