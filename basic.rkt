@@ -41,7 +41,9 @@
          (mutate-c p3 mutation)
          (define ranking (rank* p3))
          (define ranking-list (hash->list ranking))
-(define char-hash (scan-char-m ranking-list rounds-per-match delta pie))
+(define char-hash 
+(if (empty? ranking-list) (hash 'nothing 0)
+(scan-char-m ranking-list rounds-per-match delta pie)))
          ;(define sample-auto
          ;  (if (hash-empty? ranking) 0 (car (first ranking-list))))
          ;(define resp
