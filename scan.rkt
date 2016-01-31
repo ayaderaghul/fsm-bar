@@ -1,6 +1,6 @@
 #lang racket
 (require "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt")
-(provide rank rank* scan scan* scan-char how-many)
+(provide rank rank* scan scan* scan-char how-many how-manys)
 
 ;; SCAN
 (define (initial-action au)
