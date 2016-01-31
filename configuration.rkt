@@ -43,7 +43,7 @@
 (define DELTA .99)
 (define MUTATION 1)
 
-(define DATA-POINT 50) ; collect data every x cycles
+(define DATA-POINT 20) ; collect data every x cycles
 
 ;; RUN ACROSS DELTA
 (define DELTAS-C (list .99 .97 .95 .93 0))
@@ -57,7 +57,7 @@
 (define STATES# (list 10 30 50 70 90))
 
 ;; SCAN
-(define THRESHOLD 7) ; only collect data on automata that have at least 10 of its kind
+(define THRESHOLD 5) ; only collect data on automata that have at least 10 of its kind
 
 
 

@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt" unstable/hash "scan.rkt")
+(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt" racket/hash "scan.rkt")
 (require (planet neil/csv:2:0))
 
 ;; IMPORT
