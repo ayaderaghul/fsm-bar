@@ -1,6 +1,6 @@
 #lang racket
 (require "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt")
-(provide rank rank* scan scan* scan-char how-many how-manys)
+(provide rank rank* scan scan* scan-char scan-char-m how-many how-manys)
 
 ;; SCAN
 (define (initial-action au)
@@ -62,6 +62,13 @@
                              0))
    (hash)
    result))
+
+(define (scan-char-m lst rounds delta pie)
+(define autos (map car lst))
+(define auto-numbers (map cdr lst))
+(hash 
+(first (test-mixture autos auto-numbers rounds delta pie))
+(apply + auto-numbers)))
 
 
 ;; SCAN FOR DIFFERENT TESTS
