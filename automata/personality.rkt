@@ -77,3 +77,17 @@
                     (/ i total)))
   (define questionaire-result (questionaire-m mixture weights rounds delta pie))
   (read-test-m questionaire-result))
+
+(define (test-simulation lst data-point rounds delta pie)
+  (define (test-mix mix posn rounds delta pie)
+    (define autos (map car mix))
+    (define auto-numbers (map cdr mix))
+    (quote posn
+(cons      
+(first (test-mixture autos auto-numbers rounds delta pie))
+     	(apply + auto-numbers))))
+(define len (length lst))
+  (for ([i (in-list lst)]
+[j (* data-point (in-naturals len))])
+    (if (list? i) (test-mix i j rounds delta pie)
+        (cons j (cons 'nothing 0)))))

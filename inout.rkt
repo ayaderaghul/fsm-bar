@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "csv.rkt" plot/no-gui "configuration.rkt")
+(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt")
 (require (planet neil/csv:2:0))
 
 ;; IMPORT
@@ -65,7 +65,7 @@
 
 
 ;; convert the whole file at once, this shouldnt be necessary
-#|
+
 (define (take-odd lst)
   (define l (length lst))
   (filter-not false?
@@ -79,17 +79,30 @@
                 (zero? (apply string-length j)))
            0]
           [else (map convert j)])))
+
 (define (converts2 lst)
-  (for/fold ([results '()])
-            ([i (in-range (length lst))]
-             [j (in-list lst)])
-    (define result
-      (cond [(and (zero? (- (length j) 1))
-                  (zero? (apply string-length j)))
-             0]
+  (reverse
+   (for/fold ([results '()])
+             ([i (in-range (length lst))]
+              [j (in-list lst)])
+     (define result
+       (cond [(and (zero? (- (length j) 1))
+                   (zero? (apply string-length j)))
+              0]
             [else (map convert j)]))
-    (cons result results)))
-|#
+     (cons result results))))
+(define (converts3 lst)
+  (define result
+    (foldl (lambda (next init)
+             (cons
+              (cond [(and (zero? (- (length next) 1))
+                          (zero? (apply string-length next)))
+                     0]
+                    [else (map convert next)])
+              init))
+           '()
+           lst))
+  (reverse result))
 
 (define (convert x)
   (define y (string-split x " . "))
@@ -102,18 +115,18 @@
    (string->number t)))
 
 (define (resurrect pre lst)
-(define resurrected (map convert lst))
-(define l (length resurrected))
-(define names (generate-ax pre (build-list l values)))
-(for ([i (in-list names)]
-[j (in-list resurrected)])
-(eval (list 'define i (car j))))
-(map cdr resurrected))
+  (define resurrected (map convert lst))
+  (define l (length resurrected))
+  (define names (generate-ax pre (build-list l values)))
+  (for ([i (in-list names)]
+        [j (in-list resurrected)])
+    (eval (list 'define i (car j))))
+  (map cdr resurrected))
 
 (define (resurrect-at cycle data-point pre file make-reader)
-(define posn (cycle->posn cycle data-point))
-(define data (at-row (+ posn 1) file make-reader))
-(resurrect pre data))
+  (define posn (cycle->posn cycle data-point))
+  (define data (at-row (+ posn 1) file make-reader))
+  (resurrect pre data))
 
 ;; name the resurrected automata
 (define (x->ax pre x)
@@ -123,10 +136,20 @@
 
 ;; match the resurrected automata
 (define (contest lst delta pie)
-(for/list ([i (in-list lst)])
-(for/list ([j (in-list lst)])
-(interact-s i j 400 0 delta pie))))
- 
+  (for/list ([i (in-list lst)])
+    (for/list ([j (in-list lst)])
+      (interact-s i j 400 0 delta pie))))
+
+;; test the whole simulation, then plot the characters
+data (all-rows file make-reader)
+autos (take-odd data)
+ressurected (converts autos)
+test-result (test-simulation ressurected data-point rounds delta pie)
+len (length test-result)
+
+
+
+
 ;; EXPORT DATA
 ;; if needed, map list data..
 (define (out-data filename data)
