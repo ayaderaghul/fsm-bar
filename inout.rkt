@@ -162,7 +162,7 @@
 (lines (pack-coors toughs) #:color 'red)
 (lines (pack-coors bullys) #:color 'green)
 (lines (pack-coors b-toughs) #:color 'blue)
-(lines (pack-coors fairs) #:color 'purple)
+`(lines (pack-coors fairs) #:color 'purple)
 (lines (pack-coors accoms) #:color 'brown))
 "chars.png" '.png))
 
