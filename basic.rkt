@@ -12,9 +12,9 @@
   (collect-garbage)
   (collect-garbage)
   (define pic-title (print-delta DELTA "discount factor"))
-  (define rank-name (generate-file-name RANK DELTA))
-  (define mean-name (generate-file-name MEAN DELTA))
-  ;(define res-name (generate-file-name RES DELTA))
+  (define rank-name (generate-file-name DELTA RANK))
+  (define mean-name (generate-file-name DELTA MEAN))
+  ;(define res-name (generate-file-name DELTA RES))
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
   (define ps (map first datas))

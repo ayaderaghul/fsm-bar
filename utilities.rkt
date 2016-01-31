@@ -10,7 +10,7 @@
 
 (define (variable->string x)
   (string-trim (number->string (* 100 x)) ".0"))
-(define (generate-file-name suffix x)
+(define (generate-file-name x suffix)
   (string-append (variable->string x) suffix))
 
 ;; PLOT MEANS IN RUNTIME
