@@ -37,20 +37,20 @@
   (define exploitation (/ w-lows highs-potential))
   (define cooperation (/ mediums-pay (+ w-itself 0.001)))
   (cons
-   (cond [(= 1 kindness) (cond [(< accommodation .5) 'authentic-fair]
-                               [else (cond [(> exploitation .5) 'accommodator]
-                                           [else 'nice-accommodator])])]
-         [(> kindness .5) (cond [(< cooperation .9) 'tough]
+   (cond [(> kindness .995) (cond [(< accommodation .5) 'fair]
+                               [else 'accommodator]
+                                           )]
+         [(> kindness .6) (cond [(< cooperation .9) 'tough]
                                 [(< cooperation 1) 'bullyish-tough]
                                 [else (cond [(< accommodation .5) 'bully]
-                                            [else 'low])])]
+                                            [else 'almost-accommodator])])] ;; almost or nice accommodator
          [else (cond [(< cooperation .8) (cond [(> exploitation .6) 'high]
                                                [else 'lame])]
                      [else 'low])])
-   (list "w-itself fair-benchmark mediums-pay highs-pay highs-potential w-lows"
+   (list "w-itself fair-benchmark mediums-pay highs-pay highs-potential w-lows lows-pay"
          w-itself fair-benchmark
          mediums-pay highs-pay
-         highs-potential w-lows)))
+         highs-potential w-lows lows-pay)))
 
 (define (test-auto auto rounds delta pie)
   (define questionaire-result (questionaire (list auto) rounds delta pie))
@@ -82,12 +82,12 @@
   (define (test-mix mix posn rounds delta pie)
     (define autos (map car mix))
     (define auto-numbers (map cdr mix))
-(hash      
-(first (test-mixture autos auto-numbers rounds delta pie))
-     	(list posn (apply + auto-numbers))))
-(define len (length lst))
-(define xs (build-list len (lambda (x) (* 10 x))))
+    (hash
+     (first (test-mixture autos auto-numbers rounds delta pie))
+     (list posn (apply + auto-numbers))))
+  (define len (length lst))
+  (define xs (build-list len (lambda (x) (* data-point x))))
   (for/list ([i (in-list lst)]
-[j (in-list xs)])
+             [j (in-list xs)])
     (if (list? i) (test-mix i j rounds delta pie)
         (hash 'nothing (list 0 0)))))

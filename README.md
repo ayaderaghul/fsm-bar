@@ -87,9 +87,9 @@ with -tm and no further specification, racket will evaluate the function `main d
 | resurrect automata from data & analyse population state | 23 jan |||
 | personality test (w itself, l m h) | 28 jan |||
 |personality test for mixture | x|| there are cases that the test doesnt comprehend (third branch)|
-| plot the personality test | ||||
-|plot simulation test from data ||||
-|see the error file for rund.pbs||||
+| plot the personality test | |||too many toughs|
+|plot simulation test from data |x||see the .png|
+|see the error file for rund.pbs|||but you deleted it, i guess it's smt when the test return '() list so list->matrix throws exception|
 
 ### Personality test
 

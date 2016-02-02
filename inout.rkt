@@ -1,6 +1,6 @@
 #lang racket
 (provide (all-defined-out))
-(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt" racket/hash "scan.rkt")
+(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt" unstable/hash "scan.rkt")
 (require (planet neil/csv:2:0))
 
 ;; IMPORT
@@ -135,37 +135,61 @@
   (map (lambda (x) (x->ax pre x)) a-list))
 
 ;; match the resurrected automata
-(define (contest lst delta pie)
+(define (contest lst rounds delta pie)
   (for/list ([i (in-list lst)])
     (for/list ([j (in-list lst)])
-      (interact-s i j 400 0 delta pie))))
+      (interact i j rounds delta pie))))
 
 ;; test the whole simulation, then plot the characters
 (define (render-characters file make-reader data-point rounds delta pie)
-(define data (all-rows file make-reader))
-(define autos (take-odd data))
-(define ressurected (converts autos))
-(define test-result (test-simulation ressurected data-point rounds delta pie))
-(define len (length test-result))
-(define types (apply hash-union test-result
-#:combine/key (lambda (k v1 v2) (append  v1 v2))))
-(define toughs (how-many 'tough types))
-(define bullys (how-many 'bully types))
-(define b-toughs (how-many 'bullyish-tough types))
-(define fairs (how-many 'authentic-fair types))
-(define accoms (how-many 'accommodator types))
-(list toughs bullys b-toughs fairs accoms))
+  (define data (all-rows file make-reader))
+  (define autos (take-odd data))
+  (define ressurected (converts autos))
+  (define test-result (test-simulation ressurected data-point rounds delta pie))
+  (define len (length test-result))
+  (define types (apply hash-union test-result
+                       #:combine/key (lambda (k v1 v2) (append  v1 v2))))
+  (define toughs (how-many 'tough types))
+  (define bullys (how-many 'bully types))
+  (define b-toughs (how-many 'bullyish-tough types))
+  (define fairs (how-many 'fair types))
+  (define accoms (how-many 'accommodator types))
+(define a-accoms (how-many 'almost-accommodator types))
+  (list toughs b-toughs bullys fairs accoms a-accoms))
 
-(define (plot-types toughs bullys b-toughs accoms)
-(plot-file 
-(list
-(lines (pack-coors toughs) #:color 'red)
-(lines (pack-coors bullys) #:color 'green)
-(lines (pack-coors b-toughs) #:color 'blue)
-`(lines (pack-coors fairs) #:color 'purple)
-(lines (pack-coors accoms) #:color 'brown))
-"chars.png" '.png))
+(define (plot-types filename a-list name-list)
+  (define len (length a-list))
+  (define data
+    (for/list ([i (in-list a-list)]
+               [j (in-naturals len)]
+               [k (in-list name-list)])
+      (if (list? i)
+          (lines (pack-coors i) #:color j #:label k)
+          (lines (list (list 0 0)) #:color j #:label k))))
+  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
 
+(define (plot-point-types filename a-list name-list color-list)
+  (define data
+    (for/list ([i (in-list a-list)]
+               [j (in-list color-list)]
+               [k (in-list name-list)]
+               )
+      (if (list? i)
+          (points (pack-coors i) #:color j #:line-width 10 #:alpha .7 #:label k)
+          (points (list (list 0 0)) #:color j #:line-width 10 #:label k))))
+  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
+
+(define (plot-simulation file make-reader data-point rounds delta pie)
+  (define types-list (render-characters file make-reader data-point rounds delta pie))
+  (define name-list (list "toughs" "bullyish-toughs" "bullys" "fairs" "accommodators" "almost-accommodators"))
+(define high-color-list (list 'darkblue 'royalblue  'cyan 'lime 'purple 'magenta))
+(define dark-color-list (list 'midnightblue 'royalblue 'darkturquoise 'darkgreen 'crimson 'orchid))
+  (plot-point-types (string-append file "chars.png") types-list name-list dark-color-list))
+
+(define (plot-simulations file-list make-reader data-point rounds delta-list pie)
+  (for ([i (in-list file-list)]
+        [j (in-list delta-list)])
+    (time (plot-simulation i make-reader data-point rounds j pie))))
 
 
 
