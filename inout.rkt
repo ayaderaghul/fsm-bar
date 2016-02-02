@@ -184,7 +184,7 @@
   (define name-list (list "toughs" "bullyish-toughs" "bullys" "fairs" "accommodators" "almost-accommodators"))
 (define high-color-list (list 'darkblue 'royalblue  'cyan 'lime 'purple 'magenta))
 (define dark-color-list (list 'midnightblue 'royalblue 'darkturquoise 'darkgreen 'crimson 'orchid))
-  (plot-point-types (string-append file "chars.png") types-list name-list dark-color-list))
+  (plot-point-types (string-append (string-replace file "rank" "meanplot") "chars.png") types-list name-list dark-color-list))
 
 (define (plot-simulations file-list make-reader data-point rounds delta-list pie)
   (for ([i (in-list file-list)]

@@ -90,6 +90,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 | plot the personality test | |||too many toughs|
 |plot simulation test from data |x||see the .png|
 |see the error file for rund.pbs|||but you deleted it, i guess it's smt when the test return '() list so list->matrix throws exception|
+|plot the bubbles in runtime| |||
 
 ### Personality test
 

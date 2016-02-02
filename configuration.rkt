@@ -29,6 +29,8 @@
 (define RANK (string-append c "rank"))
 (define PIC (string-append c "meanplot"))
 (define RES (string-append c "respons"))
+(define CHAR (string-append c "meanplotchars"))
+
 
 (define T (string-append c "toughs"))
 (define B (string-append c "bullys"))

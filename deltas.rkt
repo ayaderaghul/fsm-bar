@@ -1,6 +1,6 @@
 #lang racket
 
-(require "basic.rkt" "configuration.rkt" "utilities.rkt" "population.rkt")
+(require "basic.rkt" "configuration.rkt" "utilities.rkt" "population.rkt" "inout.rkt" "scan.rkt" unstable/hash)
 
 ;; ACROSS DELTAS: DISCOUNT FACTOR
 
@@ -14,22 +14,24 @@
     (define mean-name (generate-file-name i MEAN))
     (define rank-name (generate-file-name i RANK))
     ;(define res-name (generate-file-name i RES)) 
-(define t-name (generate-file-name i T))    
-    (define b-name (generate-file-name i B))
-    (define f-name (generate-file-name i F))
-    (define a-name (generate-file-name i A))    
+(define char-name (generate-file-name i CHAR))    
     (define datas (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS i PIE MUTATION mean-name rank-name)))
     (define ps (map first datas))
     (plot-payoffs ps i pic-title pic-name)
-    (define ts (map second datas))
-(define bs (map third datas))
-(define fs (map fourth datas))
-(define as (map fifth datas))
-  (plot-payoff ts "toughs" t-name)
-(plot-payoff bs "bullys" b-name)
-(plot-payoff fs "fairs" f-name)
-(plot-payoff as "accoms" a-name)
+    (define chars (map second datas))
+(define types (apply hash-union chars
+                       #:combine/key (lambda (k v1 v2) (append  v1 v2))))
 
+(define toughs (how-many 'tough types))
+  (define bullys (how-many 'bully types))
+  (define b-toughs (how-many 'bullyish-tough types))
+  (define fairs (how-many 'fair types))
+  (define accoms (how-many 'accommodator types))
+(define a-accoms (how-many 'almost-accommodator types))
+  (define type-list (list toughs b-toughs bullys fairs accoms a-accoms))
+(define name-list (list "toughs" "bullyish-toughs" "bullys" "fairs" "accommodators" "almost-accommodators"))
+(define dark-color-list (list 'midnightblue 'royalblue 'darkturquoise 'darkgreen 'crimson 'orchid))
+(plot-point-types (string-append char-name ".png") type-list name-list dark-color-list)
     ))
 
 (module+ main (deltas))

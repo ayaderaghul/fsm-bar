@@ -28,6 +28,7 @@
         #:y-min 0.0 #:y-max (+ 5 max-pay) #:title title
                 #:width 1200))
 
+
 ;; to calculate the compound rate of payoff
 (define (compound d r) (foldl (lambda (n a) (+ a (expt d n))) 1 (build-list (- r 1) add1)))
 

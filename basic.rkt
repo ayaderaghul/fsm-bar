@@ -1,7 +1,7 @@
 #lang racket
 
 (provide evolve print-delta)
-(require "utilities.rkt" "configuration.rkt" "./automata/automata.rkt" "population.rkt" "scan.rkt" "inout.rkt")
+(require "utilities.rkt" "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt" "population.rkt" "scan.rkt" "inout.rkt")
 
 ;; DISCOUNT FACTOR
 (define (print-delta delta method)
@@ -41,25 +41,19 @@
          (mutate-c p3 mutation)
          (define ranking (rank* p3))
          (define ranking-list (hash->list ranking))
+(define autos (map car ranking-list))
+(define auto-numbers (map cdr ranking-list))
 (define char-hash 
-(if (empty? ranking-list) (hash 'nothing 0)
-(scan-char-m ranking-list rounds-per-match delta pie)))
-         ;(define sample-auto
-         ;  (if (hash-empty? ranking) 0 (car (first ranking-list))))
-         ;(define resp
-         ;  (if (struct? sample-auto)
-         ;      (acc-responses-2 sample-auto)
-         ;      (list (list 0 0 0) (list 0 0 0) (list 0 0 0))))
+(if (empty? ranking-list) (hash 'nothing (list 0 0))
+(hash
+     (first (test-mixture autos auto-numbers rounds-per-match delta pie))
+     (list cycles (apply + auto-numbers)))))
          (when (zero? (modulo cycles DATA-POINT))
               (out-rank rank-file cycles
                        (hash->list (rank p3))))
-(define toughs (how-many 'tough char-hash))
-(define bullys (how-manys (list 'bullyish-tough 'bully) char-hash))
-(define accoms (how-manys (list 'nice-accommodator 'accommodator) char-hash))
-(define fairs (how-many 'authentic-fair char-hash))
          (define m (relative-average pp 1))
          (out-mean mean-file (list m))
-         (cons (list m toughs bullys fairs accoms)
+         (cons (list m char-hash)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))
