@@ -1,5 +1,5 @@
 #lang racket
-(require "configuration.rkt" plot/no-gui)
+(require "configuration.rkt" plot/no-gui unstable/hash)
 (provide (all-defined-out))
 
 ;; GENERATE NAMES AND TITLES
@@ -14,6 +14,13 @@
   (string-append (variable->string x) suffix))
 
 ;; PLOT MEANS IN RUNTIME
+
+(define (pack-coors a-list)
+  [define l (length a-list)]
+  (for/list ([i (in-range (/ l 2))])
+    (list
+     (list-ref a-list (* 2 i))
+     (list-ref a-list (add1 (* 2 i))))))
 
 (define (pack-points data)
   (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
@@ -61,5 +68,46 @@
 (plot-distribution h "h->" (string-append pre-name "h"))
 )
 
+;; PLOT CHARACTERS IN RUNTIME
+
+
+(define (how-many x h)
+(if (hash-has-key? h x) (hash-ref h x) 0))
+
+(define (render-characters hash-lst)
+(define types (apply hash-union hash-lst
+               #:combine/key (lambda (k v1 v2) (append  v1 v2))))
+(define toughs (how-many 'tough types))
+  (define bullys (how-many 'bully types))
+  (define b-toughs (how-many 'bullyish-tough types))
+  (define fairs (how-many 'fair types))
+  (define accoms (how-many 'accommodator types))
+  (define a-accoms (how-many 'almost-accommodator types))
+(define highs (how-many 'high types))
+(define lows (how-many 'low types))
+  (list toughs b-toughs bullys fairs accoms a-accoms highs lows))
+
+
+(define (plot-types filename a-list name-list)
+  (define len (length a-list))
+  (define data
+    (for/list ([i (in-list a-list)]
+               [j (in-naturals len)]
+               [k (in-list name-list)])
+      (if (list? i)
+          (lines (pack-coors i) #:color j #:label k)
+          (lines (list (list 0 0)) #:color j #:label k))))
+  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
+
+(define (plot-point-types filename a-list name-list color-list)
+  (define data
+    (for/list ([i (in-list a-list)]
+               [j (in-list color-list)]
+               [k (in-list name-list)]
+               )
+      (if (list? i)
+          (points (pack-coors i) #:color j #:line-width 5 #:alpha .4 #:label k)
+          (points (list (list 0 0)) #:color j #:line-width 5 #:label k))))
+  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
 
 

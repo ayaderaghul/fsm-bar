@@ -31,7 +31,6 @@
 (define RES (string-append c "respons"))
 (define CHAR (string-append c "meanplotchars"))
 
-
 (define T (string-append c "toughs"))
 (define B (string-append c "bullys"))
 (define F (string-append c "fairs"))
@@ -49,7 +48,9 @@
 
 ;; RUN ACROSS DELTA
 (define DELTAS-C (list .99 .97 .95 .93 0))
-(define DELTAS (list .99 .95 .9 .85 .8 .7 .6 .4 .2 0))
+(define DELTAS (list .99 .95 .9 
+;.85 .8 .7 .6 .4 .2 0
+))
 
 ;; PIES
 (define PIES (list 0.5 1 2 3 4 4.5))
@@ -61,6 +62,10 @@
 ;; SCAN
 (define THRESHOLD 5) ; only collect data on automata that have at least 10 of its kind
 
+;; PLOT CHARS
+(define CHAR-LIST (list "toughs" "bullyish-toughs" "bullys" "fairs" "accommodators" "almost-accommodators" "highs" "lows"))
+(define BRIGHT-COLORS (list 'darkblue 'royalblue  'cyan 'lime 'purple 'magenta))
+(define DARK-COLORS (list 'midnightblue 'royalblue 'darkturquoise 'darkgreen 'crimson 'orchid 'darkred 'coral))
 
 
 

@@ -1,7 +1,7 @@
 #lang racket
 
 (provide evolve print-delta)
-(require "utilities.rkt" "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt" "population.rkt" "scan.rkt" "inout.rkt")
+(require "utilities.rkt" "configuration.rkt" "./automata/personality.rkt" "population.rkt" "scan.rkt" "inout.rkt")
 
 ;; DISCOUNT FACTOR
 (define (print-delta delta method)
@@ -14,20 +14,14 @@
   (define pic-title (print-delta DELTA "discount factor"))
   (define rank-name (generate-file-name DELTA RANK))
   (define mean-name (generate-file-name DELTA MEAN))
-  ;(define res-name (generate-file-name DELTA RES))
+  (define char-name (generate-file-name DELTA CHAR))
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
   (define ps (map first datas))
-  (define ts (map second datas))
-(define bs (map third datas))
-(define fs (map fourth datas))
-(define as (map fifth datas))
-  ;(plot-distributions rs res-name)
+  (define char-hash (map second datas))
   (plot-payoffs ps DELTA pic-title PIC)
-(plot-payoff ts "toughs" "toughs.png")
-(plot-payoff bs "bullys" "bullys.png")
-(plot-payoff fs "fairs" "fairs.png")
-(plot-payoff as "accoms" "accoms.png")
+(define type-list (render-characters char-hash))
+(plot-point-types (string-append char-name ".png") type-list CHAR-LIST DARK-COLORS)
   )
 
 (module+ main (run-d))

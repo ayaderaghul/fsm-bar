@@ -1,6 +1,8 @@
 #lang racket
 (provide (all-defined-out))
-(require "utilities.rkt" "./automata/automata.rkt" "./automata/interaction.rkt" "./automata/personality.rkt" "csv.rkt" plot/no-gui "configuration.rkt" unstable/hash "scan.rkt")
+(require "./automata/automata.rkt" "./automata/personality.rkt"
+         "csv.rkt" plot/no-gui
+         "configuration.rkt" "utilities.rkt")
 (require (planet neil/csv:2:0))
 
 ;; IMPORT
@@ -18,17 +20,15 @@
   (define c (load-data csv-file))
   (define d (series->lines c))
   (define max-pay (* 5 (compound DELTA ROUNDS)))
-  (define ceiling (function (lambda (x) max-pay) #:color "blue"))
-  (plot-file (list d ceiling) pic-name 'png #:width 1200 #:y-min 0.0 #:y-max (+ 10 max-pay) #:title title))
+  (define cap (function (lambda (x) max-pay) #:color "blue"))
+  (plot-file (list d cap) pic-name 'png #:width 1200 #:y-min 0.0 #:y-max (+ 10 max-pay) #:title title))
+
+(define (load-mean csv-file)
+(define c (load-data csv-file))
+(series->lines c))
 
 ;; PLOT DYNAMICS FROM EXPORTED DATA
 
-(define (pack-coors a-list)
-  [define l (length a-list)]
-  (for/list ([i (in-range (/ l 2))])
-    (list
-     (list-ref a-list (* 2 i))
-     (list-ref a-list (add1 (* 2 i))))))
 (define (load-dynamic csv-file)
   (lines (pack-coors (load-data csv-file))))
 (define (load-dynamics file-list)
@@ -134,57 +134,20 @@
 (define (generate-ax pre a-list)
   (map (lambda (x) (x->ax pre x)) a-list))
 
-;; match the resurrected automata
-(define (contest lst rounds delta pie)
-  (for/list ([i (in-list lst)])
-    (for/list ([j (in-list lst)])
-      (interact i j rounds delta pie))))
 
 ;; test the whole simulation, then plot the characters
-(define (render-characters file make-reader data-point rounds delta pie)
+(define (render-characters-f file make-reader data-point
+                                     rounds delta pie)
   (define data (all-rows file make-reader))
   (define autos (take-odd data))
   (define ressurected (converts autos))
   (define test-result (test-simulation ressurected data-point rounds delta pie))
-  (define len (length test-result))
-  (define types (apply hash-union test-result
-                       #:combine/key (lambda (k v1 v2) (append  v1 v2))))
-  (define toughs (how-many 'tough types))
-  (define bullys (how-many 'bully types))
-  (define b-toughs (how-many 'bullyish-tough types))
-  (define fairs (how-many 'fair types))
-  (define accoms (how-many 'accommodator types))
-(define a-accoms (how-many 'almost-accommodator types))
-  (list toughs b-toughs bullys fairs accoms a-accoms))
+  (render-characters test-result))
 
-(define (plot-types filename a-list name-list)
-  (define len (length a-list))
-  (define data
-    (for/list ([i (in-list a-list)]
-               [j (in-naturals len)]
-               [k (in-list name-list)])
-      (if (list? i)
-          (lines (pack-coors i) #:color j #:label k)
-          (lines (list (list 0 0)) #:color j #:label k))))
-  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
-
-(define (plot-point-types filename a-list name-list color-list)
-  (define data
-    (for/list ([i (in-list a-list)]
-               [j (in-list color-list)]
-               [k (in-list name-list)]
-               )
-      (if (list? i)
-          (points (pack-coors i) #:color j #:line-width 10 #:alpha .7 #:label k)
-          (points (list (list 0 0)) #:color j #:line-width 10 #:label k))))
-  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
 
 (define (plot-simulation file make-reader data-point rounds delta pie)
-  (define types-list (render-characters file make-reader data-point rounds delta pie))
-  (define name-list (list "toughs" "bullyish-toughs" "bullys" "fairs" "accommodators" "almost-accommodators"))
-(define high-color-list (list 'darkblue 'royalblue  'cyan 'lime 'purple 'magenta))
-(define dark-color-list (list 'midnightblue 'royalblue 'darkturquoise 'darkgreen 'crimson 'orchid))
-  (plot-point-types (string-append (string-replace file "rank" "meanplot") "chars.png") types-list name-list dark-color-list))
+  (define types-list (render-characters-f file make-reader data-point rounds delta pie))
+  (plot-point-types (string-append (string-replace file "rank" "meanplot") "chars.png") types-list CHAR-LIST DARK-COLORS))
 
 (define (plot-simulations file-list make-reader data-point rounds delta-list pie)
   (for ([i (in-list file-list)]

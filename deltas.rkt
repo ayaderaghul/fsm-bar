@@ -1,6 +1,6 @@
 #lang racket
 
-(require "basic.rkt" "configuration.rkt" "utilities.rkt" "population.rkt" "inout.rkt" "scan.rkt" unstable/hash)
+(require "basic.rkt" "configuration.rkt" "utilities.rkt" "population.rkt")
 
 ;; ACROSS DELTAS: DISCOUNT FACTOR
 
@@ -18,20 +18,9 @@
     (define datas (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS i PIE MUTATION mean-name rank-name)))
     (define ps (map first datas))
     (plot-payoffs ps i pic-title pic-name)
-    (define chars (map second datas))
-(define types (apply hash-union chars
-                       #:combine/key (lambda (k v1 v2) (append  v1 v2))))
-
-(define toughs (how-many 'tough types))
-  (define bullys (how-many 'bully types))
-  (define b-toughs (how-many 'bullyish-tough types))
-  (define fairs (how-many 'fair types))
-  (define accoms (how-many 'accommodator types))
-(define a-accoms (how-many 'almost-accommodator types))
-  (define type-list (list toughs b-toughs bullys fairs accoms a-accoms))
-(define name-list (list "toughs" "bullyish-toughs" "bullys" "fairs" "accommodators" "almost-accommodators"))
-(define dark-color-list (list 'midnightblue 'royalblue 'darkturquoise 'darkgreen 'crimson 'orchid))
-(plot-point-types (string-append char-name ".png") type-list name-list dark-color-list)
+    (define char-hash (map second datas))
+(define type-list (render-characters char-hash))
+(plot-point-types (string-append char-name ".png") type-list CHAR-LIST DARK-COLORS)
     ))
 
 (module+ main (deltas))
