@@ -40,7 +40,44 @@ rounds delta pie)
            0 800
            1200 400))
 
-(define (plot-bundle csv-file delta rank-file make-reader data-point)
+(define (plot-bundle csv-file delta rank-file make-reader data-point rounds pie)
   (plot-mean-dc csv-file delta)
 (plot-tests rank-file make-reader data-point
-ROUNDS delta PIE))
+rounds delta pie))
+
+(define (plot-bundles mean-list delta-list rank-list make-reader data-point rounds pie)
+(for ([i (in-list mean-list)]
+[j (in-list delta-list)]
+[k (in-list rank-list)])
+(send dc erase)
+(plot-bundle i j k make-reader data-point rounds pie)
+(send frame save-file (string-append (generate-file-name delta TESTS) ".png") 'png)))
+
+(define cluster "/home/linhchi.nguyen/run86/")
+(define MEAN-FILE (list (string-append cluster "rank0")
+(string-append cluster "mean20")
+(string-append cluster "mean40")
+(string-append cluster "mean60")
+(string-append cluster "mean70")
+(string-append cluster "mean80")
+(string-append cluster "mean85")
+(string-append cluster "mean90")
+(string-append cluster "mean95")
+(string-append cluster "mean99")))
+(define RANK-FILE (list (string-append cluster "rank0")
+(string-append cluster "rank20")
+(string-append cluster "rank40")
+(string-append cluster "rank60")
+(string-append cluster "rank70")
+(string-append cluster "rank80")
+(string-append cluster "rank85")
+(string-append cluster "rank90")
+(string-append cluster "rank95")
+(string-append cluster "rank99")))
+(define DELTA-LIST (list 0 .2 .4 .6 .7 .8 .85 .9 .95 .99))
+(define JUMP 100) ;; data point
+
+(define (draws)
+(plot-bundles MEAN-FILE DELTA-LIST RANK-FILE make-automaton-csv-reader JUMP ROUNDS PIE))
+
+(module+ main (draws))
