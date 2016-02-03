@@ -141,8 +141,8 @@
   (define data (all-rows file make-reader))
   (define autos (take-odd data))
   (define ressurected (converts autos))
-  (define test-result (test-simulation ressurected data-point rounds delta pie))
-  (render-characters test-result))
+  (define test-result (test ressurected data-point rounds delta pie))
+  (map render-characters test-result))
 
 
 (define (plot-simulation file make-reader data-point rounds delta pie)

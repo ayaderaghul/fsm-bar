@@ -1,5 +1,5 @@
 #lang racket
-(require "automata.rkt" math/matrix)
+(require "automata.rkt")
 (provide (all-defined-out))
 
 ;; PAIR MATCH
@@ -122,6 +122,12 @@
               )))
   (cons (round-payoff p1 2) (round-payoff p2 2)))
 
+;; create payoff matrix
+(define (contest lst rounds delta pie)
+  (for/list ([i (in-list lst)])
+    (for/list ([j (in-list lst)])
+      (interact i j rounds delta pie))))
+
 ;; UTILITIES
 (define (round-payoff x n)
 (define factor (expt 10 n))
@@ -137,32 +143,10 @@
   (define payoffs (payoff-matrix pie))
   (vector-ref (vector-ref payoffs current1) current2))
 
-;; MIXTURE INTERACTION
-;; the previous part deals with interaction among pure strategies
-;; but a mixture should be able to be thought of as one strategy also
-;; so we write function to interact mixture
 (define (payoff-table hori-lst vert-lst rounds-per-match delta pie)
   (for/list ([i (in-list vert-lst)])
     (for/list ([j (in-list hori-lst)])
       (car (interact i j rounds-per-match delta pie)))))
 
-(define (questionaire-m auto-list weights rounds-per-match delta pie)
-  (define test-kit (list l m h))
-  (define len (length auto-list))
-  (define mixture (payoff-table auto-list auto-list rounds-per-match delta pie))
-  (define w-lmh (payoff-table test-kit auto-list rounds-per-match delta pie))
-  (define lmh-pay (payoff-table auto-list test-kit rounds-per-match delta pie))
-  (define mixture-matrix (list->matrix len len (flatten mixture)))
-  (define w-lmh-matrix (list->matrix len 3 (flatten w-lmh)))
-  (define lmh-pay-matrix (list->matrix 3 len (flatten lmh-pay)))
-  (define weight-row (list->matrix 1 len weights))
-  (define weight-col (->col-matrix weight-row))
-  (match-define (cons highs-potential lows-pay) (interact h l rounds-per-match delta pie))
-  (define fair-benchmark (car (interact m m rounds-per-match delta pie)))
-  (append
-   (matrix->list (matrix* weight-row mixture-matrix weight-col))
-   (matrix->list (matrix* weight-row w-lmh-matrix))
-   (matrix->list (matrix* lmh-pay-matrix weight-col))
-   (list lows-pay fair-benchmark highs-potential)
-   ))
+
 

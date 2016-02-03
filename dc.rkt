@@ -15,31 +15,32 @@
   (plot/dc (list d cap)
            dc 0 0 1200 400))
 
-
-
-
-`(define (plot-bundle mean result result-m name-list color-list)
-  (define c (load-data csv-file))
-  (define d (series->lines c))
-  (define max-pay (* 5 (compound DELTA ROUNDS)))
-  (define ceiling (function (lambda (x) max-pay) #:color "blue"))
-  (plot/dc (list d ceiling) dc 0 0 1200 400)
-  (define (pack lst)
+(define (plot-tests rank-file make-reader data-point
+rounds delta pie)
+(define test-results
+(render-characters-f rank-file make-reader data-point
+                                     rounds delta pie))
+(match-define (list result result-m) test-results)
+(define (pack lst alpha y-max)
     (for/list ([i (in-list lst)]
-               [j (in-list color-list)]
-               [k (in-list name-list)]
+               [j (in-list DARK-COLORS)]
+               [k (in-list CHAR-LIST)]
                )
       (if (list? i)
-          (points (pack-coors i) #:color j #:line-width 5 #:alpha .4 #:label k)
-          (points (list (list 0 0)) #:color j #:line-width 5 #:label k))))
-  (define data (pack result))
-  (define data-m (pack result-m))
+          (points (pack-coors i) #:color j #:line-width 7 #:alpha alpha #:label k #:y-min 0 #:y-max y-max)
+          (points (list (list 0 0)) #:color j #:line-width 7 #:label k))))
+(define data (pack result .4 80))
+  (define data-m (pack result-m .7 100))
   (plot/dc data
            dc
            0 400
-           1200 800)
+           1200 400)
   (plot/dc data-m
            dc
            0 800
-           1200 1200)
-  )
+           1200 400))
+
+(define (plot-bundle csv-file delta rank-file make-reader data-point)
+  (plot-mean-dc csv-file delta)
+(plot-tests rank-file make-reader data-point
+ROUNDS delta PIE))
