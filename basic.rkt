@@ -1,7 +1,7 @@
 #lang racket
 
 (provide evolve print-delta)
-(require "utilities.rkt" "configuration.rkt" "./automata/personality.rkt" "population.rkt" "scan.rkt" "inout.rkt")
+(require "utilities.rkt" "configuration.rkt" "./automata/personality.rkt" "population.rkt" "scan.rkt" "inout.rkt" "draw.rkt")
 
 ;; DISCOUNT FACTOR
 (define (print-delta delta method)
@@ -14,14 +14,15 @@
   (define pic-title (print-delta DELTA "discount factor"))
   (define rank-name (generate-file-name DELTA RANK))
   (define mean-name (generate-file-name DELTA MEAN))
-  (define char-name (generate-file-name DELTA CHAR))
+  (define test-name (generate-file-name DELTA TESTS))
   (define datas
     (time (evolve (build-random-population N STATE#) CYCLES SPEED ROUNDS DELTA PIE MUTATION mean-name rank-name)))
   (define ps (map first datas))
   (define char-hash (map second datas))
-  (plot-payoffs ps DELTA pic-title PIC)
-(define type-list (render-characters char-hash))
-(plot-point-types (string-append char-name ".png") type-list CHAR-LIST DARK-COLORS)
+(define char-hash-m (map third datas))
+(define char-list (render-characters (flatten char-hash)))
+(define char-list-m (render-characters char-hash-m))
+(draw-bundle ps char-list char-list-m DELTA (string-append test-name ".png"))
   )
 
 (module+ main (run-d))
@@ -35,19 +36,16 @@
          (mutate-c p3 mutation)
          (define ranking (rank* p3))
          (define ranking-list (hash->list ranking))
-(define autos (map car ranking-list))
-(define auto-numbers (map cdr ranking-list))
-(define char-hash 
-(if (empty? ranking-list) (hash 'nothing (list 0 0))
-(hash
-     (first (test-mixture autos auto-numbers rounds-per-match delta pie))
-     (list cycles (apply + auto-numbers)))))
-         (when (zero? (modulo cycles DATA-POINT))
+(define char-results
+         (test-both ranking-list (- CYCLES cycles) rounds-per-match delta pie)
+)
+(when (zero? (modulo cycles DATA-POINT))
               (out-rank rank-file cycles
                        (hash->list (rank p3))))
+
          (define m (relative-average pp 1))
          (out-mean mean-file (list m))
-         (cons (list m char-hash)
+         (cons (cons m char-results)
                ;;(hash-count ranking)
                ;;(apply max (if (hash-empty? ranking) (list 0) (hash-values ranking))))
                (evolve p3 (- cycles 1) speed rounds-per-match delta pie mutation mean-file rank-file))]))

@@ -7,28 +7,25 @@
 
 (define dc (new bitmap-dc% [bitmap frame]))
 
-(define (plot-mean-dc csv-file delta)
-  (define data (load-data csv-file))
+(define (draw-mean means delta)
   (define max-pay (* 5 (compound delta ROUNDS)))
   (define cap (function (lambda (x) max-pay) #:color "blue"))
-  (define d (lines (pack-points data) #:y-min 0 #:y-max (+ 5 max-pay)))
+  (define d (lines (pack-points means) #:y-min 0 #:y-max (+ 5 max-pay)))
   (plot/dc (list d cap)
            dc 0 0 1200 400))
 
-(define (plot-tests rank-file make-reader data-point
-rounds delta pie)
-(define test-results
-(render-characters-f rank-file make-reader data-point
-                                     rounds delta pie))
-(match-define (list result result-m) test-results)
+(define (draw-mean-f csv-file delta)
+(define data (load-data csv-file))
+(draw-mean data delta))
+
+(define (draw-chars result result-m)
 (define (pack lst alpha y-max)
     (for/list ([i (in-list lst)]
                [j (in-list DARK-COLORS)]
                [k (in-list CHAR-LIST)]
                )
-      (if (list? i)
-          (points (pack-coors i) #:color j #:line-width 6 #:alpha alpha #:label k #:y-min 0 #:y-max y-max)
-          (points (list (list 0 0)) #:color j #:line-width 6 #:label k))))
+               (points (pack-coors i) #:color j #:line-width 6 #:alpha alpha #:label k #:y-min 0 #:y-max y-max)))
+       
 (define data (pack result .4 70))
   (define data-m (pack result-m .7 100))
   (plot/dc data
@@ -40,18 +37,32 @@ rounds delta pie)
            0 800
            1200 400))
 
-(define (plot-bundle csv-file delta rank-file make-reader data-point rounds pie)
-  (plot-mean-dc csv-file delta)
-(plot-tests rank-file make-reader data-point
-rounds delta pie))
+(define (draw-chars-f rank-file make-reader data-point
+rounds delta pie)
+(define test-results
+(render-characters-f rank-file make-reader data-point
+                                     rounds delta pie))
+(match-define (list result result-m) test-results)
+(draw-chars result result-m))
 
-(define (plot-bundles mean-list delta-list rank-list make-reader data-point rounds pie)
+(define (draw-bundle means char-test char-test-m delta filename)
+(draw-mean means delta)
+(draw-chars char-test char-test-m)
+(send frame save-file filename 'png))
+
+
+(define (draw-bundle-f csv-file delta rank-file make-reader data-point rounds pie filename)
+(send dc erase)
+  (draw-mean-f csv-file delta)
+(draw-chars-f rank-file make-reader data-point
+rounds delta pie)
+(send frame save-file filename 'png))
+
+(define (draw-bundles-f mean-list delta-list rank-list make-reader data-point rounds pie)
 (for ([i (in-list mean-list)]
 [j (in-list delta-list)]
 [k (in-list rank-list)])
-(send dc erase)
-(plot-bundle i j k make-reader data-point rounds pie)
-(send frame save-file (string-append (generate-file-name delta TESTS) ".png") 'png)))
+(draw-bundle-f i j k make-reader data-point rounds pie (string-append (generate-file-name j TESTS) ".png"))))
 
 (define cluster "/home/linhchi.nguyen/run86/")
 (define MEAN-FILE (list (string-append cluster "rank0")
@@ -78,6 +89,6 @@ rounds delta pie))
 (define JUMP 100) ;; data point
 
 (define (draws)
-(plot-bundles MEAN-FILE DELTA-LIST RANK-FILE make-automaton-csv-reader JUMP ROUNDS PIE))
+(draw-bundles-f MEAN-FILE DELTA-LIST RANK-FILE make-automaton-csv-reader JUMP ROUNDS PIE))
 
 (module+ main (draws))

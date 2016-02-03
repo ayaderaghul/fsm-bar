@@ -72,7 +72,7 @@
 
 
 (define (how-many x h)
-(if (hash-has-key? h x) (hash-ref h x) 0))
+(if (hash-has-key? h x) (hash-ref h x) (hash-ref h 'nothing)))
 
 (define (render-characters hash-lst)
 (define types (apply hash-union hash-lst
@@ -99,15 +99,13 @@
           (lines (list (list 0 0)) #:color j #:label k))))
   (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
 
-(define (plot-point-types filename a-list name-list color-list)
+(define (plot-point-types filename a-list alpha y-max)
   (define data
     (for/list ([i (in-list a-list)]
-               [j (in-list color-list)]
-               [k (in-list name-list)]
+               [j (in-list DARK-COLORS)]
+               [k (in-list CHAR-LIST)]
                )
-      (if (list? i)
-          (points (pack-coors i) #:color j #:line-width 5 #:alpha .4 #:label k)
-          (points (list (list 0 0)) #:color j #:line-width 5 #:label k))))
-  (plot-file data filename 'png #:y-max 130 #:y-min 0 #:width 1200))
-
+          (points (pack-coors i) #:color j #:line-width 7 #:alpha alpha #:label k)))
+         
+  (plot-file data filename 'png #:y-max y-max #:y-min 0 #:width 1200))
 

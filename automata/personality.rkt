@@ -96,58 +96,42 @@
   (define questionaire-result (questionaire-m mixture weights rounds delta pie))
   (read-test-m questionaire-result))
 
-;; test a simulation
-(define (test-simulation lst data-point rounds delta pie)
-  (define (test-au mixture posn rounds delta pie)
+
+
+;; test a whole simulation
+(define (test-au mixture posn rounds delta pie)
     (for/list ([i (in-list mixture)])
       (hash
        (first (test-auto (car i) rounds delta pie))
        (list posn (cdr i)))))
-  (define len (length lst))
-  (define xs (build-list len (lambda (x) (* data-point x))))
-  (flatten
-   (for/list ([i (in-list lst)]
-              [j (in-list xs)])
-     (if (list? i) (test-au i j rounds delta pie)
-         (hash 'nothing (list 0 0))))))
-
-(define (test-simulation-m lst data-point rounds delta pie)
-  (define (test-mix mix posn rounds delta pie)
+(define (test-mix mix posn rounds delta pie)
     (define autos (map car mix))
     (define auto-numbers (map cdr mix))
     (hash
      (first (test-mixture autos auto-numbers rounds delta pie))
      (list posn (apply + auto-numbers))))
-  (define len (length lst))
-  (define xs (build-list len (lambda (x) (* data-point x))))
-  (for/list ([i (in-list lst)]
-             [j (in-list xs)])
-    (if (list? i) (test-mix i j rounds delta pie)
-        (hash 'nothing (list 0 0)))))
-
+(define (test* f mix posn rounds delta pie)
+      (if (empty? mix) (hash 'nothing (list 0 0)) (f mix posn rounds delta pie)
+          ))
 ;; combine both method (return both test-auto and test-mixture at the same time)
-(define (test lst data-point rounds delta pie)
-  (define (test-au mixture posn rounds delta pie)
-    (for/list ([i (in-list mixture)])
-      (hash
-       (first (test-auto (car i) rounds delta pie))
-       (list posn (cdr i)))))
-  (define (test-mix mixture posn rounds delta pie)
-    (define autos (map car mixture))
-    (define auto-numbers (map cdr mixture))
-    (hash
-     (first (test-mixture autos auto-numbers rounds delta pie))
-     (list posn (apply + auto-numbers))))
+(define (test-simulation lst data-point rounds delta pie)
   (define len (length lst))
   (define xs (build-list len (lambda (x) (* data-point x))))
-  (define (test* f rounds delta pie)
-    (for/list ([i (in-list lst)]
-               [j (in-list xs)])
-      (if (list? i) (f i j rounds delta pie)
-          (hash 'nothing (list 0 0)))))
   (define test-result
     (flatten
-     (test* test-au rounds delta pie)))
+(for/list ([i (in-list lst)] [j (in-list xs)])
+     (test* test-au i j rounds delta pie))))
   (define test-result-m
-    (test* test-mix rounds delta pie))
+(for/list ([i (in-list lst)] [j (in-list xs)])
+    (test* test-mix i j rounds delta pie)))
   (list test-result test-result-m))
+
+;; test the population state as autos and as mixture
+
+(define (test-both mixture posn rounds delta pie)
+  (define test-result
+     (test* test-au mixture posn rounds delta pie))
+  (define test-result-m
+    (test* test-mix mixture posn rounds delta pie))
+  (list test-result test-result-m))
+

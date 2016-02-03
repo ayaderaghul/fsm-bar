@@ -1,6 +1,6 @@
 #lang racket
 (require "configuration.rkt" "./automata/automata.rkt" "./automata/personality.rkt" "utilities.rkt")
-(provide rank rank* scan scan* scan-char scan-char-m how-many how-manys)
+(provide rank rank* scan scan* scan-char scan-char-m )
 
 ;; SCAN
 (define (initial-action au)
@@ -42,7 +42,7 @@
 
 ;; scan for types (personality)
 
-(define (how-manys lst h)
+`(define (how-manys lst h)
 (for/sum ([i (in-list lst)])
 (how-many i h)))
 

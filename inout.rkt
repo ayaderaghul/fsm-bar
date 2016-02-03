@@ -77,7 +77,7 @@
              [j (in-list lst)])
     (cond [(and (zero? (- (length j) 1))
                 (zero? (apply string-length j)))
-           0]
+           '()]
           [else (map convert j)])))
 
 (define (converts2 lst)
@@ -141,7 +141,7 @@
   (define data (all-rows file make-reader))
   (define autos (take-odd data))
   (define ressurected (converts autos))
-  (define test-result (test ressurected data-point rounds delta pie))
+  (define test-result (test-simulation ressurected data-point rounds delta pie))
   (map render-characters test-result))
 
 
