@@ -27,9 +27,9 @@ rounds delta pie)
                [k (in-list CHAR-LIST)]
                )
       (if (list? i)
-          (points (pack-coors i) #:color j #:line-width 7 #:alpha alpha #:label k #:y-min 0 #:y-max y-max)
-          (points (list (list 0 0)) #:color j #:line-width 7 #:label k))))
-(define data (pack result .4 80))
+          (points (pack-coors i) #:color j #:line-width 6 #:alpha alpha #:label k #:y-min 0 #:y-max y-max)
+          (points (list (list 0 0)) #:color j #:line-width 6 #:label k))))
+(define data (pack result .4 70))
   (define data-m (pack result-m .7 100))
   (plot/dc data
            dc
