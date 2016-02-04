@@ -20,15 +20,16 @@
 (draw-mean data delta))
 
 (define (draw-chars result result-m)
-(define (pack lst alpha y-max)
+(define (pack lst alpha y-min y-max)
     (for/list ([i (in-list lst)]
                [j (in-list DARK-COLORS)]
                [k (in-list CHAR-LIST)]
                )
-               (points (pack-coors i) #:color j #:line-width 6 #:alpha alpha #:label k #:y-min 0 #:y-max y-max)))
-       
-(define data (pack result .4 70))
-  (define data-m (pack result-m .7 100))
+               (points (pack-coors i) #:color j #:line-width 6 #:alpha alpha #:label k #:y-min y-min #:y-max y-max)))
+;; for newer simulation, the threshold decreases so there are more autos
+;; you should lower the opacity (alpha) and the adjust the capture frame       
+(define data (pack result .4 0 70)) ; .2 0 80
+  (define data-m (pack result-m .7 40 120)) ; .5 40 120 
   (plot/dc data
            dc
            0 400

@@ -1,5 +1,5 @@
 #lang racket
-(require "configuration.rkt" "automata.rkt")
+(require "../configuration.rkt" "automata.rkt")
 (provide export-mathas export-matha-codes)
 
 ;; EXPORT MATHA CODE OF THE AUTOMATON
@@ -115,7 +115,7 @@
 (define (export-matha-codes a-list name)
   (with-output-to-file AUTO-CODE
     (lambda () (printf (generate-matha-codes a-list name)))
-    #:exists 'replace))
+    #:exists 'append))
 
 (define (generate-matha-codes a-list name)
 (string-join
