@@ -43,8 +43,7 @@ rounds delta pie)
 (define test-results
 (render-characters-f rank-file make-reader data-point
                                      rounds delta pie))
-(match-define (list result result-m) test-results)
-(draw-chars result result-m))
+(apply draw-chars test-results))
 
 (define (draw-bundle means char-test char-test-m delta filename)
 (draw-mean means delta)

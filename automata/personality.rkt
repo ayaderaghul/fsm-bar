@@ -114,7 +114,8 @@
       (if (empty? mix) (hash 'nothing (list 0 0)) (f mix posn rounds delta pie)
           ))
 ;; combine both method (return both test-auto and test-mixture at the same time)
-(define (test-simulation lst data-point rounds delta pie)
+#|
+(define (test-simulation3 lst data-point rounds delta pie)
   (define len (length lst))
   (define xs (build-list len (lambda (x) (* data-point x))))
   (define test-result
@@ -126,6 +127,33 @@
     (test* test-mix i j rounds delta pie)))
   (list test-result test-result-m))
 
+(define (test-simulation2 lst data-point rounds delta pie)
+  (define len (length lst))
+  (define xs (build-list len (lambda (x) (* data-point x))))
+  (define test-result
+    (for/fold ([test-one '()])
+              ([i (in-list lst)] [j (in-list xs)])
+      (define result (test* test-au i j rounds delta pie))
+      (cons result test-one)))
+  (define test-result-m
+    (for/fold ([test-1 '()])
+              ([i (in-list lst)] [j (in-list xs)])
+      (define result-m (test* test-mix i j rounds delta pie))
+      (cons result-m test-1)))
+  (list (reverse (flatten test-result)) (reverse test-result-m)))
+|#
+(define (test-simulation lst data-point rounds delta pie)
+  (define len (length lst))
+  (define xs (build-list len (lambda (x) (* data-point x))))
+  (define test-result
+    (foldl (lambda (next1 next2 init) (cons (test* test-au next1 next2 rounds delta pie) init))
+           '() lst xs))
+  (define test-result-m
+    (foldl (lambda (next1 next2 init) (cons (test* test-mix next1 next2 rounds delta pie) init))
+           '() lst xs))
+  (list (reverse (flatten test-result)) (reverse test-result-m)))
+
+
 ;; test the population state as autos and as mixture
 
 (define (test-both mixture posn rounds delta pie)
@@ -134,4 +162,3 @@
   (define test-result-m
     (test* test-mix mixture posn rounds delta pie))
   (list test-result test-result-m))
-

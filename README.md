@@ -87,10 +87,11 @@ with -tm and no further specification, racket will evaluate the function `main d
 | resurrect automata from data & analyse population state | 23 jan |||
 | personality test (w itself, l m h) | 28 jan |||
 |personality test for mixture | x|| there are cases that the test doesnt comprehend (third branch)|
-| plot the personality test | |||too many toughs|
+| plot the personality test | |||too many toughs, meh..|
 |plot simulation test from data |x||see the .png|
-|see the error file for rund.pbs|||but you deleted it, i guess it's smt when the test return '() list so list->matrix throws exception|
-|plot the bubbles in runtime| |||
+|see the error file for rund.pbs|x||but you deleted it, i guess it's smt when the test return '() list so list->matrix throws exception|
+|plot the bubbles in runtime| ||a night is too short, all the jobs get killed in the morning, run a shorter job|
+|investigate the 6state machines||||
 
 ### Personality test
 
