@@ -16,6 +16,7 @@
 
 (define (draw-mean-f csv-file delta)
 (define data (load-data csv-file))
+;(define d (take-even data))
 (draw-mean data delta))
 
 (define (draw-chars result result-m)
@@ -64,9 +65,11 @@ rounds delta pie)
 [k (in-list rank-list)])
 (draw-bundle-f i j k make-reader data-point rounds pie (string-append (generate-file-name j TESTS) ".png"))))
 
-(define cluster "/home/linhchi.nguyen/run86/")
-(define MEAN-FILE (list (string-append cluster "rank0")
+(define cluster "/home/linhchi.nguyen/data/")
+(define MEAN-FILE (list 
+(string-append cluster "mean0")
 (string-append cluster "mean20")
+;(string-append cluster "mean30")
 (string-append cluster "mean40")
 (string-append cluster "mean60")
 (string-append cluster "mean70")
@@ -77,6 +80,7 @@ rounds delta pie)
 (string-append cluster "mean99")))
 (define RANK-FILE (list (string-append cluster "rank0")
 (string-append cluster "rank20")
+;(string-append cluster "rank30")
 (string-append cluster "rank40")
 (string-append cluster "rank60")
 (string-append cluster "rank70")
@@ -86,9 +90,11 @@ rounds delta pie)
 (string-append cluster "rank95")
 (string-append cluster "rank99")))
 (define DELTA-LIST (list 0 .2 .4 .6 .7 .8 .85 .9 .95 .99))
-(define JUMP 100) ;; data point
+(define JUMP 50) ;; data point
 
 (define (draws)
+;(draw-mean-f "/home/linhchi.nguyen/data/mean30" .3))
+;(draw-bundle-f "/home/linhchi.nguyen/data/mean0" 0 "/home/linhchi.nguyen/data/rank0" make-automaton-csv-reader JUMP ROUNDS PIE "0test.png"))
 (draw-bundles-f MEAN-FILE DELTA-LIST RANK-FILE make-automaton-csv-reader JUMP ROUNDS PIE))
 
 (module+ main (draws))

@@ -72,6 +72,12 @@
               (for/list ([i (in-range l)]
                          [j (in-list lst)])
                 (and (odd? i) j))))
+(define (take-even lst)
+  (define l (length lst))
+  (filter-not false?
+              (for/list ([i (in-range l)]
+                         [j (in-list lst)])
+                (and (even? i) j))))
 (define (converts lst)
   (for/list ([i (in-range (length lst))]
              [j (in-list lst)])
