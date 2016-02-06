@@ -31,10 +31,10 @@
                                 [(< cooperation 1) 'bullyish-tough]
                                 [else (cond [(< accommodation .5) 'bully]
                                             [else 'almost-accommodator])])] ;; almost or nice accommodator
-         [else (cond [(< cooperation .8) (cond [(> exploitation .6) 'high]
-                                               [else 'lame])]
-                     [else 'low])])
-   (list "w-itself fair-benchmark mediums-pay pay-highs highs-potential w-lows lows-pay"
+         [else (cond [(> exploitation .6) 'high]
+                     [else (cond [(< cooperation .8) 'lame]
+                                 [else 'low])])])
+   (list "w-itself fair-benchmark mediums-pay highs-pay highs-potential w-lows lows-pay"
          w-itself fair-benchmark
          mediums-pay highs-pay
          highs-potential w-lows lows-pay)))

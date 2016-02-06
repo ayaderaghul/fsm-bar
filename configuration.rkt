@@ -39,7 +39,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 100)
+(define CYCLES 100000)
 (define SPEED 15)
 (define ROUNDS 400)
 (define DELTA .99)
@@ -50,14 +50,14 @@
 ;; RUN ACROSS DELTA
 (define DELTAS-C (list .99 .97 .95 .93 0))
 (define DELTAS (list .99 .95 .9 
-;.85 .8 .7 .6 .4 .2 0
+.85 .8 ;.7 .6 .4 .2 0
 ))
 
 ;; PIES
 (define PIES (list 0.5 1 2 3 4 4.5))
 
 ;; POPULATION
-(define STATE# 6) ; generating automata w this number of states
+(define STATE# 5) ; generating automata w this number of states
 (define STATES# (list 10 30 50 70 90))
 
 ;; SCAN

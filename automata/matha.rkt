@@ -109,8 +109,8 @@
    "   VertexLabels -> {" (generate-state-code states) "}\n"
    "   ];\n"
    ;; "G = Graphics[{White, Disk[{0, 0}, 0.2]}];\n"
-   "S = Show[" name "Graph]\n"
-   "(*Export[\"" name ".png\",S]*)\n \n"))
+   ;;"S = Show[" name "Graph]\n"
+   "Export[\"" name ".png\", " name "Graph]\n \n"))
 
 (define (export-matha-codes a-list name)
   (with-output-to-file AUTO-CODE

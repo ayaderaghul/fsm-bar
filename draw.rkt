@@ -25,11 +25,11 @@
                [j (in-list DARK-COLORS)]
                [k (in-list CHAR-LIST)]
                )
-               (points (pack-coors i) #:color j #:line-width 6 #:alpha alpha #:label k #:y-min y-min #:y-max y-max)))
+               (points (pack-coors i) #:color j #:size 4 #:line-width 4 #:alpha alpha #:label k #:y-min y-min #:y-max y-max)))
 ;; for newer simulation, the threshold decreases so there are more autos
 ;; you should lower the opacity (alpha) and the adjust the capture frame       
-(define data (pack result .4 0 70)) ; .2 0 80
-  (define data-m (pack result-m .7 40 120)) ; .5 40 120 
+(define data (pack result .2 0 100)) ; .2 0 100
+  (define data-m (pack result-m .4 20 120)) ; .5 20 120 
   (plot/dc data
            dc
            0 400
@@ -65,36 +65,57 @@ rounds delta pie)
 [k (in-list rank-list)])
 (draw-bundle-f i j k make-reader data-point rounds pie (string-append (generate-file-name j TESTS) ".png"))))
 
+(define (draw-bundles-f-pie mean-list pie-list rank-list make-reader data-point rounds delta)
+(for ([i (in-list mean-list)]
+[j (in-list pie-list)]
+[k (in-list rank-list)])
+(draw-bundle-f i delta k make-reader data-point rounds j (string-append (generate-file-name j TESTS) ".png"))))
+
 (define cluster "/home/linhchi.nguyen/data/")
 (define MEAN-FILE (list 
-(string-append cluster "mean0")
-(string-append cluster "mean20")
-;(string-append cluster "mean30")
-(string-append cluster "mean40")
-(string-append cluster "mean60")
-(string-append cluster "mean70")
-(string-append cluster "mean80")
-(string-append cluster "mean85")
-(string-append cluster "mean90")
-(string-append cluster "mean95")
-(string-append cluster "mean99")))
-(define RANK-FILE (list (string-append cluster "rank0")
-(string-append cluster "rank20")
+;(string-append cluster "mean0")
+;(string-append cluster "mean20")
+;(string-append cluster "30mean")
+;(string-append cluster "mean40")
+;(string-append cluster "mean60")
+;(string-append cluster "mean70")
+;(string-append cluster "mean80")
+;(string-append cluster "mean85")
+;(string-append cluster "mean90")
+;(string-append cluster "mean95")
+;(string-append cluster "mean99")
+(string-append cluster "mean50")
+(string-append cluster "mean100")
+(string-append cluster "mean200")
+(string-append cluster "mean300")
+(string-append cluster "mean400")
+(string-append cluster "mean450")
+))
+(define RANK-FILE (list 
+;(string-append cluster "rank0")
+;(string-append cluster "rank20")
 ;(string-append cluster "rank30")
-(string-append cluster "rank40")
-(string-append cluster "rank60")
-(string-append cluster "rank70")
-(string-append cluster "rank80")
-(string-append cluster "rank85")
-(string-append cluster "rank90")
-(string-append cluster "rank95")
-(string-append cluster "rank99")))
+;(string-append cluster "rank40")
+;(string-append cluster "rank60")
+;(string-append cluster "rank70")
+;(string-append cluster "rank80")
+;(string-append cluster "rank85")
+;(string-append cluster "rank90")
+;(string-append cluster "rank95")
+;(string-append cluster "rank99")
+(string-append cluster "rank50")
+(string-append cluster "rank100")
+(string-append cluster "rank200")
+(string-append cluster "rank300")
+(string-append cluster "rank400")
+(string-append cluster "rank450")
+))
 (define DELTA-LIST (list 0 .2 .4 .6 .7 .8 .85 .9 .95 .99))
-(define JUMP 50) ;; data point
+(define JUMP 20) ;; data point
 
 (define (draws)
 ;(draw-mean-f "/home/linhchi.nguyen/data/mean30" .3))
-;(draw-bundle-f "/home/linhchi.nguyen/data/mean0" 0 "/home/linhchi.nguyen/data/rank0" make-automaton-csv-reader JUMP ROUNDS PIE "0test.png"))
-(draw-bundles-f MEAN-FILE DELTA-LIST RANK-FILE make-automaton-csv-reader JUMP ROUNDS PIE))
+(draw-bundle-f "/home/linhchi.nguyen/data2/99mean" .99 "/home/linhchi.nguyen/data2/99rank" make-automaton-csv-reader JUMP ROUNDS PIE "99tests.png"))
+;(draw-bundles-f-pie MEAN-FILE PIES RANK-FILE make-automaton-csv-reader JUMP ROUNDS DELTA))
 
 (module+ main (draws))
