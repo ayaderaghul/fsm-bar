@@ -1,7 +1,13 @@
 #lang racket
 
 (provide evolve print-delta)
-(require "utilities.rkt" "configuration.rkt" "./automata/personality.rkt" "population.rkt" "scan.rkt" "inout.rkt" "draw.rkt")
+(require 
+"utilities.rkt" 
+"configuration.rkt" 
+"population.rkt" 
+"scan.rkt" 
+"inout.rkt" 
+"draw.rkt")
 
 ;; DISCOUNT FACTOR
 (define (print-delta delta method)
