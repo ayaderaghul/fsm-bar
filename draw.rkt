@@ -11,7 +11,8 @@
   (define max-pay (* 5 (compound delta ROUNDS)))
   (define cap (function (lambda (x) max-pay) #:color "blue"))
   (define d (lines (pack-points means) #:y-min 0 #:y-max (+ 5 max-pay)))
-  (plot/dc (list d cap)
+(define title (print-configuration STATE# PIE "discount method" delta))
+  (plot/dc (list d cap) #:title title
            dc 0 0 1200 400))
 
 (define (draw-mean-f csv-file delta)
@@ -28,8 +29,8 @@
                (points (pack-coors i) #:color j #:size 4 #:line-width 4 #:alpha alpha #:label k #:y-min y-min #:y-max y-max)))
 ;; for newer simulation, the threshold decreases so there are more autos
 ;; you should lower the opacity (alpha) and the adjust the capture frame       
-(define data (pack result .2 0 100)) ; .2 0 100
-  (define data-m (pack result-m .4 20 120)) ; .5 20 120 
+(define data (pack result .3 0 100)) ; .3 0 100
+  (define data-m (pack result-m .5 20 120)) ; .5 20 120 
   (plot/dc data
            dc
            0 400
