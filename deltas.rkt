@@ -1,6 +1,6 @@
 #lang racket
 
-(require "basic.rkt" "configuration.rkt" "utilities.rkt" "population.rkt" "draw.rkt")
+(require "basic.rkt" "configuration.rkt" "utilities.rkt" "population.rkt" "draw.rkt" "inout.rkt")
 
 ;; ACROSS DELTAS: DISCOUNT FACTOR
 
