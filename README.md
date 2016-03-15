@@ -90,8 +90,10 @@ with -tm and no further specification, racket will evaluate the function `main d
 | plot the personality test | |||too many toughs, meh..|
 |plot simulation test from data |x||see the .png|
 |see the error file for rund.pbs|x||but you deleted it, i guess it's smt when the test return '() list so list->matrix throws exception|
-|plot the bubbles in runtime| ||a night is too short, all the jobs get killed in the morning, run a shorter job|
-|investigate the 6state machines||||
+|plot the bubbles in runtime|x ||a night is too short, all the jobs get killed in the morning, run a shorter job|
+|investigate the 6state machines|x||get some for the paper|
+
+|change parameter of payoff table|15 mar|chi|first change: H vs M -> 3,0|
 
 ### Personality test
 
@@ -143,7 +145,7 @@ NO              YES          (Fair does   |         __V_______
 
 This is a customised version built upon the base code of Matthias Felleisen [here](https://github.com/mfelleisen/sample-fsm)
 
-The initial code of this project received a lot of critical contribution by Hoang Minh Thang.
+The initial code of this project received a lot of critical contribution by Hoang Minh Thang. At the early stage, it is from [this paper](http://www.pnas.org/content/109/25/9929.abstract) that we got inspiration for the simulation workflow.
 
 Along the way of the development of this project, the code benefits tremendously from discussions on racket mailing list [here](https://groups.google.com/forum/?hl=en-GB#!topic/racket-users/4o1goSwrLHA), IRC #racket [here](http://pastebin.com/sxrCnwRV) and StackExchange.
 

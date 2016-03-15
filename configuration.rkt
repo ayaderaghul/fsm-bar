@@ -13,6 +13,15 @@
 
 (define PIE 3) ; pie < 5
 
+;; parameter for the payoff table:
+;; the first one is for the case:
+;; what happens when High meets Medium 0,0
+;; what if it's changed to 4,0
+;; rationale: agressive behavior can be regarded as investment in war
+(define INV 4)
+;; the game doesn't change in terms of NE
+
+
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
 (define NTH-TREE 2) ;; nth order decision tree of an automaton

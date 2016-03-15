@@ -1,5 +1,5 @@
 #lang racket
-(require "automata.rkt")
+(require "automata.rkt" "../configuration.rkt")
 (provide (all-defined-out))
 
 ;; PAIR MATCH
@@ -134,10 +134,13 @@
 (/ (round (* x factor))
    factor))
 
+
+
 (define (payoff-matrix pie)
   (vector (vector (cons pie pie) (cons pie 5) (cons pie (- 10 pie)))
-          (vector (cons 5 pie) (cons 5 5) (cons 0 0))
-          (vector (cons (- 10 pie) pie) (cons 0 0) (cons 0 0))))
+          (vector (cons 5 pie) (cons 5 5) (cons 0 INV))
+          (vector (cons (- 10 pie) pie) (cons INV 0) (cons 0 0))))
+
 
 (define (payoff current1 current2 pie)
   (define payoffs (payoff-matrix pie))
