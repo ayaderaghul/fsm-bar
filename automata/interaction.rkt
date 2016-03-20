@@ -137,7 +137,7 @@
 
 
 (define (payoff-matrix pie)
-  (vector (vector (cons pie pie) (cons pie 5) (cons pie (- 10 pie)))
+  (vector (vector (cons (+ pie CUS) (+ pie CUS)) (cons pie 5) (cons pie (- 10 pie)))
           (vector (cons 5 pie) (cons 5 5) (cons 0 INV))
           (vector (cons (- 10 pie) pie) (cons INV 0) (cons 0 0))))
 

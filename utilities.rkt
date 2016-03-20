@@ -1,12 +1,12 @@
 #lang racket
-(require "configuration.rkt" plot/no-gui unstable/hash)
+(require "configuration.rkt" plot/no-gui racket/hash)
 (provide (all-defined-out))
 
 ;; GENERATE NAMES AND TITLES
 (define (print-configuration state# pie method delta)
   (format
-   "N = ~a, speed = ~a, rounds = ~a, states# = ~a, pie = ~a, ~a: delta = ~a"
-   N SPEED ROUNDS state# pie method delta))
+   "N = ~a, speed = ~a, rounds = ~a, states# = ~a, pie = ~a, ~a: delta = ~a, INV payoff = ~a, CUS = ~a"
+   N SPEED ROUNDS state# pie method delta INV CUS))
 
 (define (variable->string x)
   (string-trim (number->string (* 100 x)) ".0"))

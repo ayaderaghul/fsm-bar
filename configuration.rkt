@@ -18,9 +18,10 @@
 ;; what happens when High meets Medium 0,0
 ;; what if it's changed to 4,0
 ;; rationale: agressive behavior can be regarded as investment in war
-(define INV 4)
+(define INV 0)
 ;; the game doesn't change in terms of NE
-
+(define CUS 0)
+;; the second change: L meets L 2,2 -> cushioned 5,5
 
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
@@ -48,7 +49,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 1000)
+(define CYCLES 300000)
 (define SPEED 15)
 (define ROUNDS 400)
 (define DELTA .99)
@@ -66,7 +67,8 @@
 (define PIES (list 0.5 1 2 3 4 4.5))
 
 ;; POPULATION
-(define STATE# 5) ; generating automata w this number of states
+(define STATE# 15) ; generating automata w this number of states
+; the number of active states is 15/3=5 initially
 (define STATES# (list 10 30 50 70 90))
 
 ;; SCAN
