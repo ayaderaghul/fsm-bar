@@ -93,7 +93,7 @@ with -tm and no further specification, racket will evaluate the function `main d
 |plot the bubbles in runtime|x ||a night is too short, all the jobs get killed in the morning, run a shorter job|
 |investigate the 6state machines|x||get some for the paper|
 |change parameter of payoff table|15 mar|chi|first change: H vs M -> 3,0|
-|second change: L vs L -> 5,5|||| this change the max possible average payoff|
+|second change: L vs L -> 5,5||| this change the max possible average payoff|
 | changes in payoff table change the personality test structure also|||think about it|
 
 
