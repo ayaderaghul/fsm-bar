@@ -94,6 +94,9 @@ with -tm and no further specification, racket will evaluate the function `main d
 |investigate the 6state machines|x||get some for the paper|
 
 |change parameter of payoff table|15 mar|chi|first change: H vs M -> 3,0|
+|second change: L vs L -> 5,5|||| this change the max possible average payoff|
+| changes in payoff table change the personality test structure also|||think about it|
+
 
 ### Personality test
 

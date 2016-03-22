@@ -1,5 +1,5 @@
 #lang racket
-(require "configuration.rkt" plot/no-gui racket/hash)
+(require "configuration.rkt" plot/no-gui unstable/hash)
 (provide (all-defined-out))
 
 ;; GENERATE NAMES AND TITLES
