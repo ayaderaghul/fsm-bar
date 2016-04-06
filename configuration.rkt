@@ -18,7 +18,7 @@
 ;; what happens when High meets Medium 0,0
 ;; what if it's changed to 4,0
 ;; rationale: agressive behavior can be regarded as investment in war
-(define INV 4)
+(define INV 0)
 ;; the game doesn't change in terms of NE
 (define CUS 0)
 ;; the second change: L meets L 2,2 -> cushioned 5,5

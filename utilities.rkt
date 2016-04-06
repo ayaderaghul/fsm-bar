@@ -5,7 +5,7 @@
 ;; GENERATE NAMES AND TITLES
 (define (print-configuration state# pie method delta)
   (format
-   "N = ~a, speed = ~a, rounds = ~a, states# = ~a, pie = ~a, ~a: delta = ~a, INV payoff = ~a, CUS = ~a"
+   "N = ~a, speed = ~a, rounds = ~a, states# = ~a, pie = ~a, ~a: delta = ~a, INV = ~a, CUS = ~a"
    N SPEED ROUNDS state# pie method delta INV CUS))
 
 (define (variable->string x)

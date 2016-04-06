@@ -38,6 +38,7 @@
   (define (out-data* lst) (flatten lst))
   (define out-test1 (string-append rank-file "1"))
   (define out-test2 (string-append rank-file "2"))
+  (define normalisation-factor (compound delta rounds-per-match))
   (cond
    [(zero? cycles) '()]
    [else (define p2 (match-up-d population rounds-per-match delta pie))
@@ -64,7 +65,7 @@
          (when (zero? (modulo cycles DATA-POINT))
            (out-rank rank-file cycles
                      (hash->list (rank p3))))
-         (define m (relative-average pp 1))
+         (define m (/ (relative-average pp 1) normalisation-factor))
          (out-mean mean-file (list m))
          (cons m ;char-results
                ;;(hash-count ranking)
