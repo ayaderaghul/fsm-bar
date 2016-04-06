@@ -2,6 +2,7 @@
 
 (provide evolve print-delta)
 (require
+ "./automata/personality.rkt"
 "utilities.rkt"
 "configuration.rkt"
 "population.rkt"
@@ -34,16 +35,32 @@
 (module+ main (run-d))
 
 (define (evolve population cycles speed rounds-per-match delta pie mutation mean-file rank-file)
+  (define (out-data* lst) (flatten lst))
+  (define out-test1 (string-append rank-file "1"))
+  (define out-test2 (string-append rank-file "2"))
   (cond
    [(zero? cycles) '()]
    [else (define p2 (match-up-d population rounds-per-match delta pie))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate-c p3 mutation)
-         ;(define ranking (rank* p3))
-         ;(define ranking-list (hash->list ranking))
-         ;(define char-results
-         ;  (test-both ranking-list (- CYCLES cycles) rounds-per-match delta pie))
+         (define ranking (rank* p3))
+         (define ranking-list (hash->list ranking))
+         (match-define
+          (list char-result1 char-result2)
+          (test-simulation (list ranking-list) DATA-POINT rounds-per-match delta pie))
+         (match-define
+          (list result1 result2)
+          (list
+           (map hash->list char-result1)
+           (map hash->list char-result2)))
+         (match-define
+          (list out1 out2)
+          (list
+           (map out-data* result1)
+           (map out-data* result2)))
+         (out-data out-test1 out1)
+         (out-data out-test2 out2)
          (when (zero? (modulo cycles DATA-POINT))
            (out-rank rank-file cycles
                      (hash->list (rank p3))))

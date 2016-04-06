@@ -42,9 +42,9 @@
 
 ;; scan for types (personality)
 
-`(define (how-manys lst h)
-(for/sum ([i (in-list lst)])
-(how-many i h)))
+;(define (how-manys lst h)
+;(for/sum ([i (in-list lst)])
+;(how-many i h)))
 
 (define (scan-char lst rounds delta pie)
   (define autos (map car lst))
