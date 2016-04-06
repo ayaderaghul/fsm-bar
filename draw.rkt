@@ -8,7 +8,8 @@
 (define dc (new bitmap-dc% [bitmap frame]))
 
 (define (draw-mean means delta)
-  (define max-pay (* 5 (compound delta ROUNDS)))
+  ;(define max-pay (* 5 (compound delta ROUNDS)))
+(define max-pay 5) ; bc popu mean is normalised by dividing by (compound d r)
   (define cap (function (lambda (x) max-pay) #:color "blue"))
   (define d (lines (pack-points means) #:y-min 0 #:y-max (+ 5 max-pay)))
 (define title (print-configuration STATE# PIE "discount method" delta))
