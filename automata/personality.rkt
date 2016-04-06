@@ -153,6 +153,19 @@
            '() lst xs))
   (list (reverse (flatten test-result)) (reverse test-result-m)))
 
+(define (test-in-simulation lst count-down max-cycles rounds delta pie)
+  (define current-cycle (- (+ 1 max-cycles) count-down))
+  (define len (length lst))
+  (define xs (make-list len current-cycle))
+  (define test-result
+    (foldl (lambda (next1 next2 init) (cons (test* test-au next1 next2 rounds delta pie) init))
+           '() lst xs))
+  (define test-result-m
+    (foldl (lambda (next1 next2 init) (cons (test* test-mix next1 next2 rounds delta pie) init))
+           '() lst xs))
+  (list (reverse (flatten test-result)) (reverse test-result-m)))
+
+
 
 ;; test the population state as autos and as mixture
 

@@ -48,7 +48,7 @@
          (define ranking-list (hash->list ranking))
          (match-define
           (list char-result1 char-result2)
-          (test-simulation (list ranking-list) DATA-POINT rounds-per-match delta pie))
+          (test-in-simulation (list ranking-list) cycles CYCLES rounds-per-match delta pie))
          (match-define
           (list result1 result2)
           (list
