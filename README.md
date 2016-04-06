@@ -1,47 +1,14 @@
 # fsm-bar
 
-## how to run in mathematica
+## CURRENT ISSUES
 
-before running, it's necessary to change the directory for the output.
+print out the classification (for a regression)
 
-- open `basic.rkt`, the CONFIGURATION is at the beginning:
+normalise the means of diff number of rounds (for the t test)
 
-- change the directory to smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/"
-this directory will be append before the file name, it's better to append "" (nothing) so that the output is exported in the current directory
+the classification changes with cushions (how?)
 
-- then change the variables accordingly, for example: N 100, CYCLES 100000...
-
-- then run the file `run-in-matha.nb` in mathematica (in that file, mathematica set directory as the current directory)
-
-in general (and inside mathematica), the command to run is
-
-```
-raco test -s rund basic.rkt
-```
-or
-```
-racket -tm side.rkt
-```
-
-with -tm and no further specification, racket will evaluate the function `main defined inside the file side.rkt, raco will run the test module inside the file, (this may be necessary when there is not only one main module inside the file, for example, run in continual probability fashion or run in discount factor fashion)
-
-### how to run in lab 1 computer:
-
-- change the directory for the output into a dropbox folder
-(ie smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png")
-
-```
-(require (file "/Users/linhchi.nguyen/Documents/fsm-bar/main.rkt"))
-
-```
-
-### how to run in disa lab computer:
-- change directory for output:
-"C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/run6/mean"
-
-```
-(require (file "R:/fsm-bar/main.rkt"))
-```
+revise the classification
 
 ## To do
 
@@ -141,7 +108,48 @@ NO              YES          (Fair does   |         __V_______
 
 
 ```
+## how to run in mathematica
 
+before running, it's necessary to change the directory for the output.
+
+- open `basic.rkt`, the CONFIGURATION is at the beginning:
+
+- change the directory to smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/"
+this directory will be append before the file name, it's better to append "" (nothing) so that the output is exported in the current directory
+
+- then change the variables accordingly, for example: N 100, CYCLES 100000...
+
+- then run the file `run-in-matha.nb` in mathematica (in that file, mathematica set directory as the current directory)
+
+in general (and inside mathematica), the command to run is
+
+```
+raco test -s rund basic.rkt
+```
+or
+```
+racket -tm side.rkt
+```
+
+with -tm and no further specification, racket will evaluate the function `main defined inside the file side.rkt, raco will run the test module inside the file, (this may be necessary when there is not only one main module inside the file, for example, run in continual probability fashion or run in discount factor fashion)
+
+### how to run in lab 1 computer:
+
+- change the directory for the output into a dropbox folder
+(ie smt like: "/Users/linhchi.nguyen/Dropbox/fsm-bar/run1/mean.png")
+
+```
+(require (file "/Users/linhchi.nguyen/Documents/fsm-bar/main.rkt"))
+
+```
+
+### how to run in disa lab computer:
+- change directory for output:
+"C:/Documents and Settings/linhchi.nguyen/My Documents/Dropbox/fsm-bar/run6/mean"
+
+```
+(require (file "R:/fsm-bar/main.rkt"))
+```
 
 # Acknowledgment
 

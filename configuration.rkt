@@ -11,17 +11,18 @@
 ;; the strategy to be played at that state
 ;; and 3 dispatching rules: given that the opponent plays L M H, which state to jump to?
 
-(define PIE 3) ; pie < 5
+(define PIE 2) ; pie < 5
 
 ;; parameter for the payoff table:
 ;; the first one is for the case:
 ;; what happens when High meets Medium 0,0
 ;; what if it's changed to 4,0
 ;; rationale: agressive behavior can be regarded as investment in war
-(define INV 0)
+(define INV 4)
 ;; the game doesn't change in terms of NE
 (define CUS 0)
 ;; the second change: L meets L 2,2 -> cushioned 5,5
+;; CUS runs from 0 to 2 (because PIE + CUS <= 5
 
 (define AUTO-CODE "auto-code.nb") ; file name if exporting matha code
 
@@ -49,7 +50,7 @@
 
 ;; change the simulation settings here
 (define N 100)
-(define CYCLES 300000)
+(define CYCLES 100)
 (define SPEED 15)
 (define ROUNDS 400)
 (define DELTA .99)
@@ -60,7 +61,8 @@
 ;; RUN ACROSS DELTA
 (define DELTAS-C (list .99 .97 .95 .93 0))
 (define DELTAS (list .99 .95 .9 
-.85 .8 ;.7 .6 .4 .2 0
+.85 .8 .7 .6 .4 .2
+ 0
 ))
 
 ;; PIES
